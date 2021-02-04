@@ -1,0 +1,13 @@
+#include "core.cvc"
+
+export int main () {
+    gcd( 8, 12);
+
+    fac( 3);
+
+    fib( 10);
+
+    isprime( 2);
+
+    return 0;
+}

@@ -1,0 +1,32 @@
+int gcd( int a, int b ) {
+    if (b == 0) {
+        return a;
+    } else {
+        return gcd(b, a % b);
+    }
+}
+
+int fac( int n ) {
+    if (n>0) {
+        return n * fac(n - 1);
+    } else {
+        return 0;
+    }
+}
+
+int fib( int n ) {
+    if (n == 0 || n == 1 ) {
+        return n;
+    } else {
+        return fib(n - 1) + fib(n - 2);
+    }
+}
+
+int isprime( int n ) {
+    if (n > 1 && n/1 == n && n/n == 1) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}

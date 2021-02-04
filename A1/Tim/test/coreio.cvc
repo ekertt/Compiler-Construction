@@ -1,0 +1,7 @@
+int fibs( int n ) {
+
+}
+
+int primes( int n ) {
+    
+}
