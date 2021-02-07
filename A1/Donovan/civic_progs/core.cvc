@@ -1,0 +1,61 @@
+/**
+*   Function that calculates the greatest common dominator between a given 'a' and 'b'
+*   @param int 
+*   @return int
+*/
+int gcd ( int a, int b) {
+    
+    // Base case
+    if (b == 0) {
+        return a;
+    }
+
+    // Return int
+    return gcd(b, a % b);
+}
+
+/**
+*   Function that calculates the factorial for a given 'n'
+*   @param int 
+*   @return int
+*/
+int fac ( int n) {
+    
+    // Base case
+    if (n == 0) {
+        return 1;
+    }
+
+    // Return int
+    return n * fac( n - 1);
+}
+
+/**
+*   Function that calculates the prime numbers for a given n
+*   @param int 
+*   @return int
+*/
+int fib ( int n) {
+    
+    // Base case
+    if ( n <= 1) {
+        return n;
+    }
+
+    // Return int
+    return fib( n-1) + fib( n-2);
+}
+
+/**
+*   Function that calculates the prime numbers for a given 'n'
+*   @param bool 
+*   @return bool
+*/
+bool isprime ( int n) {
+    if ( n / n == 1 && n / 1 == n){
+        return true;
+    } 
+
+    // Return bool
+    return false;
+}

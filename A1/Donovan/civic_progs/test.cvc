@@ -1,3 +1,5 @@
+#include "core.cvc"
+
 export int main( )
 {
     printInt( gcd( 8, 12));
