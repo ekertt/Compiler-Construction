@@ -18,7 +18,7 @@ export int main () {
 
     return 0;
 }
-*/
+
 
 export int main () {
     fibs(5);
@@ -26,3 +26,44 @@ export int main () {
 
     return 0;
 }
+
+export int main () {
+    int[5] intVec = [1, 2, 3, 4, 5];
+    printIntVec( intVec);
+
+    float[4] floatVec = [1.1, 2.2, 3.3, 4.4];
+    printFloatVec( floatVec);
+
+    int[2, 4] intMat = [[1, 2, 3, 4], [6, 20, 13, 6]];
+    printIntMat( intMat);
+
+    float[2, 4] floatMat = [[1.2, 2.2, 3.2, 4.2], [6.2, 20.2, 13.2, 6.2]];
+    printFloatMat( floatMat);
+
+    int[2] intVecScanner;
+    scanIntVec( intVecScanner);
+    printIntVec( intVecScanner);
+
+    float[2] floatVecScanner;
+    scanFloatVec( floatVecScanner);
+    printFloatVec( floatVecScanner);
+
+    int[2,2] intMatScanner;
+    scanIntMat( intMatScanner);
+    printIntMat( intMatScanner);
+        
+    float[2,2] floatMatScanner;
+    scanFloatMat( floatMatScanner);
+    printFloatMat( floatMatScanner);
+
+
+    float[2, 4] matMul1 = [[1.2, 2.2, 3.2, 4.2], [6.2, 20.2, 13.2, 6.2]];
+    float[2, 4] matMul2 = [[1.2, 2.2, 3.2, 4.2], [6.2, 20.2, 13.2, 6.2]];
+    float[2, 4] matMulbOutput = [];
+    
+    matMul( matMul1, matMul2, matMulbOutput);
+    printFloatMat( matMulbOutput);
+   
+    return 0;
+}
+*/

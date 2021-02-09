@@ -28,7 +28,7 @@
 
 node *FLbinop(node *arg_node, info *arg_info)
 {
-    DBUG_ENTER("OSbinop");
+    DBUG_ENTER("FLbinop");
 
     if (BINOP_OP(arg_node) == BO_sub)
     {
@@ -55,7 +55,7 @@ node *FLbinop(node *arg_node, info *arg_info)
 
 node *FLdoFool(node *syntaxtree)
 {
-    DBUG_ENTER("OSdoOptSub");
+    DBUG_ENTER("FLdoOptSub");
 
     TRAVpush(TR_fl);
     syntaxtree = TRAVdo(syntaxtree, NULL);

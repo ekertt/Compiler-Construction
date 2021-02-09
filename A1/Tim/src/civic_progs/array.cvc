@@ -1,0 +1,72 @@
+#include "civic.h"
+
+
+void printIntVec ( int[n] vec) {
+    for(int i = 0, n) {
+        printInt(vec[i]);
+        printNewlines( 1);
+    }
+}
+
+void printFloatVec ( float[n] vec) {
+    for(int i = 0, n) {
+        printFloat(vec[i]);
+        printNewlines( 1);
+    }
+}
+
+void printIntMat ( int[m, n] mat) {
+    for (int a = 0, m) {
+        for (int b = 0, n) {
+            printInt(mat[a, b]);
+            printNewlines( 1);
+        }
+        printNewlines( 1);
+    }
+}
+
+void printFloatMat( float[m,n] mat) {
+    for (int a = 0, m) {
+        for (int b = 0, n) {
+            printFloat(mat[a, b]);
+            printNewlines( 1);
+        }
+        printNewlines( 1);
+    }
+}
+
+void scanIntVec( int[n] vec) {
+    for(int i = 0, n) {
+        vec[i] = scanInt();
+    }
+}
+
+void scanFloatVec( float[n] vec) {
+    for(int i = 0, n) {
+        vec[i] = scanFloat();
+    }
+}
+
+void scanIntMat( int[m,n] mat) {
+    for (int a = 0, m) {
+        for (int b = 0, n) {
+            mat[a, b] = scanInt();
+        }
+    }
+}
+
+void scanFloatMat( float[m,n] mat) {
+    for (int a = 0, m) {
+        for (int b = 0, n) {
+            mat[a, b] = scanFloat();
+        }
+    }
+}
+
+void matMul(float[m, n] a, float[o, p] b, float[q, l] c) {
+    for (int d = 0, m) {
+        for (int e = 0, n) {
+            c[d, e] = a[d, e] * b[d, e];
+        }
+    }
+}

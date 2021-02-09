@@ -41,6 +41,12 @@
       <traversal id="FREE" name="Free Syntax Tree" default="user" include="free_node.h" />
       <traversal id="CHK" name="Check Syntax Tree" default="user" include="check.h" />
 
+      <traversal id="SR" name="Strength reduction" default="sons" include="strength_reduction.h">
+        <travuser>
+          <node name="BinOp" />
+        </travuser>
+      </traversal>
+
       <traversal id="RI" name="Rename identifiers" default="sons" include="rename_identifiers.h">
         <travuser>
           <node name="Var" />
