@@ -1,0 +1,28 @@
+/*#include "core.cvc"*/
+#include "civic.h"
+#include "coreio.cvc"
+
+/*
+export int main () {
+    printInt(gcd( 7, 31));
+    printNewlines(1);
+
+    printInt(fac( 3));
+    printNewlines(1);
+
+    printInt(fib( 10));
+    printNewlines(1);
+
+    printInt((int)isprime( 3));
+    printNewlines(1);
+
+    return 0;
+}
+*/
+
+export int main () {
+    fibs(5);
+    primes(5);
+
+    return 0;
+}
