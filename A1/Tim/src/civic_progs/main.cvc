@@ -21,10 +21,10 @@ export int main () {
 
 
 export int main () {
-    fibs(5);
+    fibs(10);
     printNewlines(1);
 
-    primes(5);
+    primes(10);
     printNewlines(1);
 
     return 0;

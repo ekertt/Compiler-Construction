@@ -28,7 +28,7 @@ int fib( int n ) {
 bool isprime(int n) {
     bool primeNumberRecursive(int num, int divisor) {
         if (num == 1) {
-            return true;
+            return false;
         }
 
         if (num == divisor) {
