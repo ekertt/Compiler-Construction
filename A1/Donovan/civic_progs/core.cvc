@@ -1,3 +1,5 @@
+# include <civic.h>
+
 /**
 *   Function that calculates the greatest common dominator between a given 'a' and 'b'
 *   @param int 
@@ -31,7 +33,7 @@ int fac( int n) {
 }
 
 /**
-*   Function that calculates the prime numbers for a given n
+*   Function that calculates 'n'th fibonacci number in the list
 *   @param int 
 *   @return int
 */
@@ -47,7 +49,7 @@ int fib( int n) {
 }
 
 /**
-*   Function that calculates the prime numbers for a given 'n'
+*   Function that returns true if 'n' is a prime number otherwise it will return false
 *   @param int 
 *   @return int
 */
@@ -64,22 +66,34 @@ bool isprime( int n) {
     bool primeNumberCheckRecursive (int isItPrime, int currentDivisor) {
         
         // Base case 1 is prime
-        if ( isItPrime == 1) {
-            return true;
+        if ( isItPrime <= 1) {
+            
+            return false;
         }
 
         // Base case 2 is prime
         if ( isItPrime == 2) {
+            
+            return true;
+        }
+
+        // Base case 
+        if ( isItPrime == currentDivisor) {
+            
             return true;
         }
 
         // Base case remainder present
         if ( n % currentDivisor == 0) {
+            
             return false;
         }
 
+        // Return bool
         return primeNumberCheckRecursive( n, currentDivisor + 1);
     }
 
+    // Return bool
     return primeNumberCheckRecursive( n, startDivisor);
 }
+

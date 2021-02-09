@@ -1,0 +1,132 @@
+# include <civic.h>
+
+/**
+*   Function that prints the int array 'vec' to stdout
+*   @param int[] 
+*/
+void printIntVec( int [ n] vec) {
+    
+    // Loop through all of the values
+    for ( int i = 0, n) {
+
+        printNewlines( 1);
+
+        // Print the value to stdout
+        printInt( vec[ i]);
+
+        printNewlines( 1);
+    }
+    
+}
+
+/**
+*   Function that prints the float array 'vec' to stdout
+*   @param float[] 
+*/
+void printFloatVec( float [ n] vec) {
+
+    // Loop through all of the values
+    for ( int i = 0, n) {
+
+        printNewlines( 1);
+
+        // print the value
+        printFloat( vec[ i]);
+
+        printNewlines( 1);
+    }
+
+}
+
+/**
+*   Function that prints the int array 'mat' to stdout
+*   @param int[] 
+*/
+void printIntMat( int [ m, n] mat) {
+
+    printNewlines( 1);
+
+    // Loop through all of the 'm' values
+    for ( int m = 0, n) {
+
+        // Loop through all of the 'n' values
+        for ( int n = 0, n) {
+            
+            // print the value
+            printInt( mat[ m, n]);
+
+            printSpaces( 1);
+        }
+
+        printNewlines( 2);
+    }
+
+}
+
+/**
+*   Function that prints the float array 'mat' to stdout
+*   @param float[] 
+*/
+void printFloatMat( float [ m, n] mat) {
+
+    printNewlines( 1);
+
+    // Loop through all of the 'm' values
+    for ( int m = 0, n) {
+
+        // Loop through all of the 'n' values
+        for ( int n = 0, n) {
+        
+            // print the value
+            printFloat( mat[ m, n]);
+
+            printSpaces( 1);
+        }
+
+        printNewlines( 2);
+    }
+
+}
+
+/**
+*   Function that prints the int array 'vec' to stdout
+*   @param int[] 
+*/
+void scanIntVec( int [ n] vec) {
+
+    // Loop through all of the values
+    for ( int i = 0, n) {
+
+        printNewlines( 1);
+
+        // Print the value to stdout
+        printInt( vec[ i]);
+
+        printNewlines( 1);
+    }
+
+}
+
+//scanInt
+export int main( )
+{
+    //int[4] intVec = [1, 2, 3, 4];
+    //printIntVec( intVec);
+    //printNewlines( 1);
+
+    //float[4] floatVec = [1.4, 2.3, 3.3, 4.1];
+    //printFloatVec( floatVec);
+    //printNewlines( 1);
+
+    //int[4, 4] intMap = [[1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4]];
+    //printIntMat( intMap);
+    //printNewlines( 1);
+
+    //float[4, 4] floatMap = [[1.4, 2.3, 3.2, 4.1], [1.4, 2.3, 3.2, 4.1], [1.4, 2.3, 3.2, 4.1], [1.4, 2.3, 3.2, 4.1]];
+    //printFloatMat( floatMap);
+    //printNewlines( 1);
+
+    return 0;
+}
+
+
