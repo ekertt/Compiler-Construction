@@ -10,7 +10,7 @@ int gcd( int a, int b ) {
 }
 
 int fac( int n ) {
-    if (n>0) {
+    if (n > 0) {
         return n * fac(n - 1);
     }
 
@@ -26,13 +26,21 @@ int fib( int n ) {
 }
 
 bool isprime(int n) {
-    bool isprimerec(int num, int div) {
-        if (num == div || num == 1) return true;
+    bool primeNumberRecursive(int num, int divisor) {
+        if (num == 1) {
+            return true;
+        }
 
-        if (num % div == 0) return false;
+        if (num == divisor) {
+            return true;
+        }
 
-        return isprimerec(num, div + 1);
+        if (num % divisor == 0) {
+            return false;
+        }
+
+        return primeNumberRecursive(num, divisor + 1);
     }
 
-    return isprimerec(n, 2);
+    return primeNumberRecursive(n, 2);
 }

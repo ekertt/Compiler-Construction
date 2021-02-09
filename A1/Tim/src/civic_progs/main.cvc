@@ -13,7 +13,7 @@ export int main () {
     printInt(fib( 10));
     printNewlines(1);
 
-    printInt((int)isprime( 3));
+    printInt((int)isprime( 8));
     printNewlines(1);
 
     return 0;
