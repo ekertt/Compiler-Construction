@@ -119,15 +119,3 @@ void primes( int n) {
     // Recursion
     primes( n - 1);
 }
-
-/*
-export int main() {
-    fibs ( 20);
-
-    
-    printNewlines( 1);
-    primes( 11);
-
-    return 0;
-}
-*/

@@ -96,4 +96,3 @@ bool isprime( int n) {
     // Return bool
     return primeNumberCheckRecursive( n, startDivisor);
 }
-

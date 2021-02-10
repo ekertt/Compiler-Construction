@@ -44,6 +44,12 @@ SUBPHASE( fl,
           "Fool compiler",
           FLdoFool, 
           ALWAYS,
+          pet)  
+
+SUBPHASE( sr, 
+          "Strength reduction",
+          SRdoStrengthReduction, 
+          ALWAYS,
           pet)      
 
 SUBPHASE( si, 

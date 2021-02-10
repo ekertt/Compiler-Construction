@@ -1,5 +1,5 @@
-src/framework/check_attribs.o src/framework/.check_attribs.d: $(PROJECT_ROOT)/Makefile.Config src/framework/check_attribs.c \
-  src/framework/check_attribs.h src/framework/types.h \
+src/demo/strength_reduction.o src/demo/.strength_reduction.d: $(PROJECT_ROOT)/Makefile.Config src/demo/strength_reduction.c \
+  src/demo/strength_reduction.h src/framework/types.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/stdio.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/_stdio.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/sys/cdefs.h \
@@ -57,4 +57,6 @@ src/framework/check_attribs.o src/framework/.check_attribs.d: $(PROJECT_ROOT)/Ma
   /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/sys/resource.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/sys/_types/_timeval.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/sys/_types/_wchar_t.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/malloc/_malloc.h
+  /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include/malloc/_malloc.h \
+  src/framework/memory.h src/framework/free.h src/framework/free_node.h \
+  src/framework/str.h
