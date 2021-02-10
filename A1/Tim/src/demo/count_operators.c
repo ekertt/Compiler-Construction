@@ -77,13 +77,6 @@ node *CAbinop(node *arg_node, info *arg_info)
 {
     DBUG_ENTER("CAbinop");
 
-    /*
-       * Extremely important:
-       *  we must continue to traverse the abstract syntax tree !!
-       */
-    BINOP_RIGHT(arg_node) = TRAVdo(BINOP_RIGHT(arg_node), arg_info);
-    BINOP_LEFT(arg_node) = TRAVdo(BINOP_LEFT(arg_node), arg_info);
-
     if (BINOP_OP(arg_node) == BO_mul)
     {
         COUNT_OPERATORS_MUL(arg_info) = COUNT_OPERATORS_MUL(arg_info) + 1;
