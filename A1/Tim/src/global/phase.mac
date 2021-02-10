@@ -40,6 +40,12 @@ SUBPHASE( ca,
           ALWAYS,
           pet) 
 
+SUBPHASE( ci, 
+          "Count identifiers",
+          CIdoCount, 
+          ALWAYS,
+          pet) 
+
 SUBPHASE( sr, 
           "Strength reduction",
           SRdoStrenghtReduction, 

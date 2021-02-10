@@ -41,6 +41,13 @@
       <traversal id="FREE" name="Free Syntax Tree" default="user" include="free_node.h" />
       <traversal id="CHK" name="Check Syntax Tree" default="user" include="check.h" />
 
+      <traversal id="CI" name="Count identifiers" default="sons" include="count_identifiers.h">
+        <travuser>
+          <node name="Var" />
+          <node name="VarLet" />
+        </travuser>
+      </traversal>
+
       <traversal id="CA" name="Count Arithmetic operators" default="sons" include="count_operators.h">
         <travuser>
           <node name="BinOp" />
@@ -195,7 +202,7 @@
         </attribute>
       </attributes>
     </node>
-    
+
     <!--
  Node Stmts:
 -->
