@@ -41,6 +41,12 @@
       <traversal id="FREE" name="Free Syntax Tree" default="user" include="free_node.h" />
       <traversal id="CHK" name="Check Syntax Tree" default="user" include="check.h" />
 
+      <traversal id="CA" name="Count Arithmetic operators" default="sons" include="count_operators.h">
+        <travuser>
+          <node name="BinOp" />
+        </travuser>
+      </traversal>
+
       <traversal id="SR" name="Strength reduction" default="sons" include="strength_reduction.h">
         <travuser>
           <node name="BinOp" />
@@ -59,7 +65,7 @@
           <node name="BinOp" />
         </travuser>
       </traversal>
-      
+
       <traversal id="SI" name="Sum ins" default="sons" include="sum_ints.h">
         <travuser>
           <node name="Num" />
@@ -101,6 +107,94 @@
 -->
 
   <syntaxtree>
+
+    <!--
+ Node Module:
+-->
+    <node name="Module">
+      <description>represents arithmetic operator sequence</description>
+      <sons>
+        <son name="Next">
+          <description>remaining statements in sequence</description>
+          <targets>
+            <target mandatory="no">
+              <node name="Stmts" />
+              <phases>
+                <all />
+              </phases>
+            </target>
+          </targets>
+        </son>
+      </sons>
+      <attributes>
+        <attribute name="Mul">
+          <description>Arithmetic operator multiply</description>
+          <type name="Int">
+            <targets>
+              <target mandatory="yes">
+                <any />
+                <phases>
+                  <all />
+                </phases>
+              </target>
+            </targets>
+          </type>
+        </attribute>
+        <attribute name="Sub">
+          <description>Arithmetic operator substitute</description>
+          <type name="Int">
+            <targets>
+              <target mandatory="yes">
+                <any />
+                <phases>
+                  <all />
+                </phases>
+              </target>
+            </targets>
+          </type>
+        </attribute>
+        <attribute name="Add">
+          <description>Arithmetic operator add</description>
+          <type name="Int">
+            <targets>
+              <target mandatory="yes">
+                <any />
+                <phases>
+                  <all />
+                </phases>
+              </target>
+            </targets>
+          </type>
+        </attribute>
+        <attribute name="Div">
+          <description>Arithmetic operator divide</description>
+          <type name="Int">
+            <targets>
+              <target mandatory="yes">
+                <any />
+                <phases>
+                  <all />
+                </phases>
+              </target>
+            </targets>
+          </type>
+        </attribute>
+        <attribute name="Mod">
+          <description>Arithmetic operator modulo</description>
+          <type name="Int">
+            <targets>
+              <target mandatory="yes">
+                <any />
+                <phases>
+                  <all />
+                </phases>
+              </target>
+            </targets>
+          </type>
+        </attribute>
+      </attributes>
+    </node>
+    
     <!--
  Node Stmts:
 -->
