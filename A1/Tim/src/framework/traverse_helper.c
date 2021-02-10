@@ -38,6 +38,9 @@ node           *
 TRAVsons(node * arg_node, info * arg_info)
 {
 	switch (NODE_TYPE(arg_node)) {
+	case N_module:
+		TRAV(MODULE_NEXT(arg_node), arg_info);
+		break;
 	case N_stmts:
 		TRAV(STMTS_STMT(arg_node), arg_info);
 		TRAV(STMTS_NEXT(arg_node), arg_info);
@@ -82,6 +85,9 @@ TRAVnumSons(node * node)
 	DBUG_ENTER("TRAVnumSons");
 
 	switch (NODE_TYPE(node)) {
+	case N_module:
+		result = 1;
+		break;
 	case N_stmts:
 		result = 2;
 		break;
@@ -129,6 +135,15 @@ TRAVgetSon(int no, node * parent)
 	DBUG_ENTER("TRAVgetSon");
 
 	switch (NODE_TYPE(parent)) {
+	case N_module:
+		switch (no) {
+		case 0:
+			result = MODULE_NEXT(parent);
+			break;
+		default:
+			DBUG_ASSERT((FALSE), "index out of range!");
+			break;
+		} break;
 	case N_stmts:
 		switch (no) {
 		case 0:

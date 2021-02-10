@@ -22,6 +22,18 @@
 
 
 /*****************************************************************************
+ * macros and functions for N_module
+ *****************************************************************************/
+
+#define MODULE_NEXT( n) ((n)->sons.N_module->Next)
+#define MODULE_MUL( n) ((n)->attribs.N_module->Mul)
+#define MODULE_SUB( n) ((n)->attribs.N_module->Sub)
+#define MODULE_ADD( n) ((n)->attribs.N_module->Add)
+#define MODULE_DIV( n) ((n)->attribs.N_module->Div)
+#define MODULE_MOD( n) ((n)->attribs.N_module->Mod)
+extern node    *TBmakeModule(int Mul, int Sub, int Add, int Div, int Mod, node * Next);
+
+/*****************************************************************************
  * macros and functions for N_stmts
  *****************************************************************************/
 
