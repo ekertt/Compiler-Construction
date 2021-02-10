@@ -44,6 +44,7 @@
       <traversal id="CA" name="Count Arithmetic operators" default="sons" include="count_operators.h">
         <travuser>
           <node name="BinOp" />
+          <node name="Module" />
         </travuser>
       </traversal>
 
