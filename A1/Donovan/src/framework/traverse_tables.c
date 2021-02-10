@@ -20,6 +20,7 @@
 #include "check.h"
 #include "rename_identifiers.h"
 #include "fool.h"
+#include "strength_reduction.h"
 #include "sum_ints.h"
 #include "opt_sub.h"
 
@@ -47,6 +48,9 @@ travtables_t	travtables = {
 	/* TR_fl */
 	,{&TRAVerror, &TRAVsons, &TRAVsons, &FLbinop, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons}
 
+	/* TR_sr */
+	,{&TRAVerror, &TRAVsons, &TRAVsons, &SRbinop, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons}
+
 	/* TR_si */
 	,{&TRAVerror, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &SInum, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons}
 
@@ -56,15 +60,15 @@ travtables_t	travtables = {
 
 preposttable_t	pretable = {
 	NULL
-	,NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
+	,NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
 };
 
 preposttable_t	posttable = {
 	NULL
-	,NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
+	,NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
 };
 
-const char     *travnames[9] = {
+const char     *travnames[10] = {
 	"unknown"
-	,"prt", "copy", "free", "chk", "ri", "fl", "si", "os"
+	,"prt", "copy", "free", "chk", "ri", "fl", "sr", "si", "os"
 };
