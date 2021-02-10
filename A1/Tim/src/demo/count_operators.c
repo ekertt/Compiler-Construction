@@ -48,7 +48,6 @@ static info *MakeInfo(void)
     info *result;
 
     DBUG_ENTER("MakeInfo");
-    printf("MakeInfo");
 
     result = (info *)MEMmalloc(sizeof(info));
 
@@ -64,7 +63,6 @@ static info *MakeInfo(void)
 static info *FreeInfo(info *info)
 {
     DBUG_ENTER("FreeInfo");
-    printf("FreeInfo");
 
     info = MEMfree(info);
 
@@ -78,7 +76,6 @@ static info *FreeInfo(info *info)
 node *CAbinop(node *arg_node, info *arg_info)
 {
     DBUG_ENTER("CAbinop");
-    printf("CAbinop");
 
     /*
        * Extremely important:
@@ -114,7 +111,6 @@ node *CAbinop(node *arg_node, info *arg_info)
 node *CAmodule(node *arg_node, info *arg_info)
 {
     DBUG_ENTER("CAmodule");
-    printf("CAmodule");
 
     TRAVdo(MODULE_NEXT(arg_node), arg_info);
     MODULE_MUL(arg_node) = COUNT_OPERATORS_MUL(arg_info);
@@ -133,7 +129,6 @@ node *CAmodule(node *arg_node, info *arg_info)
 node *CAdoCount(node *syntaxtree)
 {
     DBUG_ENTER("CAdoCount");
-    printf("CAdoCount");
 
     info *arg_info;
 
