@@ -41,6 +41,12 @@
       <traversal id="FREE" name="Free Syntax Tree" default="user" include="free_node.h" />
       <traversal id="CHK" name="Check Syntax Tree" default="user" include="check.h" />
 
+      <traversal id="CA" name="Count Arithmetic operators" default="sons" include="count_operators.h">
+        <travuser>
+          <node name="BinOp" />
+        </travuser>
+      </traversal>
+
       <traversal id="SR" name="Strength reduction" default="sons" include="strength_reduction.h">
         <travuser>
           <node name="BinOp" />
@@ -59,7 +65,7 @@
           <node name="BinOp" />
         </travuser>
       </traversal>
-      
+
       <traversal id="SI" name="Sum ins" default="sons" include="sum_ints.h">
         <travuser>
           <node name="Num" />
