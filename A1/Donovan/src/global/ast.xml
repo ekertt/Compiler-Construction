@@ -59,6 +59,13 @@
           <node name="BinOp" />
         </travuser>
       </traversal>
+
+      <traversal id="CO" name="Count operators" default="sons" include="count_operators.h">
+        <travuser>
+          <node name="BinOp" />
+          <node name="Module" />
+        </travuser>
+      </traversal>
       
       <traversal id="SI" name="Sum ins" default="sons" include="sum_ints.h">
         <travuser>
@@ -101,6 +108,92 @@
 -->
 
   <syntaxtree>
+    <!--
+ Node Module:
+-->
+    <node name="Module">
+      <description>represents binary operator application</description>
+      <sons>
+        <son name="Next">
+          <description>next statement in sequence</description>
+          <targets>
+            <target mandatory="no">
+              <node name="Stmts" />
+              <phases>
+                <all />
+              </phases>
+            </target>
+          </targets>
+        </son>
+      </sons>
+        <attributes>
+          <attribute name="Add">
+            <description>Counter for + operator</description>
+            <type name="Int">
+              <targets>
+                <target mandatory="yes">
+                  <any />
+                  <phases>
+                    <all />
+                  </phases>
+                </target>
+              </targets>
+            </type>
+          </attribute>
+          <attribute name="Sub">
+            <description>Counter for - operator</description>
+            <type name="Int">
+              <targets>
+                <target mandatory="yes">
+                  <any />
+                  <phases>
+                    <all />
+                  </phases>
+                </target>
+              </targets>
+            </type>
+          </attribute>
+          <attribute name="Div">
+            <description>Counter for / operator</description>
+            <type name="Int">
+              <targets>
+                <target mandatory="yes">
+                  <any />
+                  <phases>
+                    <all />
+                  </phases>
+                </target>
+              </targets>
+            </type>
+          </attribute>
+          <attribute name="Mul">
+            <description>Counter for * operator</description>
+            <type name="Int">
+              <targets>
+                <target mandatory="yes">
+                  <any />
+                  <phases>
+                    <all />
+                  </phases>
+                </target>
+              </targets>
+            </type>
+          </attribute>
+          <attribute name="Mod">
+            <description>Counter for % operator</description>
+            <type name="Int">
+              <targets>
+                <target mandatory="yes">
+                  <any />
+                  <phases>
+                    <all />
+                  </phases>
+                </target>
+              </targets>
+            </type>
+          </attribute>
+        </attributes>
+    </node>
     <!--
  Node Stmts:
 -->

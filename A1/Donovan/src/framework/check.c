@@ -260,6 +260,41 @@ node           *CHKfloat(node * arg_node, info * arg_info) {
 }
 /** <!--******************************************************************-->
  *
+ * @fn CHKmodule
+ *
+ * @brief Check the node and its sons/attributes
+ *
+ * @param arg_node Module node to process
+ * @param arg_info pointer to info structure
+ *
+ * @return processed node
+ *
+ ***************************************************************************/
+node           *CHKmodule(node * arg_node, info * arg_info) {
+	DBUG_ENTER("CHKmodule");
+
+	/*
+	 * Son check: MODULE_NEXT
+	 */
+	if ((FALSE) || (TRUE)) {
+		if (MODULE_NEXT(arg_node) != NULL) {
+			if (!((FALSE) || (NODE_TYPE(MODULE_NEXT(arg_node)) == N_stmts))) {
+				CHKcorrectTypeInsertError(arg_node, "MODULE_NEXT hasnt the right type." " It should be: " "N_stmts");
+			}
+		}
+	} else {
+		CHKnotExist(MODULE_NEXT(arg_node), arg_node, "attribute MODULE_NEXT must be NULL");
+	}
+
+	/*
+	 * trav functions: to get all sons
+	 */
+	if (MODULE_NEXT(arg_node) != NULL) {
+		MODULE_NEXT(arg_node) = TRAVdo(MODULE_NEXT(arg_node), arg_info);
+	} DBUG_RETURN(arg_node);
+}
+/** <!--******************************************************************-->
+ *
  * @fn CHKnum
  *
  * @brief Check the node and its sons/attributes
@@ -415,6 +450,7 @@ typedef enum {
 	CHK_bool_value,
 	CHK_error_message,
 	CHK_float_value,
+	CHK_module_add,
 	CHK_num_value,
 	CHK_var_name,
 	CHK_varlet_name

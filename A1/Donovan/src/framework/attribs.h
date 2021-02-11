@@ -37,6 +37,13 @@ struct ATTRIBS_N_ERROR {
 struct ATTRIBS_N_FLOAT {
 	float		Value;
 };
+struct ATTRIBS_N_MODULE {
+	int		Add;
+	int		Sub;
+	int		Div;
+	int		Mul;
+	int		Mod;
+};
 struct ATTRIBS_N_NUM {
 	int		Value;
 };
@@ -62,6 +69,7 @@ struct ATTRIBUNION {
 	struct ATTRIBS_N_BOOL *N_bool;
 	struct ATTRIBS_N_ERROR *N_error;
 	struct ATTRIBS_N_FLOAT *N_float;
+	struct ATTRIBS_N_MODULE *N_module;
 	struct ATTRIBS_N_NUM *N_num;
 	struct ATTRIBS_N_STMTS *N_stmts;
 	struct ATTRIBS_N_SYMBOLTABLEENTRY *N_symboltableentry;

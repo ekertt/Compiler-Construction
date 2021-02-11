@@ -75,11 +75,11 @@ node *SRbinop( node *arg_node, info *arg_info)
             // Put the variable in the right BINOP
             BINOP_RIGHT(arg_node) = TBmakeVar(STRcpy(anyVariable));
 
-            // Make a new multiplication BINOP and add the variable and multiplication
+            // Make a new multiplication BINOP and add the variable and multiplication number
             BINOP_LEFT(arg_node) = TBmakeBinop(BO_mul, TBmakeVar(STRcpy(anyVariable)), TBmakeNum(multiplicationNumber - 1));
         } else {
 
-            // No multiplication needed 
+            // No multiplication needed make add BINOP
             arg_node = TBmakeBinop(BO_add, TBmakeVar(STRcpy(anyVariable)), TBmakeVar(STRcpy(anyVariable)));
         }
         

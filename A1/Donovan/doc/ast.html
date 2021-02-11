@@ -150,6 +150,9 @@
                         <a href="#Float">N_float</a>
                       </li>
                       <li>
+                        <a href="#Module">N_module</a>
+                      </li>
+                      <li>
                         <a href="#Num">N_num</a>
                       </li>
                       <li>
@@ -201,12 +204,12 @@
       Phases
       <ul><li><a href="#GENERALTRAVS">
         General Traversals
-      </a><ul><li><a href="#TR_PRT">Print Syntax Tree</a></li><li><a href="#TR_COPY">Copy Syntax Tree</a></li><li><a href="#TR_FREE">Free Syntax Tree</a></li><li><a href="#TR_CHK">Check Syntax Tree</a></li><li><a href="#TR_RI">Rename identifiers</a></li><li><a href="#TR_FL">Fool compilers</a></li><li><a href="#TR_SR">Strength reduction</a></li><li><a href="#TR_SI">Sum ins</a></li><li><a href="#TR_OS">Optimise subtraction</a></li></ul></li></ul></li>
+      </a><ul><li><a href="#TR_PRT">Print Syntax Tree</a></li><li><a href="#TR_COPY">Copy Syntax Tree</a></li><li><a href="#TR_FREE">Free Syntax Tree</a></li><li><a href="#TR_CHK">Check Syntax Tree</a></li><li><a href="#TR_RI">Rename identifiers</a></li><li><a href="#TR_FL">Fool compilers</a></li><li><a href="#TR_SR">Strength reduction</a></li><li><a href="#TR_CO">Count operators</a></li><li><a href="#TR_SI">Sum ins</a></li><li><a href="#TR_OS">Optimise subtraction</a></li></ul></li></ul></li>
         <li> Nodesets
       <ul><li><a href="#Expr">{Expr}</a></li><li><a href="#Stmt">{Stmt}</a></li></ul></li>
         <li>
       Nodes
-      <ul><li><a href="#Assign">N_assign</a></li><li><a href="#BinOp">N_binop</a></li><li><a href="#Bool">N_bool</a></li><li><a href="#Error">N_error</a></li><li><a href="#Float">N_float</a></li><li><a href="#Num">N_num</a></li><li><a href="#Stmts">N_stmts</a></li><li><a href="#SymbolTableEntry">N_symboltableentry</a></li><li><a href="#Var">N_var</a></li><li><a href="#VarLet">N_varlet</a></li></ul></li>
+      <ul><li><a href="#Assign">N_assign</a></li><li><a href="#BinOp">N_binop</a></li><li><a href="#Bool">N_bool</a></li><li><a href="#Error">N_error</a></li><li><a href="#Float">N_float</a></li><li><a href="#Module">N_module</a></li><li><a href="#Num">N_num</a></li><li><a href="#Stmts">N_stmts</a></li><li><a href="#SymbolTableEntry">N_symboltableentry</a></li><li><a href="#Var">N_var</a></li><li><a href="#VarLet">N_varlet</a></li></ul></li>
       </ul>
       <h1>Tables</h1>
     </div>
@@ -349,6 +352,13 @@
             <tr>
               <td class="heading">
                 <a name="TR_SR" id="TR_SR">Strength reduction</a>
+              </td>
+            </tr>
+          </table>
+          <table class="inner">
+            <tr>
+              <td class="heading">
+                <a name="TR_CO" id="TR_CO">Count operators</a>
               </td>
             </tr>
           </table>
@@ -667,6 +677,101 @@
               </td>
               <td class="ccode"></td>
               <td></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td class="toclink">
+          <a href="#toc" class="toclink">top</a>
+        </td>
+      </tr>
+    </table>
+    <a name="Module" id="Module"></a>
+    <table>
+      <tr>
+        <td class="title">N_module<div class="description">represents binary operator application</div></td>
+      </tr>
+      <tr>
+        <td class="heading">
+          Make Function
+        </td>
+      </tr>
+      <tr>
+        <td class="ccode">node *TBmakeModule( int Add ,int Sub ,int Div ,int Mul ,int Mod ,node * Next)</td>
+      </tr>
+      <tr>
+        <td class="heading">Sons</td>
+      </tr>
+      <tr>
+        <td>
+          <table class="hidden">
+            <tr>
+              <td class="subheading">Name</td>
+              <td class="subheading">Possible Target Nodes</td>
+              <td class="subheading">Default</td>
+              <td class="subheading">Comment</td>
+            </tr>
+            <tr>
+              <td>Next</td>
+              <td> <a href="#Stmts">N_stmts</a></td>
+              <td class="ccode"></td>
+              <td>next statement in sequence</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td class="heading">Permanent Attributes</td>
+      </tr>
+      <tr>
+        <td>
+          <table class="hidden">
+            <tr>
+              <td class="subheading">Name</td>
+              <td class="subheading">Type</td>
+              <td class="subheading">Default</td>
+              <td class="subheading">Comment</td>
+            </tr>
+            <tr>
+              <td>Add</td>
+              <td>
+                <div class="type"><a href="#atype_Int">Int</a> (  ) </div>
+              </td>
+              <td class="ccode"></td>
+              <td>Counter for + operator</td>
+            </tr>
+            <tr>
+              <td>Sub</td>
+              <td>
+                <div class="type"><a href="#atype_Int">Int</a> (  ) </div>
+              </td>
+              <td class="ccode"></td>
+              <td>Counter for - operator</td>
+            </tr>
+            <tr>
+              <td>Div</td>
+              <td>
+                <div class="type"><a href="#atype_Int">Int</a> (  ) </div>
+              </td>
+              <td class="ccode"></td>
+              <td>Counter for / operator</td>
+            </tr>
+            <tr>
+              <td>Mul</td>
+              <td>
+                <div class="type"><a href="#atype_Int">Int</a> (  ) </div>
+              </td>
+              <td class="ccode"></td>
+              <td>Counter for * operator</td>
+            </tr>
+            <tr>
+              <td>Mod</td>
+              <td>
+                <div class="type"><a href="#atype_Int">Int</a> (  ) </div>
+              </td>
+              <td class="ccode"></td>
+              <td>Counter for % operator</td>
             </tr>
           </table>
         </td>
