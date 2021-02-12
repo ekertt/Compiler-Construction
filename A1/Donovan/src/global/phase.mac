@@ -56,6 +56,12 @@ SUBPHASE( co,
           "Count operators",
           COdoCountOperators, 
           ALWAYS,
+          pet) 
+
+SUBPHASE( ci, 
+          "Count identifiers",
+          CIdoCountIdentifiers, 
+          ALWAYS,
           pet)      
 
 SUBPHASE( si, 

@@ -66,6 +66,13 @@
           <node name="Module" />
         </travuser>
       </traversal>
+
+      <traversal id="CI" name="Count identifiers" default="sons" include="count_identifiers.h">
+        <travuser>
+          <node name="Var" />
+          <node name="VarLet" />
+        </travuser>
+      </traversal>
       
       <traversal id="SI" name="Sum ins" default="sons" include="sum_ints.h">
         <travuser>
@@ -112,10 +119,10 @@
  Node Module:
 -->
     <node name="Module">
-      <description>represents binary operator application</description>
+      <description>Represents binary operator application</description>
       <sons>
         <son name="Next">
-          <description>next statement in sequence</description>
+          <description>Next statement in sequence</description>
           <targets>
             <target mandatory="no">
               <node name="Stmts" />
@@ -198,10 +205,10 @@
  Node Stmts:
 -->
     <node name="Stmts">
-      <description>represents (sequence of) statements</description>
+      <description>Represents (sequence of) statements</description>
       <sons>
         <son name="Stmt">
-          <description>first statement in sequence</description>
+          <description>First statement in sequence</description>
           <targets>
             <target mandatory="yes">
               <set name="Stmt" />
@@ -212,7 +219,7 @@
           </targets>
         </son>
         <son name="Next">
-          <description>remaining statements in sequence</description>
+          <description>Remaining statements in sequence</description>
           <targets>
             <target mandatory="no">
               <node name="Stmts" />
@@ -230,11 +237,11 @@
  Node Assign:
 -->
     <node name="Assign">
-      <description>represents assignment statement</description>
+      <description>Represents assignment statement</description>
       <sons>
         <son name="Let">
           <description>
-         left hand side variable; can be missing to represent procedure calls
+         Left hand side variable; can be missing to represent procedure calls
           </description>
           <targets>
             <target mandatory="no">
@@ -246,7 +253,7 @@
           </targets>
         </son>
         <son name="Expr">
-          <description>right hand side expression</description>
+          <description>Right hand side expression</description>
           <targets>
             <target mandatory="yes">
               <set name="Expr" />
@@ -264,10 +271,10 @@
  Node BinOp:
 -->
     <node name="BinOp">
-      <description>represents binary operator application</description>
+      <description>Represents binary operator application</description>
       <sons>
         <son name="Left">
-          <description>left operand expression</description>
+          <description>Left operand expression</description>
           <targets>
             <target mandatory="yes">
               <set name="Expr" />
@@ -278,7 +285,7 @@
           </targets>
         </son>
         <son name="Right">
-          <description>right operand expression</description>
+          <description>Right operand expression</description>
           <targets>
             <target mandatory="yes">
               <set name="Expr" />
@@ -290,7 +297,7 @@
         </son>
       </sons>
       <attributes>
-        <description>operator type</description>
+        <description>Operator type</description>
         <attribute name="Op">
           <type name="BinOp">
             <targets>
@@ -309,7 +316,7 @@
  Node VarLet:
 -->
     <node name="VarLet">
-      <description>represents variable (identifier) in assignment position</description>
+      <description>Represents variable (identifier) in assignment position</description>
       <sons>
       </sons>
       <attributes>
@@ -345,7 +352,7 @@
  Node Var:
 -->
     <node name="Var">
-      <description>represents variable (identifier) in expression position</description>
+      <description>Represents variable (identifier) in expression position</description>
       <sons>
       </sons>
       <attributes>
@@ -380,7 +387,7 @@
  Node Num:
 -->
     <node name="Num">
-      <description>represents integer constant</description>
+      <description>Represents integer constant</description>
       <sons>
       </sons>
       <attributes>
@@ -401,7 +408,7 @@
  Node Float:
 -->
     <node name="Float">
-      <description>represents floating point constant</description>
+      <description>Represents floating point constant</description>
       <sons>
       </sons>
       <attributes>
@@ -422,7 +429,7 @@
  Node Bool:
 -->
     <node name="Bool">
-      <description>represents Boolean constant (true/false)</description>
+      <description>Represents Boolean constant (true/false)</description>
       <sons>
       </sons>
       <attributes>
@@ -443,7 +450,7 @@
  Node SymbolTableEntry:
 -->
     <node name="SymbolTableEntry">
-      <description>represents symbol table entry</description>
+      <description>Represents symbol table entry</description>
       <sons>
       </sons>
       <attributes>
@@ -453,7 +460,7 @@
  Node Error:
 -->
     <node name="Error">
-      <description>represents internal Error representation constructor</description>
+      <description>Represents internal Error representation constructor</description>
       <sons>
         <son name="Next">
           <targets>

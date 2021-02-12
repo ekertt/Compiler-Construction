@@ -204,7 +204,7 @@
       Phases
       <ul><li><a href="#GENERALTRAVS">
         General Traversals
-      </a><ul><li><a href="#TR_PRT">Print Syntax Tree</a></li><li><a href="#TR_COPY">Copy Syntax Tree</a></li><li><a href="#TR_FREE">Free Syntax Tree</a></li><li><a href="#TR_CHK">Check Syntax Tree</a></li><li><a href="#TR_RI">Rename identifiers</a></li><li><a href="#TR_FL">Fool compilers</a></li><li><a href="#TR_SR">Strength reduction</a></li><li><a href="#TR_CO">Count operators</a></li><li><a href="#TR_SI">Sum ins</a></li><li><a href="#TR_OS">Optimise subtraction</a></li></ul></li></ul></li>
+      </a><ul><li><a href="#TR_PRT">Print Syntax Tree</a></li><li><a href="#TR_COPY">Copy Syntax Tree</a></li><li><a href="#TR_FREE">Free Syntax Tree</a></li><li><a href="#TR_CHK">Check Syntax Tree</a></li><li><a href="#TR_RI">Rename identifiers</a></li><li><a href="#TR_FL">Fool compilers</a></li><li><a href="#TR_SR">Strength reduction</a></li><li><a href="#TR_CO">Count operators</a></li><li><a href="#TR_CI">Count identifiers</a></li><li><a href="#TR_SI">Sum ins</a></li><li><a href="#TR_OS">Optimise subtraction</a></li></ul></li></ul></li>
         <li> Nodesets
       <ul><li><a href="#Expr">{Expr}</a></li><li><a href="#Stmt">{Stmt}</a></li></ul></li>
         <li>
@@ -365,6 +365,13 @@
           <table class="inner">
             <tr>
               <td class="heading">
+                <a name="TR_CI" id="TR_CI">Count identifiers</a>
+              </td>
+            </tr>
+          </table>
+          <table class="inner">
+            <tr>
+              <td class="heading">
                 <a name="TR_SI" id="TR_SI">Sum ins</a>
               </td>
             </tr>
@@ -412,7 +419,7 @@
     <a name="Assign" id="Assign"></a>
     <table>
       <tr>
-        <td class="title">N_assign<div class="description">represents assignment statement</div></td>
+        <td class="title">N_assign<div class="description">Represents assignment statement</div></td>
       </tr>
       <tr>
         <td class="heading">
@@ -439,7 +446,7 @@
               <td> <a href="#VarLet">N_varlet</a></td>
               <td class="ccode"></td>
               <td>
-         left hand side variable; can be missing to represent procedure calls
+         Left hand side variable; can be missing to represent procedure calls
           </td>
             </tr>
             <tr>
@@ -448,7 +455,7 @@
                 <a href="#Expr">{Expr}</a>
               </td>
               <td class="ccode"></td>
-              <td>right hand side expression</td>
+              <td>Right hand side expression</td>
             </tr>
           </table>
         </td>
@@ -462,7 +469,7 @@
     <a name="BinOp" id="BinOp"></a>
     <table>
       <tr>
-        <td class="title">N_binop<div class="description">represents binary operator application</div></td>
+        <td class="title">N_binop<div class="description">Represents binary operator application</div></td>
       </tr>
       <tr>
         <td class="heading">
@@ -490,7 +497,7 @@
                 <a href="#Expr">{Expr}</a>
               </td>
               <td class="ccode"></td>
-              <td>left operand expression</td>
+              <td>Left operand expression</td>
             </tr>
             <tr>
               <td>Right</td>
@@ -498,7 +505,7 @@
                 <a href="#Expr">{Expr}</a>
               </td>
               <td class="ccode"></td>
-              <td>right operand expression</td>
+              <td>Right operand expression</td>
             </tr>
           </table>
         </td>
@@ -535,7 +542,7 @@
     <a name="Bool" id="Bool"></a>
     <table>
       <tr>
-        <td class="title">N_bool<div class="description">represents Boolean constant (true/false)</div></td>
+        <td class="title">N_bool<div class="description">Represents Boolean constant (true/false)</div></td>
       </tr>
       <tr>
         <td class="heading">
@@ -577,7 +584,7 @@
     <a name="Error" id="Error"></a>
     <table>
       <tr>
-        <td class="title">N_error<div class="description">represents internal Error representation constructor</div></td>
+        <td class="title">N_error<div class="description">Represents internal Error representation constructor</div></td>
       </tr>
       <tr>
         <td class="heading">
@@ -648,7 +655,7 @@
     <a name="Float" id="Float"></a>
     <table>
       <tr>
-        <td class="title">N_float<div class="description">represents floating point constant</div></td>
+        <td class="title">N_float<div class="description">Represents floating point constant</div></td>
       </tr>
       <tr>
         <td class="heading">
@@ -690,7 +697,7 @@
     <a name="Module" id="Module"></a>
     <table>
       <tr>
-        <td class="title">N_module<div class="description">represents binary operator application</div></td>
+        <td class="title">N_module<div class="description">Represents binary operator application</div></td>
       </tr>
       <tr>
         <td class="heading">
@@ -716,7 +723,7 @@
               <td>Next</td>
               <td> <a href="#Stmts">N_stmts</a></td>
               <td class="ccode"></td>
-              <td>next statement in sequence</td>
+              <td>Next statement in sequence</td>
             </tr>
           </table>
         </td>
@@ -785,7 +792,7 @@
     <a name="Num" id="Num"></a>
     <table>
       <tr>
-        <td class="title">N_num<div class="description">represents integer constant</div></td>
+        <td class="title">N_num<div class="description">Represents integer constant</div></td>
       </tr>
       <tr>
         <td class="heading">
@@ -827,7 +834,7 @@
     <a name="Stmts" id="Stmts"></a>
     <table>
       <tr>
-        <td class="title">N_stmts<div class="description">represents (sequence of) statements</div></td>
+        <td class="title">N_stmts<div class="description">Represents (sequence of) statements</div></td>
       </tr>
       <tr>
         <td class="heading">
@@ -855,13 +862,13 @@
                 <a href="#Stmt">{Stmt}</a>
               </td>
               <td class="ccode"></td>
-              <td>first statement in sequence</td>
+              <td>First statement in sequence</td>
             </tr>
             <tr>
               <td>Next</td>
               <td> <a href="#Stmts">N_stmts</a></td>
               <td class="ccode"></td>
-              <td>remaining statements in sequence</td>
+              <td>Remaining statements in sequence</td>
             </tr>
           </table>
         </td>
@@ -875,7 +882,7 @@
     <a name="SymbolTableEntry" id="SymbolTableEntry"></a>
     <table>
       <tr>
-        <td class="title">N_symboltableentry<div class="description">represents symbol table entry</div></td>
+        <td class="title">N_symboltableentry<div class="description">Represents symbol table entry</div></td>
       </tr>
       <tr>
         <td class="heading">
@@ -894,7 +901,7 @@
     <a name="Var" id="Var"></a>
     <table>
       <tr>
-        <td class="title">N_var<div class="description">represents variable (identifier) in expression position</div></td>
+        <td class="title">N_var<div class="description">Represents variable (identifier) in expression position</div></td>
       </tr>
       <tr>
         <td class="heading">
@@ -944,7 +951,7 @@
     <a name="VarLet" id="VarLet"></a>
     <table>
       <tr>
-        <td class="title">N_varlet<div class="description">represents variable (identifier) in assignment position</div></td>
+        <td class="title">N_varlet<div class="description">Represents variable (identifier) in assignment position</div></td>
       </tr>
       <tr>
         <td class="heading">

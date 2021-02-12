@@ -73,15 +73,16 @@ static info *FreeInfo(info *info)
 }
 
 /*
- * Function to check if the BINOPS are operators
+ * Traversal functions
  */
 
 node *CObinop(node *arg_node, info *arg_info)
 {
     DBUG_ENTER("CObinop");
 
+    // Count the occurrences
     if (BINOP_OP(arg_node) == BO_add) {
-        INFO_ADDITION(arg_info) = INFO_ADDITION(arg_info) + 1;
+        INFO_ADDITION(arg_info) += 1;
     };
 
     if (BINOP_OP(arg_node) == BO_sub) {
@@ -103,15 +104,11 @@ node *CObinop(node *arg_node, info *arg_info)
     /*
      * Continue to traverse the syntax tree
      */
-    // BINOP_LEFT(arg_node) = TRAVdo(BINOP_LEFT(arg_node), arg_info);
-    // BINOP_RIGHT(arg_node) = TRAVdo(BINOP_RIGHT(arg_node), arg_info);
+    BINOP_LEFT(arg_node) = TRAVdo(BINOP_LEFT(arg_node), arg_info);
+    BINOP_RIGHT(arg_node) = TRAVdo(BINOP_RIGHT(arg_node), arg_info);
 
     DBUG_RETURN(arg_node);
 }
-
-/*
- * Module count operators function
- */
 
 node *COmodule(node *arg_node, info *arg_info)
 {
@@ -143,6 +140,12 @@ node *COdoCountOperators(node *syntaxtree)
     TRAVpush(TR_co);
     syntaxtree = TRAVdo(syntaxtree, arg_info);
     TRAVpop();
+
+    CTInote( "Amount of addtitions: %d\n", INFO_ADDITION( arg_info));
+    CTInote( "Amount of substitutions: %d\n", INFO_SUBTRACTION( arg_info));
+    CTInote( "Amount of divisions: %d\n", INFO_DIVISOR( arg_info));
+    CTInote( "Amount of modulo: %d\n", INFO_MODULO( arg_info));
+    CTInote( "Amount of multiplications: %d\n", INFO_MULTIPLIER( arg_info));
 
     arg_info = FreeInfo(arg_info);
 

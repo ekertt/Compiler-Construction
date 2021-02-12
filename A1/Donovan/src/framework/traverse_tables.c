@@ -22,6 +22,7 @@
 #include "fool.h"
 #include "strength_reduction.h"
 #include "count_operators.h"
+#include "count_identifiers.h"
 #include "sum_ints.h"
 #include "opt_sub.h"
 
@@ -55,6 +56,9 @@ travtables_t	travtables = {
 	/* TR_co */
 	,{&TRAVerror, &COmodule, &TRAVsons, &TRAVsons, &CObinop, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons}
 
+	/* TR_ci */
+	,{&TRAVerror, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &CIvarlet, &CIvar, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons}
+
 	/* TR_si */
 	,{&TRAVerror, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &SInum, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons}
 
@@ -64,15 +68,15 @@ travtables_t	travtables = {
 
 preposttable_t	pretable = {
 	NULL
-	,NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
+	,NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
 };
 
 preposttable_t	posttable = {
 	NULL
-	,NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
+	,NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
 };
 
-const char     *travnames[11] = {
+const char     *travnames[12] = {
 	"unknown"
-	,"prt", "copy", "free", "chk", "ri", "fl", "sr", "co", "si", "os"
+	,"prt", "copy", "free", "chk", "ri", "fl", "sr", "co", "ci", "si", "os"
 };
