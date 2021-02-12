@@ -22,6 +22,7 @@
 #include "memory.h"
 #include "free.h"
 #include "str.h"
+#include "stdio.h"
 
 
 /*
@@ -47,19 +48,27 @@ node *SRbinop( node *arg_node, info *arg_info)
         nodetype TYPEBINOPRIGHT = NODE_TYPE( BINOP_RIGHT( arg_node));
 
         // Base case 
-        if (!((TYPEBINOPLEFT == N_var)
-            && (TYPEBINOPRIGHT == N_num))
+        if (((TYPEBINOPLEFT != N_var)
+            && (TYPEBINOPRIGHT != N_num))
             && 
-            !((TYPEBINOPLEFT == N_num)
-            && (TYPEBINOPRIGHT == N_var))
+            ((TYPEBINOPLEFT != N_num)
+            && (TYPEBINOPRIGHT != N_var))
             &&
-            !((TYPEBINOPLEFT == N_varlet)
-            && (TYPEBINOPRIGHT == N_num))
+            ((TYPEBINOPLEFT != N_varlet)
+            && (TYPEBINOPRIGHT != N_num))
             && 
-            !((TYPEBINOPLEFT == N_num)
-            && (TYPEBINOPRIGHT == N_varlet))) {
+            ((TYPEBINOPLEFT != N_num)
+            && (TYPEBINOPRIGHT != N_varlet))) {
 
             DBUG_RETURN(arg_node);
+        }
+
+        // Check if BINOP left varlet and right num
+        if ((TYPEBINOPLEFT == N_varlet)
+        && (TYPEBINOPRIGHT == N_num)) {
+            
+            anyVariable = VARLET_NAME( BINOP_LEFT( arg_node));
+            multiplicationNumber = NUM_VALUE( BINOP_RIGHT( arg_node));
         }
 
         // Check if BINOP left num and right var
@@ -85,14 +94,6 @@ node *SRbinop( node *arg_node, info *arg_info)
             multiplicationNumber = NUM_VALUE( BINOP_LEFT( arg_node));
             anyVariable = VARLET_NAME( BINOP_RIGHT( arg_node));
         }  
-        
-        // Check if BINOP left varlet and right num
-        if ((TYPEBINOPLEFT == N_varlet)
-        && (TYPEBINOPRIGHT == N_num)) {
-            
-            anyVariable = VARLET_NAME( BINOP_LEFT( arg_node));
-            multiplicationNumber = NUM_VALUE( BINOP_RIGHT( arg_node));
-        }
 
         if (multiplicationNumber > MINMULTIPLIER && (TYPEBINOPLEFT == N_var || TYPEBINOPRIGHT == N_var)) {
             
@@ -106,7 +107,7 @@ node *SRbinop( node *arg_node, info *arg_info)
             BINOP_LEFT(arg_node) = TBmakeBinop(BO_mul, TBmakeVar(STRcpy(anyVariable)), TBmakeNum(multiplicationNumber - 1));
         } else if (TYPEBINOPLEFT == N_var || TYPEBINOPRIGHT == N_var) {
 
-            // No multiplication needed make an add BINOP
+            // Make an add BINOP
             arg_node = TBmakeBinop(BO_add, TBmakeVar(STRcpy(anyVariable)), TBmakeVar(STRcpy(anyVariable)));
         }
 
@@ -122,7 +123,7 @@ node *SRbinop( node *arg_node, info *arg_info)
             BINOP_LEFT(arg_node) = TBmakeBinop(BO_mul, TBmakeVarlet(STRcpy(anyVariable)), TBmakeNum(multiplicationNumber - 1));
         } else if (TYPEBINOPLEFT == N_varlet || TYPEBINOPRIGHT == N_varlet) {
 
-            // No multiplication needed make an add BINOP
+            // Make an add BINOP
             arg_node = TBmakeBinop(BO_add, TBmakeVarlet(STRcpy(anyVariable)), TBmakeVarlet(STRcpy(anyVariable)));
         }
     } 
