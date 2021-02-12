@@ -73,6 +73,8 @@ PRTmodule(node *arg_node, info *arg_info)
   printf("Number of divisions: %d\n", MODULE_DIV(arg_node));
   printf("Number of modulos: %d\n", MODULE_MOD(arg_node));
 
+  MODULE_NEXT(arg_node) = TRAVdo(MODULE_NEXT(arg_node), arg_info);
+
   DBUG_RETURN(arg_node);
 }
 
