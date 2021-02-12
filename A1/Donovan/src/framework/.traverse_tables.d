@@ -37,5 +37,6 @@ src/framework/traverse_tables.o src/framework/.traverse_tables.d: $(PROJECT_ROOT
   src/framework/traverse_helper.h src/print/print.h \
   src/framework/copy_node.h src/framework/free_node.h \
   src/framework/check.h src/demo/rename_identifiers.h src/demo/fool.h \
-  src/demo/strength_reduction.h src/demo/count_operators.h \
-  src/demo/count_identifiers.h src/demo/sum_ints.h src/demo/opt_sub.h
+  src/assignment/strength_reduction.h src/assignment/count_operators.h \
+  src/assignment/count_identifiers.h src/demo/sum_ints.h \
+  src/demo/opt_sub.h
