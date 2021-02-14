@@ -2,7 +2,7 @@
  *
  * Module: count_identifiers
  *
- * Prefix: OS
+ * Prefix: CI
  *
  * Description:
  *
@@ -21,14 +21,22 @@
 #include "memory.h"
 #include "free.h"
 #include "str.h"
+#include "ctinfo.h"
 #include "lookup_table.h"
+#include "stdio.h"
 
 struct INFO
 {
-    lut_t *lookuptable;
+    lut_t *lut;
 };
 
-#define INFO_LUT(n) ((n)->lookuptable)
+/*
+ * INFO macros
+ */
+
+#define INFO_LUT(n) ((n)->lut)
+#define COUNTER_COUNT(n) ((n)->count)
+#define COUNTER_IDENTIFIER(n) ((n)->identifier)
 
 static info *MakeInfo(void)
 {
@@ -36,7 +44,8 @@ static info *MakeInfo(void)
 
     DBUG_ENTER("MakeInfo");
 
-    result = MEMmalloc(sizeof(info));
+    result = (info *)MEMmalloc(sizeof(info));
+
     INFO_LUT(result) = LUTgenerateLut();
 
     DBUG_RETURN(result);
@@ -46,35 +55,59 @@ static info *FreeInfo(info *info)
 {
     DBUG_ENTER("FreeInfo");
 
-    INFO_LUT(info) = LUTremoveLut(INFO_LUT(info));
     info = MEMfree(info);
 
     DBUG_RETURN(info);
 }
 
-struct count_identifiers
+static void *print(void *item)
 {
-    int sum;
-    char *name;
-};
+    CTInote("Identifiers count: %d", (int *)item);
+    return item;
+}
 
-typedef struct count_identifiers counter;
+static void insertIntoLut(int *counter, char *var_name, lut_t *lut)
+{
+    if (counter == NULL)
+    {
+        LUTinsertIntoLutS(lut, var_name, (int *)1);
+    }
+    else
+    {
+        *counter += 1;
 
+        LUTupdateLutP(lut, var_name, (int *)counter, NULL);
+    }
+}
 
 /*
  * Traversal functions
  */
 
-node *CIvar(node *arg_node, info *arg_info)
+node *CIvarlet(node *arg_node, info *arg_info)
 {
-    DBUG_ENTER("CIvar");
+    DBUG_ENTER("CIvarlet");
+
+    lut_t *lut = INFO_LUT(arg_info);
+    char *var_name = VARLET_NAME(arg_node);
+
+    int *counter = (int *)LUTsearchInLutS(lut, var_name);
+
+    insertIntoLut(counter, var_name, lut);
 
     DBUG_RETURN(arg_node);
 }
 
-node *CIvarlet(node *arg_node, info *arg_info)
+node *CIvar(node *arg_node, info *arg_info)
 {
-    DBUG_ENTER("CIvarlet");
+    DBUG_ENTER("CIvar");
+
+    lut_t *lut = INFO_LUT(arg_info);
+    char *var_name = VAR_NAME(arg_node);
+
+    int *counter = (int *)LUTsearchInLutS(lut, var_name);
+
+    insertIntoLut(counter, var_name, lut);
 
     DBUG_RETURN(arg_node);
 }
@@ -85,11 +118,21 @@ node *CIvarlet(node *arg_node, info *arg_info)
 
 node *CIdoCount(node *syntaxtree)
 {
-    DBUG_ENTER("FLdoOptSub");
+    info *arg_info;
 
-    TRAVpush(TR_fl);
-    syntaxtree = TRAVdo(syntaxtree, NULL);
+    DBUG_ENTER("CIdoCountIdentifiers");
+    arg_info = MakeInfo();
+
+    TRAVpush(TR_ci);
+    syntaxtree = TRAVdo(syntaxtree, arg_info);
+
+    lut_t *lut = INFO_LUT(arg_info);
+
+    LUTmapLutS(lut, print);
+
     TRAVpop();
 
     DBUG_RETURN(syntaxtree);
+
+    arg_info = FreeInfo(arg_info);
 }
