@@ -28,12 +28,12 @@
  * INFO structure
  */
 
-struct INFO 
+struct INFO
 {
     lut_t *lut;
 };
 
-#define INFO_LUT(n)  ((n)->lut)
+#define INFO_LUT(n) ((n)->lut)
 
 /*
  * INFO functions
@@ -45,7 +45,7 @@ static info *MakeInfo(void)
 
     DBUG_ENTER("MakeInfo");
 
-    result = (info *) MEMmalloc(sizeof(info));
+    result = (info *)MEMmalloc(sizeof(info));
     INFO_LUT(result) = LUTgenerateLut();
 
     DBUG_RETURN(result);
@@ -61,63 +61,103 @@ static info *FreeInfo(info *info)
 }
 
 /*
+ * COUNTERIDENTIFIER structure
+ */
+
+struct COUNTERIDENTIFIER
+{
+    char *identifier;
+    int value;
+};
+
+#define ID_ID(n) ((n)->identifier)
+#define ID_VAL(n) ((n)->value)
+
+typedef struct COUNTERIDENTIFIER counterid;
+
+/*
+ * COUNTERIDENTIFIER functions
+ */
+
+static counterid *MakeIdCounter(void)
+{
+
+    DBUG_ENTER("MakeInfo");
+
+    counterid *result = (counterid *)MEMmalloc(sizeof(counterid));
+    ID_ID(result) = NULL;
+    ID_VAL(result) = 0;
+
+    DBUG_RETURN(result);
+}
+
+/*
  * Traversal functions
  */
 
-static void *print (void *item)
+static void *mapAndPrint(void *item)
 {
-    CTInote( "Amount of identifiers: %d\n", (int *)item);
+    counterid *identifierCounter = (counterid *)item;
+    CTInote("Amount of %s: %d\n", identifierCounter->identifier, identifierCounter->value);
     return item;
 }
 
 node *CIvarlet(node *arg_node, info *arg_info)
 {
     DBUG_ENTER("CIvarlet");
-    
+
     lut_t *lut = INFO_LUT(arg_info);
-    int *valueAddress = (int *)LUTsearchInLutS(lut, VARLET_NAME(arg_node));
+    void **valueAddress = LUTsearchInLutS(lut, VARLET_NAME(arg_node));
 
     char *identifier = VARLET_NAME(arg_node);
-    int *counter = NULL;
 
-    if (valueAddress == NULL) {
-        counter = (int *)1;
+    if (valueAddress == NULL)
+    {
+        counterid *identifierCounter = MakeIdCounter();
+        ID_ID(identifierCounter) = STRcpy(identifier);
+        ID_VAL(identifierCounter) = 1;
 
-        LUTinsertIntoLutS(lut, identifier, counter);
-    } else {
-        *valueAddress += 1;
+        LUTinsertIntoLutS(lut, identifier, identifierCounter);
+    }
+    else
+    {
+        counterid *identifierCounter = (counterid *)(* valueAddress);
+        ID_VAL(identifierCounter) += 1;
 
         void *overwrite_item;
-        LUTupdateLutP(lut, identifier, (int *)valueAddress, &overwrite_item);
-
+        LUTupdateLutS(lut, identifier, identifierCounter, &overwrite_item);
     }
 
     DBUG_RETURN(arg_node);
 }
 
-node *CIvar( node *arg_node, info *arg_info)
+node *CIvar(node *arg_node, info *arg_info)
 {
     DBUG_ENTER("CIvar");
 
     lut_t *lut = INFO_LUT(arg_info);
-    int *valueAddress = (int *)LUTsearchInLutS(lut, VAR_NAME(arg_node));
+    void **valueAddress = LUTsearchInLutS(lut, VAR_NAME(arg_node));
 
     char *identifier = VAR_NAME(arg_node);
-    int *counter = NULL;
 
-    if (valueAddress == NULL) {
-        counter = (int *)1;
+    if (valueAddress == NULL)
+    {
+        counterid *identifierCounter = MakeIdCounter();
+        ID_ID(identifierCounter) = STRcpy(identifier);
+        ID_VAL(identifierCounter) = 1;
 
-        LUTinsertIntoLutS(lut, identifier, counter);
-    } else {
-        *valueAddress += 1;
+        LUTinsertIntoLutS(lut, identifier, identifierCounter);
+    }
+    else
+    {
+        counterid *identifierCounter = (counterid *)(* valueAddress);
+        ID_VAL(identifierCounter) += 1;
 
         void *overwrite_item;
-        LUTupdateLutP(lut, identifier, (int *)valueAddress, &overwrite_item);
-
+        LUTupdateLutS(lut, identifier, identifierCounter, &overwrite_item);
     }
 
-    DBUG_RETURN( arg_node);
+    DBUG_RETURN(arg_node);
 }
 
 /*
@@ -136,13 +176,11 @@ node *CIdoCountIdentifiers(node *syntaxtree)
     syntaxtree = TRAVdo(syntaxtree, arg_info);
 
     lut_t *lut = INFO_LUT(arg_info);
-    LUTmapLutS(lut, print);
+    LUTmapLutS(lut, mapAndPrint);
 
     TRAVpop();
 
     DBUG_RETURN(syntaxtree);
 
     arg_info = FreeInfo(arg_info);
-
 }
-
