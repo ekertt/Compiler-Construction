@@ -46,12 +46,6 @@ SUBPHASE( fl,
           ALWAYS,
           pet)  
 
-SUBPHASE( sr, 
-          "Strength reduction",
-          SRdoStrengthReduction, 
-          ALWAYS,
-          pet)  
-
 SUBPHASE( co, 
           "Count operators",
           COdoCountOperators, 
@@ -75,6 +69,12 @@ SUBPHASE( os,
           OSdoOptSub, 
           ALWAYS,
           pet)   
+
+SUBPHASE( sr, 
+          "Strength reduction",
+          SRdoStrengthReduction, 
+          ALWAYS,
+          pet)  
       
 ENDPHASE( pet) 
 

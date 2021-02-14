@@ -141,7 +141,7 @@ node *COdoCountOperators(node *syntaxtree)
     syntaxtree = TRAVdo(syntaxtree, arg_info);
     TRAVpop();
 
-    CTInote( "Amount of addtitions: %d\n", INFO_ADDITION( arg_info));
+    CTInote( "Amount of additions: %d\n", INFO_ADDITION( arg_info));
     CTInote( "Amount of substitutions: %d\n", INFO_SUBTRACTION( arg_info));
     CTInote( "Amount of divisions: %d\n", INFO_DIVISOR( arg_info));
     CTInote( "Amount of modulo: %d\n", INFO_MODULO( arg_info));

@@ -10,7 +10,7 @@
  *
  *****************************************************************************/
 
-#include "count_operators.h"
+#include "count_identifiers.h"
 
 #include "types.h"
 #include "tree_basic.h"
@@ -22,6 +22,7 @@
 #include "free.h"
 #include "str.h"
 #include "stdio.h"
+#include "lookup_table.h"
 
 /*
  * INFO structure
@@ -29,12 +30,10 @@
 
 struct INFO 
 {
-    int var;
-    int varLet;
+    lut_t *lut;
 };
 
-#define INFO_VAR(n) ((n)->var)
-#define INFO_VARLET(n) ((n)->varLet)
+#define INFO_LUT(n)  ((n)->lut)
 
 /*
  * INFO functions
@@ -47,9 +46,7 @@ static info *MakeInfo(void)
     DBUG_ENTER("MakeInfo");
 
     result = (info *) MEMmalloc(sizeof(info));
-
-    INFO_VAR(result) = 0;
-    INFO_VARLET(result) = 0;
+    INFO_LUT(result) = LUTgenerateLut();
 
     DBUG_RETURN(result);
 }
@@ -67,31 +64,58 @@ static info *FreeInfo(info *info)
  * Traversal functions
  */
 
+static void *print (void *item)
+{
+    CTInote( "Amount of identifiers: %d\n", (int *)item);
+    return item;
+}
+
 node *CIvarlet(node *arg_node, info *arg_info)
 {
     DBUG_ENTER("CIvarlet");
+    
+    lut_t *lut = INFO_LUT(arg_info);
+    int *valueAddress = (int *)LUTsearchInLutS(lut, VARLET_NAME(arg_node));
 
+    char *identifier = VARLET_NAME(arg_node);
+    int *counter = NULL;
 
-    /*
-     * Continue to traverse the syntax tree
-     */
-    //BINOP_LEFT(arg_node) = TRAVdo(BINOP_LEFT(arg_node), arg_info);
-    //BINOP_RIGHT(arg_node) = TRAVdo(BINOP_RIGHT(arg_node), arg_info);
+    if (valueAddress == NULL) {
+        counter = (int *)1;
+
+        LUTinsertIntoLutS(lut, identifier, counter);
+    } else {
+        *valueAddress += 1;
+
+        void *overwrite_item;
+        LUTupdateLutP(lut, identifier, (int *)valueAddress, &overwrite_item);
+
+    }
 
     DBUG_RETURN(arg_node);
 }
 
 node *CIvar( node *arg_node, info *arg_info)
 {
-    //char *name;
-
     DBUG_ENTER("CIvar");
 
-    /*
-     * Continue to traverse the syntax tree
-     */
-    //BINOP_LEFT(arg_node) = TRAVdo(BINOP_LEFT(arg_node), arg_info);
-    //BINOP_RIGHT(arg_node) = TRAVdo(BINOP_RIGHT(arg_node), arg_info);
+    lut_t *lut = INFO_LUT(arg_info);
+    int *valueAddress = (int *)LUTsearchInLutS(lut, VAR_NAME(arg_node));
+
+    char *identifier = VAR_NAME(arg_node);
+    int *counter = NULL;
+
+    if (valueAddress == NULL) {
+        counter = (int *)1;
+
+        LUTinsertIntoLutS(lut, identifier, counter);
+    } else {
+        *valueAddress += 1;
+
+        void *overwrite_item;
+        LUTupdateLutP(lut, identifier, (int *)valueAddress, &overwrite_item);
+
+    }
 
     DBUG_RETURN( arg_node);
 }
@@ -110,9 +134,15 @@ node *CIdoCountIdentifiers(node *syntaxtree)
 
     TRAVpush(TR_ci);
     syntaxtree = TRAVdo(syntaxtree, arg_info);
+
+    lut_t *lut = INFO_LUT(arg_info);
+    LUTmapLutS(lut, print);
+
     TRAVpop();
+
+    DBUG_RETURN(syntaxtree);
 
     arg_info = FreeInfo(arg_info);
 
-    DBUG_RETURN(syntaxtree);
 }
+
