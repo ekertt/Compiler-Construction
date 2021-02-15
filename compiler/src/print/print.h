@@ -11,6 +11,26 @@
 
 #include "types.h"
 
+extern node *PRTfor (node * arg_node, info * arg_info);
+extern node *PRTwhile (node * arg_node, info * arg_info);
+extern node *PRTfundefs (node * arg_node, info * arg_info);
+extern node *PRTfundef (node * arg_node, info * arg_info);
+extern node *PRTvar (node * arg_node, info * arg_info);
+extern node *PRTdowhile (node * arg_node, info * arg_info);
+extern node *PRTreturn (node * arg_node, info * arg_info);
+extern node *PRTglobdef (node * arg_node, info * arg_info);
+extern node *PRTvardecl (node * arg_node, info * arg_info);
+extern node *PRTifelse (node * arg_node, info * arg_info);
+extern node *PRTexprstmt (node * arg_node, info * arg_info);
+extern node *PRTfunbody (node * arg_node, info * arg_info);
+extern node *PRTfunheader (node * arg_node, info * arg_info);
+extern node *PRTrettype (node * arg_node, info * arg_info);
+extern node *PRTbsctype (node * arg_node, info * arg_info);
+extern node *PRTparam (node * arg_node, info * arg_info);
+extern node *PRTglobdec (node * arg_node, info * arg_info);
+extern node *PRTprogram (node * arg_node, info * arg_info);
+extern node *PRTdecls (node * arg_node, info * arg_info);
+extern node *PRTfundec (node * arg_node, info * arg_info);
 extern node *PRTstmts (node * arg_node, info * arg_info);
 extern node *PRTassign (node * arg_node, info * arg_info);
 extern node *PRTvar (node * arg_node, info * arg_info);

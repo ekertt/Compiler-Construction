@@ -104,6 +104,7 @@
              </target>
           </targets>
         </son>
+       </sons>
       </node>
 <!--
  Node Declaration:
@@ -148,6 +149,7 @@
              </target>
           </targets>
         </son>
+      </sons>
         <flags>
             <flag name="IsExtern" />
         </flags>

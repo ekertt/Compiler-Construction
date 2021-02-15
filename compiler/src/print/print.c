@@ -51,6 +51,139 @@ static info *FreeInfo( info *info)
   return info;
 }
 
+node *
+PRTfundefs (node * arg_node, info * arg_info)
+{
+  DBUG_ENTER ("PRTfundefs");
+  DBUG_RETURN (arg_node);
+}
+
+node *
+PRTfor (node * arg_node, info * arg_info)
+{
+  DBUG_ENTER ("PRTfor");
+  DBUG_RETURN (arg_node);
+}
+
+node *
+PRTreturn (node * arg_node, info * arg_info)
+{
+  DBUG_ENTER ("PRTreturn");
+  DBUG_RETURN (arg_node);
+}
+
+node *
+PRTdowhile (node * arg_node, info * arg_info)
+{
+  DBUG_ENTER ("PRTdowhile");
+  DBUG_RETURN (arg_node);
+}
+
+node *
+PRTwhile (node * arg_node, info * arg_info)
+{
+  DBUG_ENTER ("PRTwhile");
+  DBUG_RETURN (arg_node);
+}
+
+node *
+PRTexprstmt (node * arg_node, info * arg_info)
+{
+  DBUG_ENTER ("PRTexprstmt");
+  DBUG_RETURN (arg_node);
+}
+
+node *
+PRTifelse (node * arg_node, info * arg_info)
+{
+  DBUG_ENTER ("PRTifelse");
+  DBUG_RETURN (arg_node);
+}
+
+node *
+PRTvardecl (node * arg_node, info * arg_info)
+{
+  DBUG_ENTER ("PRTvardecl");
+  DBUG_RETURN (arg_node);
+}
+
+node *
+PRTglobdef (node * arg_node, info * arg_info)
+{
+  DBUG_ENTER ("PRTglobdef");
+  DBUG_RETURN (arg_node);
+}
+
+node *
+PRTglobdec (node * arg_node, info * arg_info)
+{
+  DBUG_ENTER ("PRTglobdec");
+  DBUG_RETURN (arg_node);
+}
+
+node *
+PRTparam (node * arg_node, info * arg_info)
+{
+  DBUG_ENTER ("PRTparam");
+  DBUG_RETURN (arg_node);
+}
+
+node *
+PRTbsctype (node * arg_node, info * arg_info)
+{
+  DBUG_ENTER ("PRTbsctype");
+  DBUG_RETURN (arg_node);
+}
+
+node *
+PRTrettype (node * arg_node, info * arg_info)
+{
+  DBUG_ENTER ("PRTrettype");
+  DBUG_RETURN (arg_node);
+}
+
+node *
+PRTfunheader (node * arg_node, info * arg_info)
+{
+  DBUG_ENTER ("PRTfunheader");
+  DBUG_RETURN (arg_node);
+}
+
+node *
+PRTfunbody (node * arg_node, info * arg_info)
+{
+  DBUG_ENTER ("PRTfunbody");
+  DBUG_RETURN (arg_node);
+}
+
+node *
+PRTfundec (node * arg_node, info * arg_info)
+{
+  DBUG_ENTER ("PRTfundec");
+  DBUG_RETURN (arg_node);
+}
+
+node *
+PRTfundef (node * arg_node, info * arg_info)
+{
+  DBUG_ENTER ("PRTfundef");
+  DBUG_RETURN (arg_node);
+}
+
+node *
+PRTprogram (node * arg_node, info * arg_info)
+{
+  DBUG_ENTER ("PRTprogram");
+  DBUG_RETURN (arg_node);
+}
+
+
+node *
+PRTdecls (node * arg_node, info * arg_info)
+{
+  DBUG_ENTER ("PRTdecls");
+  DBUG_RETURN (arg_node);
+}
 
 
 /** <!--******************************************************************-->

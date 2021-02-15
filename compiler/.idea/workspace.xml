@@ -20,8 +20,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9fb6c117-d8a8-4520-9544-909fb9799612" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/bin/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../A1/Donovan/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../A1/Donovan/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/global/ast.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/global/ast.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/global/ast_donovan.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/global/ast_donovan.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/global/mytypes.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/global/mytypes.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/print/print.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/print/print.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/print/print.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/print/print.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,7 +76,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1613405369197</updated>
-      <workItem from="1613405370519" duration="407000" />
+      <workItem from="1613405370519" duration="12236000" />
     </task>
     <servers />
   </component>
