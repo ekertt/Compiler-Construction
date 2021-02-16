@@ -163,7 +163,7 @@ node           *TBmakeFundefs(node * FunDef, node * Next) {
  * N_FunDef :
  *****************************************************************************/
 
-node           *TBmakeFundef(type Type, node * FunBody, node * Params) {
+node           *TBmakeFundef(type Type, node * FunBody, node * FunHeader, node * Params) {
 	node           *this;
 	DBUG_ENTER("TBmakeFundef");
 	DBUG_PRINT("MAKE", ("allocating node structure"));
@@ -178,6 +178,8 @@ node           *TBmakeFundef(type Type, node * FunBody, node * Params) {
 	NODE_TYPE(this) = N_fundef;
 	DBUG_PRINT("MAKE", ("assigning son FunBody initial value: %s ", FunBody));
 	FUNDEF_FUNBODY(this) = FunBody;
+	DBUG_PRINT("MAKE", ("assigning son FunHeader initial value: %s ", FunHeader));
+	FUNDEF_FUNHEADER(this) = FunHeader;
 	DBUG_PRINT("MAKE", ("assigning son Params initial value: %s ", Params));
 	FUNDEF_PARAMS(this) = Params;
 	FUNDEF_TYPE(this) = Type;
@@ -187,6 +189,9 @@ node           *TBmakeFundef(type Type, node * FunBody, node * Params) {
 	DBUG_PRINT("MAKE", ("doing son target checks"));
 	if ((FUNDEF_FUNBODY(this) != NULL) && (NODE_TYPE(FUNDEF_FUNBODY(this)) != N_funbody)) {
 		CTIwarn("Field FunBody of node N_FunDef has non-allowed target node.");
+	}
+	if ((FUNDEF_FUNHEADER(this) != NULL) && (NODE_TYPE(FUNDEF_FUNHEADER(this)) != N_funheader)) {
+		CTIwarn("Field FunHeader of node N_FunDef has non-allowed target node.");
 	}
 	if ((FUNDEF_PARAMS(this) != NULL) && (NODE_TYPE(FUNDEF_PARAMS(this)) != N_param)) {
 		CTIwarn("Field Params of node N_FunDef has non-allowed target node.");

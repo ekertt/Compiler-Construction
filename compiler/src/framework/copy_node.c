@@ -294,7 +294,7 @@ node           *COPYfundec(node * arg_node, info * arg_info) {
  *
  ***************************************************************************/
 node           *COPYfundef(node * arg_node, info * arg_info) {
-	node           *result = TBmakeFundef(TY_unknown, NULL, NULL);
+	node           *result = TBmakeFundef(TY_unknown, NULL, NULL, NULL);
 	DBUG_ENTER("COPYfundef");
 	LUTinsertIntoLutP(INFO_LUT(arg_info), arg_node, result);
 	/* Copy attributes */
@@ -304,6 +304,7 @@ node           *COPYfundef(node * arg_node, info * arg_info) {
 	FUNDEF_ISEXPORT(result) = FUNDEF_ISEXPORT(arg_node);
 	/* Copy sons */
 	FUNDEF_FUNBODY(result) = COPYTRAV(FUNDEF_FUNBODY(arg_node), arg_info);
+	FUNDEF_FUNHEADER(result) = COPYTRAV(FUNDEF_FUNHEADER(arg_node), arg_info);
 	FUNDEF_PARAMS(result) = COPYTRAV(FUNDEF_PARAMS(arg_node), arg_info);
 	/* Return value */
 	DBUG_RETURN(result);

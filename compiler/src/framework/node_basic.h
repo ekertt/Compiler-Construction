@@ -57,12 +57,13 @@ extern node    *TBmakeFundefs(node * FunDef, node * Next);
  *****************************************************************************/
 
 #define FUNDEF_FUNBODY( n) ((n)->sons.N_fundef->FunBody)
+#define FUNDEF_FUNHEADER( n) ((n)->sons.N_fundef->FunHeader)
 #define FUNDEF_PARAMS( n) ((n)->sons.N_fundef->Params)
 #define FUNDEF_TYPE( n) ((n)->attribs.N_fundef->Type)
 #define FUNDEF_FLAGSTRUCTURE( n) ((n)->attribs.N_fundef->flags)
 #define FUNDEF_ISEXTERN( n) ((n)->attribs.N_fundef->flags.IsExtern)
 #define FUNDEF_ISEXPORT( n) ((n)->attribs.N_fundef->flags.IsExport)
-extern node    *TBmakeFundef(type Type, node * FunBody, node * Params);
+extern node    *TBmakeFundef(type Type, node * FunBody, node * FunHeader, node * Params);
 
 /*****************************************************************************
  * macros and functions for N_funheader

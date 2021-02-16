@@ -216,6 +216,17 @@
             </target>
           </targets>
         </son>
+        <son name="FunHeader">
+          <description>FunHeader</description>
+          <targets>
+            <target mandatory="yes">
+              <node name="FunHeader"/>
+              <phases>
+                <all/>
+              </phases>
+            </target>
+          </targets>
+        </son>
         <son name="Params">
           <targets>
             <target mandatory="no">

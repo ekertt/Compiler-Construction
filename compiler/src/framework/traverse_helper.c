@@ -54,6 +54,7 @@ TRAVsons(node * arg_node, info * arg_info)
 		break;
 	case N_fundef:
 		TRAV(FUNDEF_FUNBODY(arg_node), arg_info);
+		TRAV(FUNDEF_FUNHEADER(arg_node), arg_info);
 		TRAV(FUNDEF_PARAMS(arg_node), arg_info);
 		break;
 	case N_funheader:
@@ -167,7 +168,7 @@ TRAVnumSons(node * node)
 		result = 2;
 		break;
 	case N_fundef:
-		result = 2;
+		result = 3;
 		break;
 	case N_funheader:
 		result = 1;
@@ -306,6 +307,9 @@ TRAVgetSon(int no, node * parent)
 			result = FUNDEF_FUNBODY(parent);
 			break;
 		case 1:
+			result = FUNDEF_FUNHEADER(parent);
+			break;
+		case 2:
 			result = FUNDEF_PARAMS(parent);
 			break;
 		default:

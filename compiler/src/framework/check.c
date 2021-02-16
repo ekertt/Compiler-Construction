@@ -675,6 +675,20 @@ node           *CHKfundef(node * arg_node, info * arg_info) {
 	}
 
 	/*
+	 * Son check: FUNDEF_FUNHEADER
+	 */
+	if ((FALSE) || (TRUE)) {
+		CHKexistSon(FUNDEF_FUNHEADER(arg_node), arg_node, "mandatory son FUNDEF_FUNHEADER is NULL");
+		if (FUNDEF_FUNHEADER(arg_node) != NULL) {
+			if (!((FALSE) || (NODE_TYPE(FUNDEF_FUNHEADER(arg_node)) == N_funheader))) {
+				CHKcorrectTypeInsertError(arg_node, "FUNDEF_FUNHEADER hasnt the right type." " It should be: " "N_funheader");
+			}
+		}
+	} else {
+		CHKnotExist(FUNDEF_FUNHEADER(arg_node), arg_node, "attribute FUNDEF_FUNHEADER must be NULL");
+	}
+
+	/*
 	 * Son check: FUNDEF_PARAMS
 	 */
 	if ((FALSE) || (TRUE)) {
@@ -692,6 +706,12 @@ node           *CHKfundef(node * arg_node, info * arg_info) {
 	 */
 	if (FUNDEF_FUNBODY(arg_node) != NULL) {
 		FUNDEF_FUNBODY(arg_node) = TRAVdo(FUNDEF_FUNBODY(arg_node), arg_info);
+	}
+	/*
+	 * trav functions: to get all sons
+	 */
+	if (FUNDEF_FUNHEADER(arg_node) != NULL) {
+		FUNDEF_FUNHEADER(arg_node) = TRAVdo(FUNDEF_FUNHEADER(arg_node), arg_info);
 	}
 	/*
 	 * trav functions: to get all sons

@@ -65,6 +65,7 @@ struct SONS_N_FUNDEC {
 };
 struct SONS_N_FUNDEF {
 	node           *FunBody;
+	node           *FunHeader;
 	node           *Params;
 };
 struct SONS_N_FUNDEFS {

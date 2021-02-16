@@ -328,6 +328,7 @@ node           *FREEfundef(node * arg_node, info * arg_info) {
 	DBUG_ENTER("FREEfundef");
 	DBUG_PRINT("FREE", ("Processing node N_fundef at " F_PTR, arg_node));
 	FUNDEF_FUNBODY(arg_node) = FREETRAV(FUNDEF_FUNBODY(arg_node), arg_info);
+	FUNDEF_FUNHEADER(arg_node) = FREETRAV(FUNDEF_FUNHEADER(arg_node), arg_info);
 	FUNDEF_PARAMS(arg_node) = FREETRAV(FUNDEF_PARAMS(arg_node), arg_info);
 	result = NULL;
 	arg_node->sons.N_fundef = MEMfree(arg_node->sons.N_fundef);
