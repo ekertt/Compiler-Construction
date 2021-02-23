@@ -97,7 +97,7 @@ PRTdecls (node * arg_node, info * arg_info)
 
 /** <!--******************************************************************-->
  *
- * @fn PRTvardecls
+ * @fn PRTvardecl
  *
  * @brief Prints the node and its sons/attributes
  *
@@ -109,9 +109,9 @@ PRTdecls (node * arg_node, info * arg_info)
  ***************************************************************************/
 
 node *
-PRTvardecls (node * arg_node, info * arg_info)
+PRTvardecl (node * arg_node, info * arg_info)
 {
-  DBUG_ENTER ("PRTvardecls");
+  DBUG_ENTER ("PRTvardecl");
   
   DBUG_RETURN (arg_node);
 }
