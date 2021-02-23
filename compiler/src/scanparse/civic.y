@@ -26,6 +26,8 @@ static int yyerror( char *errname);
  int                 cint;
  float               cflt;
  binop               cbinop;
+monop              cmonop;
+ type                ctype;
  node               *node;
 }
 
@@ -54,7 +56,7 @@ static int yyerror( char *errname);
 
 program: decls 
          {
-           parseresult = TBmakeProgram($1, NULL);
+           parseresult = TBmakeProgram($1);
          }
          ;
 
@@ -80,26 +82,26 @@ decl: fundef
 
 globdef: type ID SEMICOLON
         {
-          $$ = TBmakeGlobalDef($1, STRcpy($2), NULL, NULL);
+          $$ = TBmakeGlobdef($1, STRcpy($2), NULL, NULL);
         }
       | type ID LET expr SEMICOLON
         {
-          $$ = TBmakeGlobalDef($1, STRcpy($2), NULL, $4);
+          $$ = TBmakeGlobdef($1, STRcpy($2), NULL, $4);
         }
       | EXPORT type ID SEMICOLON
         {
-          $$ = TBmakeGlobalDef($2, STRcpy( $3), NULL, NULL);
-          GLOBALDEF_ISEXPORT($$) = 1;
+          $$ = TBmakeGlobdef($2, STRcpy( $3), NULL, NULL);
+          GLOBDEF_ISEXPORT($$) = 1;
         }
       | EXPORT type ID LET expr SEMICOLON
         {
-          $$ = TBmakeGlobalDef($2, STRcpy( $3), NULL, $5);
-          GLOBALDEF_ISEXPORT($$) = 1;
+          $$ = TBmakeGlobdef($2, STRcpy( $3), NULL, $5);
+          GLOBDEF_ISEXPORT($$) = 1;
         }
       | EXTERN type ID SEMICOLON
         {
-          $$ = TBmakeGlobalDef($2, STRcpy( $3), NULL, NULL);
-          GLOBALDEF_ISEXTERN($$) = 1;
+          $$ = TBmakeGlobdef($2, STRcpy( $3), NULL, NULL);
+          GLOBDEF_ISEXTERN($$) = 1;
         }
       ;
 
@@ -360,11 +362,11 @@ expr:
         }
       | ID PARENTHESIS_L PARENTHESIS_R 
         {
-          $$ = $TBmakeFuncall( STRcpy( $1), NULL, NULL);
+          $$ = TBmakeFuncall( STRcpy( $1), NULL, NULL);
         }
       | ID PARENTHESIS_L exprs PARENTHESIS_R 
         {
-          $$ = $TBmakeFuncall( STRcpy( $1), NULL, $3);
+          $$ = TBmakeFuncall( STRcpy( $1), NULL, $3);
         }
     ;
 
