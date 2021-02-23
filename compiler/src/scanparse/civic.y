@@ -159,9 +159,115 @@ funbody: vardecl stmts
         }
       ;
 
+vardecl: type ID LET expr SEMICOLON
+        {
+          $$ = TBmakeVarDecl( STRcpy( $2), $1, NULL, $4, NULL);
+        }
+      | type ID SEMICOLON
+        {
+          $$ = TBmakeVarDecl( STRcpy( $2), $1, NULL, NULL, NULL);
+        }
+      | type ID SEMICOLON vardecl
+        {
+            $$ = TBmakeVardecl( STRcpy( $2), $1, NULL, NULL, $4);
+        }
+      | type ID LET expr SEMICOLON vardecl
+        {
+            $$ = TBmakeVardecl( STRcpy( $2), $1, NULL, $4, $6);
+        }
+      ;
+
+stmts: stmt stmts
+        {
+            $$ = TBmakeStmts( $1, $2);
+        }
+    |   stmt
+        {
+            $$ = TBmakeStmts( $1, NULL);
+        }
+    ;
+
+stmt: assign
+       {
+         $$ = $1;
+       }
+      | dowhile
+        {
+          $$ = $1;
+        }
+      | ifelse
+        {
+          $$ = $1;
+        }
+      | for
+        {
+          $$ = $1;
+        }
+      | return
+        {
+          $$ = $1;
+        }
+      | exprstmt
+        {
+          $$ = $1;
+        }
+      | while
+        {
+          $$ = $1;
+        }
+       ;
+
 assign: varlet LET expr SEMICOLON
         {
           $$ = TBmakeAssign( $1, $3);
+        }
+        ;
+
+dowhile: DO block WHILE PARENTHESIS_L expr PARENTHESIS_R SEMICOLON
+        {
+          $$ = TBmakeDoWhile( $5, $2);
+        }
+        ;
+
+ifelse: IF PARENTHESIS_L expr PARENTHESIS_R block
+        {
+          $$ = TBmakeIfElse( $3, $5, NULL);
+        }
+      | IF PARENTHESIS_L expr PARENTHESIS_R block ELSE block
+        {
+          $$ = TBmakeIfElse( $3, $5, $7);
+        }
+        ;
+
+for: FOR PARENTHESIS_L INT ID LET expr COMMA expr PARENTHESIS_R block
+        {
+          $$ = TBmakeFor( STRcpy( $4), $6, $8, NULL, $10);
+        }
+      |   FOR PARENTHESIS_L INT ID LET expr COMMA expr COMMA expr PARENTHESIS_R block
+        {
+          $$ = TBmakeFor( STRcpy( $4), $6, $8, $10, $12);
+        }
+        ;
+
+return: RETURN expr SEMICOLON
+        {
+          $$ = TBmakeReturn( $2);
+        }
+      |   RETURN SEMICOLON
+        {
+          $$ = TBmakeReturn( NULL);
+        }
+        ;
+
+exprstmt: expr SEMICOLON
+        {
+          $$ = TBmakeExprStmt( $1);
+        }
+        ;
+
+while: WHILE PARENTHESIS_L expr PARENTHESIS_R block
+        {
+          $$ = TBmakeWhile($3, $5);
         }
         ;
 
@@ -171,6 +277,29 @@ varlet: ID
         }
         ;
 
+exprs: expr COMMA exprs
+        {
+          $$ = TBmakeExprs($1, $3);
+        }
+      | expr
+        {
+          $$ = TBmakeExprs($1, NULL);
+        }
+        ;
+
+block: CURLY_L stmts CURLY_R
+        {
+          $$ = $2;
+        }
+      | CURLY_L CURLY_R
+        {
+          $$ = NULL;
+        }
+      | stmt
+        {
+          $$ = TBmakeStmts($1, NULL);
+        }
+        ;
 
 expr: constant
       {
