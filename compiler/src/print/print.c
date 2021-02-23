@@ -564,21 +564,21 @@ PRTdowhile (node * arg_node, info * arg_info)
   DBUG_ENTER ("PRTdowhile");
   DBUG_PRINT ("PRT", ("PRTdowhile"));
 
-  print ( arg_info, "do\n");
+  printf("do\n");
   
-  print ( arg_info, "{\n");
+  printf("{\n");
 
   // INFO_TABS(arg_info)++;
   DOWHILE_BLOCK( arg_node) = TRAVopt( DOWHILE_BLOCK( arg_node), arg_info);
   // INFO_TABS(arg_info)--;
 
-  print ( arg_info, "}\n");
+  printf("}\n");
   
-  print ( arg_info, "while ( ");
+  printf("while ( ");
 
   DOWHILE_COND( arg_node) = TRAVdo( DOWHILE_COND( arg_node), arg_info);
 
-  printf (" );\n");
+  printf(" );\n");
   
   DBUG_RETURN (arg_node);
 }
