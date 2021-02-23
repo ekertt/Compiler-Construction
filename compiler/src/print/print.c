@@ -119,7 +119,23 @@ node *
 PRTvardecl (node * arg_node, info * arg_info)
 {
   DBUG_ENTER ("PRTvardecl");
-  
+  DBUG_PRINT ("PRT", ("PRTvardecl"));
+
+  // printTabs(arg_info);
+
+  printf("%s %s", typeInString(VARDECL_TYPE(arg_node)), VARDECL_NAME(arg_node));
+
+  if (VARDECL_INIT( arg_node) != NULL)
+  {
+    printf(" = ");
+
+    VARDECL_INIT( arg_node) = TRAVdo( VARDECL_INIT( arg_node), arg_info);
+  }
+
+  printf(";\n");
+
+  VARDECL_NEXT( arg_node) = TRAVopt( VARDECL_NEXT( arg_node), arg_info);
+
   DBUG_RETURN (arg_node);
 }
 
