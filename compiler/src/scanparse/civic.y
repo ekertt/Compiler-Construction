@@ -40,34 +40,66 @@ static int yyerror( char *errname);
 %token <id> ID
 
 %type <node> intval floatval boolval constant expr
-%type <node> stmts stmt assign varlet program
-%type <cbinop> binop
+%type <node> stmts stmt assign varlet program 
+%type <node> return exprstmt binop exprs monop 
+%type <node> vardecl fundef funbody block ifelse
+%type <node> decl decls globdef for dowhile
+%type <node> param while
 
 %start program
 
 %%
 
-program: stmts 
+program: decls 
          {
-           parseresult = $1;
+           parseresult = TBmakeProgram($1, NULL);
          }
          ;
 
-stmts: stmt stmts
+decls: decl decls
         {
-          $$ = TBmakeStmts( $1, $2);
+          $$ = TBmakeDecls( $1, $2);
         }
-      | stmt
+      | decl
         {
-          $$ = TBmakeStmts( $1, NULL);
+          $$ = TBmakeDecls( $1, NULL);
         }
         ;
 
-stmt: assign
+decl: fundef
        {
          $$ = $1;
        }
+      | globdef
+        {
+         $$ = $1;
+        }
        ;
+
+globdef: type ID SEMICOLON
+        {
+          $$ = TBmakeGlobalDef($1, STRcpy($2), NULL, NULL);
+        }
+      | type ID LET expr SEMICOLON
+        {
+          $$ = TBmakeGlobalDef($1, STRcpy($2), NULL, $4);
+        }
+      | EXPORT type ID SEMICOLON
+        {
+          $$ = TBmakeGlobalDef($2, STRcpy( $3), NULL, NULL);
+          GLOBALDEF_ISEXPORT($$) = 1;
+        }
+      | EXPORT type ID LET expr SEMICOLON
+        {
+          $$ = TBmakeGlobalDef($2, STRcpy( $3), NULL, $5);
+          GLOBALDEF_ISEXPORT($$) = 1;
+        }
+      | EXTERN type ID SEMICOLON
+        {
+          $$ = TBmakeGlobalDef($2, STRcpy( $3), NULL, NULL);
+          GLOBALDEF_ISEXTERN($$) = 1;
+        }
+      ;
 
 assign: varlet LET expr SEMICOLON
         {
