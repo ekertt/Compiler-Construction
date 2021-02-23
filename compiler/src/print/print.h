@@ -33,6 +33,7 @@ extern node *PRTfor (node * arg_node, info * arg_info);
 extern node *PRTglobdecl (node * arg_node, info * arg_info);
 extern node *PRTglobdef (node * arg_node, info * arg_info);
 extern node *PRTparam (node * arg_node, info * arg_info);
+extern const char *typeInString(type type);
 /* End */
 
 extern node *PRTstmts (node * arg_node, info * arg_info);
