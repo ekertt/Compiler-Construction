@@ -529,18 +529,18 @@ PRTwhile (node * arg_node, info * arg_info)
   DBUG_ENTER ("PRTwhile");
   DBUG_PRINT ("PRT", ("PRTwhile"));
 
-  print ( arg_info, "while ( ");
+  printf("while ( ");
 
   WHILE_COND ( arg_node) = TRAVdo ( WHILE_COND ( arg_node), arg_info);
 
-  printf ( " )\n");
-  print ( arg_info, "{\n");
+  printf( " )\n");
+  printf("{\n");
 
   // INFO_TABS ( arg_info)++;
   WHILE_BLOCK ( arg_node) = TRAVopt ( WHILE_BLOCK ( arg_node), arg_info);
   // INFO_TABS ( arg_info)--;
 
-  print ( arg_info, "}\n");
+  printf("}\n");
   
   DBUG_RETURN (arg_node);
 }
@@ -602,7 +602,7 @@ PRTfor (node * arg_node, info * arg_info)
   DBUG_ENTER ("PRTfor");
   DBUG_PRINT ("PRT", ("PRTfor"));
 
-  print(arg_info, "for ( int %s = ", FOR_LOOPVAR(arg_node)); 
+  printf("for ( int %s = ", FOR_LOOPVAR(arg_node)); 
 
   FOR_START( arg_node) = TRAVdo( FOR_START( arg_node), arg_info);
 
@@ -617,14 +617,14 @@ PRTfor (node * arg_node, info * arg_info)
 
   printf(")\n");
 
-  print(arg_info, "{\n");
+  printf("{\n");
 
   // INFO_TABS(arg_info)++;
   FOR_BLOCK( arg_node) = TRAVopt( FOR_BLOCK( arg_node), arg_info);
   
   // INFO_TABS(arg_info)--;
 
-  print(arg_info, "}\n");
+  printf("}\n");
   
   DBUG_RETURN (arg_node);
 }
