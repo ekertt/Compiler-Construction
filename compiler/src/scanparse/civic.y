@@ -107,31 +107,31 @@ globdef: type ID SEMICOLON
 
 fundef: type ID PARENTHESIS_L PARENTHESIS_R  CURLY_L funbody CURLY_R
         {
-            $$ = TBmakeFunDef( $1, STRcpy( $2), $6, NULL);
+            $$ = TBmakeFundef( $1, STRcpy( $2), $6, NULL);
         }
     |   type ID PARENTHESIS_L param PARENTHESIS_R CURLY_L funbody CURLY_R
         {
-            $$ = TBmakeFunDef( $1, STRcpy( $2), $7, $4);
+            $$ = TBmakeFundef( $1, STRcpy( $2), $7, $4);
         }
     |   EXPORT type ID PARENTHESIS_L PARENTHESIS_R CURLY_L funbody CURLY_R
         {
-            $$ = TBmakeFunDef( $2, STRcpy( $3), $7, NULL);
+            $$ = TBmakeFundef( $2, STRcpy( $3), $7, NULL);
             FUNDEF_ISEXPORT($$) = 1;
         }
     |   EXPORT type ID PARENTHESIS_L param PARENTHESIS_R CURLY_L funbody CURLY_R
         {
-            $$ = TBmakeFunDef( $2, STRcpy( $3), $8, $5);
+            $$ = TBmakeFundef( $2, STRcpy( $3), $8, $5);
             FUNDEF_ISEXPORT($$) = 1;
         }
     |   EXTERN type ID PARENTHESIS_L PARENTHESIS_R SEMICOLON
         {
-            $$ = TBmakeFunDef( $2, STRcpy( $3), NULL, NULL);
+            $$ = TBmakeFundef( $2, STRcpy( $3), NULL, NULL);
             FUNDEF_ISEXTERN($$) = 1;
 
         }
     |   EXTERN type ID PARENTHESIS_L param PARENTHESIS_R SEMICOLON
         {
-            $$ = TBmakeFunDef( $2, STRcpy( $3), NULL, $5);
+            $$ = TBmakeFundef( $2, STRcpy( $3), NULL, $5);
             FUNDEF_ISEXTERN($$) = 1;
 
         }
@@ -139,35 +139,39 @@ fundef: type ID PARENTHESIS_L PARENTHESIS_R  CURLY_L funbody CURLY_R
 
 param: type ID
         {
-          $$ = TBmakeParam(STRcpy($2), $1);
+          $$ = TBmakeParam(STRcpy($2), $1, NULL, NULL);
+        }
+      | type ID COMMA param
+        {
+          $$ = TBmakeParam(STRcpy($2), $1, NULL, $4);
         }
       ;
 
 funbody: vardecl stmts
         {
-          $$ = TBmakeFunBody($1, NULL, $2);
+          $$ = TBmakeFunbody($1, NULL, $2);
         }
       | vardecl
         {
-          $$ = TBmakeFunBody($1, NULL, NULL);
+          $$ = TBmakeFunbody($1, NULL, NULL);
         }
       | stmts
         {
-          $$ = TBmakeFunBody(NULL, NULL, $1);
+          $$ = TBmakeFunbody(NULL, NULL, $1);
         }
       |
         {
-          $$ = TBmakeFunBody(NULL, NULL, NULL);
+          $$ = TBmakeFunbody(NULL, NULL, NULL);
         }
       ;
 
 vardecl: type ID LET expr SEMICOLON
         {
-          $$ = TBmakeVarDecl( STRcpy( $2), $1, NULL, $4, NULL);
+          $$ = TBmakeVardecl( STRcpy( $2), $1, NULL, $4, NULL);
         }
       | type ID SEMICOLON
         {
-          $$ = TBmakeVarDecl( STRcpy( $2), $1, NULL, NULL, NULL);
+          $$ = TBmakeVardecl( STRcpy( $2), $1, NULL, NULL, NULL);
         }
       | type ID SEMICOLON vardecl
         {
@@ -227,17 +231,17 @@ assign: varlet LET expr SEMICOLON
 
 dowhile: DO block WHILE PARENTHESIS_L expr PARENTHESIS_R SEMICOLON
         {
-          $$ = TBmakeDoWhile( $5, $2);
+          $$ = TBmakeDowhile( $5, $2);
         }
         ;
 
 ifelse: IF PARENTHESIS_L expr PARENTHESIS_R block
         {
-          $$ = TBmakeIfElse( $3, $5, NULL);
+          $$ = TBmakeIfelse( $3, $5, NULL);
         }
       | IF PARENTHESIS_L expr PARENTHESIS_R block ELSE block
         {
-          $$ = TBmakeIfElse( $3, $5, $7);
+          $$ = TBmakeIfelse( $3, $5, $7);
         }
         ;
 
@@ -263,7 +267,7 @@ return: RETURN expr SEMICOLON
 
 exprstmt: expr SEMICOLON
         {
-          $$ = TBmakeExprStmt( $1);
+          $$ = TBmakeExprstmt( $1);
         }
         ;
 
