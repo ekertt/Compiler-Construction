@@ -511,6 +511,20 @@ node *
 PRTwhile (node * arg_node, info * arg_info)
 {
   DBUG_ENTER ("PRTwhile");
+  DBUG_PRINT ("PRT", ("PRTwhile"));
+
+  print ( arg_info, "while ( ");
+
+  WHILE_COND ( arg_node) = TRAVdo ( WHILE_COND ( arg_node), arg_info);
+
+  printf ( " )\n");
+  print ( arg_info, "{\n");
+
+  // INFO_TABS ( arg_info)++;
+  WHILE_BLOCK ( arg_node) = TRAVopt ( WHILE_BLOCK ( arg_node), arg_info);
+  // INFO_TABS ( arg_info)--;
+
+  print ( arg_info, "}\n");
   
   DBUG_RETURN (arg_node);
 }
@@ -532,6 +546,23 @@ node *
 PRTdowhile (node * arg_node, info * arg_info)
 {
   DBUG_ENTER ("PRTdowhile");
+  DBUG_PRINT ("PRT", ("PRTdowhile"));
+
+  print ( arg_info, "do\n");
+  
+  print ( arg_info, "{\n");
+
+  // INFO_TABS(arg_info)++;
+  DOWHILE_BLOCK( arg_node) = TRAVopt( DOWHILE_BLOCK( arg_node), arg_info);
+  // INFO_TABS(arg_info)--;
+
+  print ( arg_info, "}\n");
+  
+  print ( arg_info, "while ( ");
+
+  DOWHILE_COND( arg_node) = TRAVdo( DOWHILE_COND( arg_node), arg_info);
+
+  printf (" );\n");
   
   DBUG_RETURN (arg_node);
 }
@@ -553,27 +584,31 @@ node *
 PRTfor (node * arg_node, info * arg_info)
 {
   DBUG_ENTER ("PRTfor");
+  DBUG_PRINT ("PRT", ("PRTfor"));
+
+  print(arg_info, "for ( int %s = ", FOR_LOOPVAR(arg_node)); 
+
+  FOR_START( arg_node) = TRAVdo( FOR_START( arg_node), arg_info);
+
+  printf(", ");
+  FOR_STOP( arg_node) = TRAVdo( FOR_STOP( arg_node), arg_info);
+
+  if (FOR_STEP ( arg_node) != NULL)
+  {
+    printf(", ");
+    FOR_STEP( arg_node) = TRAVopt( FOR_STEP( arg_node), arg_info);
+  }
+
+  printf(")\n");
+
+  print(arg_info, "{\n");
+
+  // INFO_TABS(arg_info)++;
+  FOR_BLOCK( arg_node) = TRAVopt( FOR_BLOCK( arg_node), arg_info);
   
-  DBUG_RETURN (arg_node);
-}
+  // INFO_TABS(arg_info)--;
 
-/** <!--******************************************************************-->
- *
- * @fn PRTglobdecl
- *
- * @brief Prints the node and its sons/attributes
- *
- * @param arg_node BinOp node to process
- * @param arg_info pointer to info structure
- *
- * @return processed node
- *
- ***************************************************************************/
-
-node *
-PRTglobdecl (node * arg_node, info * arg_info)
-{
-  DBUG_ENTER ("PRTglobdecl");
+  print(arg_info, "}\n");
   
   DBUG_RETURN (arg_node);
 }
@@ -595,6 +630,30 @@ node *
 PRTglobdef (node * arg_node, info * arg_info)
 {
   DBUG_ENTER ("PRTglobdef");
+  DBUG_PRINT ("PRT", ("PRTglobdef"));
+
+  if(GLOBDEF_ISEXTERN(arg_node) == 1)
+  {
+    printf("%s", "extern ");
+  }
+
+  if(GLOBDEF_ISEXPORT(arg_node) == 1)
+  {
+    printf("%s", "export ");
+  }
+
+  printf("%s %s", typeInString(GLOBDEF_TYPE(arg_node)), GLOBDEF_NAME(arg_node));
+
+  GLOBDEF_DIMS( arg_node) = TRAVopt( GLOBDEF_DIMS( arg_node), arg_info);
+
+  if (GLOBDEF_INIT( arg_node) != NULL)
+  {
+    printf(" = ");
+
+    GLOBDEF_INIT( arg_node) = TRAVopt( GLOBDEF_INIT( arg_node), arg_info);
+  }
+
+  printf(";\n");
   
   DBUG_RETURN (arg_node);
 }
@@ -616,11 +675,46 @@ node *
 PRTparam (node * arg_node, info * arg_info)
 {
   DBUG_ENTER ("PRTparam");
+  DBUG_PRINT ("PRT", ("PRTparam"));
+
+  printf("%s %s", typeInString(PARAM_TYPE(arg_node)), PARAM_NAME(arg_node));
+  
+  if(PARAM_NEXT( arg_node))
+  {
+    printf(", ");
+
+    PARAM_NEXT( arg_node) = TRAVopt( PARAM_NEXT( arg_node), arg_info);
+  }
   
   DBUG_RETURN (arg_node);
 }
 
+/** <!--******************************************************************-->
+ *
+ * @fn typeInString
+ *
+ * @brief returns the correct string value for the given type.
+ *
+ * @param type the type of the arg_node
+ *
+ * @return void
+ *
+ ***************************************************************************/
+const char *typeInString(type type)
+{
+  switch (type) {
+    case T_void: return "void";
+    case T_bool: return "bool";
+    case T_int: return "int";
+    case T_float: return "float";
+    case T_unknown: return "unknown";
+  }
+
+  return "unknown";
+}
+
 /* END */
+
 
 
 
