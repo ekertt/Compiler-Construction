@@ -36,6 +36,10 @@
 ")"                        { FILTER( BRACKET_R); }
 ","                        { FILTER( COMMA); }
 ";"                        { FILTER( SEMICOLON); }
+"{"                        { FILTER( CURLY_L); }
+"}"                        { FILTER( CURLY_R); }
+"["                        { FILTER( BRACKET_L); }
+"]"                        { FILTER( BRACKET_R); }
 
 "-"                        { FILTER( MINUS); }
 "+"                        { FILTER( PLUS);  }
@@ -54,6 +58,23 @@
 
 "="                        { FILTER( LET);    }
 
+"!"                        { FILTER( NEG);    }
+
+"extern"                   { FILTER( EXTERN); } // KEYWORDS
+"export"                   { FILTER( EXPORT); }
+"return"                   { FILTER( RETURN); }
+
+"if"                       { FILTER( IF); }
+"else"                     { FILTER( ELSE); }
+"do"                       { FILTER( DO); }
+"while"                    { FILTER( WHILE); }
+"for"                      { FILTER( FOR); }
+
+"int"                      { FILTER( INT); }
+"float"                    { FILTER( FLOAT); }
+"bool"                     { FILTER( BOOL); }
+"void"                     { FILTER( VOID); }
+
 "true"                     { FILTER( TRUEVAL); }
 "false"                    { FILTER( FALSEVAL); }
 
@@ -65,6 +86,10 @@
                              FILTER( NUM);
                            }
 
+[0-9]*[.][0-9]+            { yylval.cflt = atof(yytext);  
+                             FILTER( FLOATNUM);
+                           }
+
 \n.*                       { global.line += 1;
                              global.col = 0;
                              yyless(1);
@@ -72,3 +97,8 @@
 
 [ \t]                      { global.col += yyleng;
                            } 
+
+[ \t\n]+                   //White space
+"//".*                     //Single line comment
+[/][*][^*]*[*]+([^*/][^*]*[*]+)*[/]       { /* DO NOTHING */ }
+[/][*]                                    { yy_fatal_error("Unclosed comment"); } 
