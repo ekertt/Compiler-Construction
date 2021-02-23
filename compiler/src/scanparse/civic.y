@@ -31,7 +31,7 @@ static int yyerror( char *errname);
 
 %token PARENTHESIS_L PARENTHESIS_R BRACKET_L BRACKET_R COMMA SEMICOLON CURLY_L CURLY_R
 %token MINUS PLUS STAR SLASH PERCENT LE LT GE GT EQ NE OR AND NEG
-%token TRUEVAL FALSEVAL LET INT FLOAT BOOL VOID
+%token TRUEVAL FALSEVAL LET INT BOOL VOID
 %token EXTERN EXPORT RETURN
 %token IF ELSE DO WHILE FOR
 
@@ -45,6 +45,8 @@ static int yyerror( char *errname);
 %type <node> vardecl fundef funbody block ifelse
 %type <node> decl decls globdef for dowhile
 %type <node> param while
+
+%type <ctype> type
 
 %start program
 
@@ -98,6 +100,62 @@ globdef: type ID SEMICOLON
         {
           $$ = TBmakeGlobalDef($2, STRcpy( $3), NULL, NULL);
           GLOBALDEF_ISEXTERN($$) = 1;
+        }
+      ;
+
+fundef: type ID PARENTHESIS_L PARENTHESIS_R  CURLY_L funbody CURLY_R
+        {
+            $$ = TBmakeFunDef( $1, STRcpy( $2), $6, NULL);
+        }
+    |   type ID PARENTHESIS_L param PARENTHESIS_R CURLY_L funbody CURLY_R
+        {
+            $$ = TBmakeFunDef( $1, STRcpy( $2), $7, $4);
+        }
+    |   EXPORT type ID PARENTHESIS_L PARENTHESIS_R CURLY_L funbody CURLY_R
+        {
+            $$ = TBmakeFunDef( $2, STRcpy( $3), $7, NULL);
+            FUNDEF_ISEXPORT($$) = 1;
+        }
+    |   EXPORT type ID PARENTHESIS_L param PARENTHESIS_R CURLY_L funbody CURLY_R
+        {
+            $$ = TBmakeFunDef( $2, STRcpy( $3), $8, $5);
+            FUNDEF_ISEXPORT($$) = 1;
+        }
+    |   EXTERN type ID PARENTHESIS_L PARENTHESIS_R SEMICOLON
+        {
+            $$ = TBmakeFunDef( $2, STRcpy( $3), NULL, NULL);
+            FUNDEF_ISEXTERN($$) = 1;
+
+        }
+    |   EXTERN type ID PARENTHESIS_L param PARENTHESIS_R SEMICOLON
+        {
+            $$ = TBmakeFunDef( $2, STRcpy( $3), NULL, $5);
+            FUNDEF_ISEXTERN($$) = 1;
+
+        }
+    ;
+
+param: type ID
+        {
+          $$ = TBmakeParam(STRcpy($2), $1);
+        }
+      ;
+
+funbody: vardecl stmts
+        {
+          $$ = TBmakeFunBody($1, NULL, $2);
+        }
+      | vardecl
+        {
+          $$ = TBmakeFunBody($1, NULL, NULL);
+        }
+      | stmts
+        {
+          $$ = TBmakeFunBody(NULL, NULL, $1);
+        }
+      |
+        {
+          $$ = TBmakeFunBody(NULL, NULL, NULL);
         }
       ;
 
