@@ -29,9 +29,11 @@ static int yyerror( char *errname);
  node               *node;
 }
 
-%token BRACKET_L BRACKET_R COMMA SEMICOLON
-%token MINUS PLUS STAR SLASH PERCENT LE LT GE GT EQ NE OR AND
-%token TRUEVAL FALSEVAL LET
+%token PARENTHESIS_L PARENTHESIS_R BRACKET_L BRACKET_R COMMA SEMICOLON CURLY_L CURLY_R
+%token MINUS PLUS STAR SLASH PERCENT LE LT GE GT EQ NE OR AND NEG
+%token TRUEVAL FALSEVAL LET INT FLOAT BOOL VOID
+%token EXTERN EXPORT RETURN
+%token IF ELSE DO WHILE FOR
 
 %token <cint> NUM
 %token <cflt> FLOAT
@@ -75,7 +77,7 @@ assign: varlet LET expr SEMICOLON
 
 varlet: ID
         {
-          $$ = TBmakeVarlet( STRcpy( $1));
+          $$ = TBmakeVarlet( STRcpy( $1), NULL, NULL);
         }
         ;
 
@@ -86,7 +88,7 @@ expr: constant
       }
     | ID
       {
-        $$ = TBmakeVar( STRcpy( $1));
+        $$ = TBmakeVar( STRcpy( $1), NULL, NULL);
       }
     | BRACKET_L expr binop expr BRACKET_R
       {

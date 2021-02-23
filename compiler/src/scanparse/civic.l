@@ -32,8 +32,8 @@
 
 %%
 
-"("                        { FILTER( BRACKET_L); }
-")"                        { FILTER( BRACKET_R); }
+"("                        { FILTER( PARENTHESIS_L); }
+")"                        { FILTER( PARENTHESIS_L); }
 ","                        { FILTER( COMMA); }
 ";"                        { FILTER( SEMICOLON); }
 "{"                        { FILTER( CURLY_L); }
@@ -87,7 +87,7 @@
                            }
 
 [0-9]*[.][0-9]+            { yylval.cflt = atof(yytext);  
-                             FILTER( FLOATNUM);
+                             FILTER( FLOAT);
                            }
 
 \n.*                       { global.line += 1;
