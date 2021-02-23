@@ -30,6 +30,7 @@ extern node *PRTifelse (node * arg_node, info * arg_info);
 extern node *PRTwhile (node * arg_node, info * arg_info);
 extern node *PRTdowhile (node * arg_node, info * arg_info);
 extern node *PRTfor (node * arg_node, info * arg_info);
+extern node *PRTglobdecl (node * arg_node, info * arg_info);
 extern node *PRTglobdef (node * arg_node, info * arg_info);
 extern node *PRTparam (node * arg_node, info * arg_info);
 /* End */

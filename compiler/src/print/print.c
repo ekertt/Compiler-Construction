@@ -691,6 +691,32 @@ PRTparam (node * arg_node, info * arg_info)
 
 /** <!--******************************************************************-->
  *
+ * @fn PRTglobdecl
+ *
+ * @brief Prints the node and its sons/attributes
+ *
+ * @param arg_node BinOp node to process
+ * @param arg_info pointer to info structure
+ *
+ * @return processed node
+ *
+ ***************************************************************************/
+
+node *
+PRTglobdecl (node * arg_node, info * arg_info)
+{
+  DBUG_ENTER ("PRTglobdecl");
+  DBUG_PRINT ("PRT", ("PRTglobdecl"));
+
+  printf("%s %s", typeInString(GLOBDECL_TYPE(arg_node)), GLOBDECL_NAME(arg_node));
+  
+  GLOBDECL_DIMS( arg_node) = TRAVopt( GLOBDECL_DIMS( arg_node), arg_info);
+  
+  DBUG_RETURN (arg_node);
+}
+
+/** <!--******************************************************************-->
+ *
  * @fn typeInString
  *
  * @brief returns the correct string value for the given type.
