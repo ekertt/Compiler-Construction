@@ -301,20 +301,6 @@ block: CURLY_L stmts CURLY_R
         }
         ;
 
-expr: constant
-      {
-        $$ = $1;
-      }
-    | ID
-      {
-        $$ = TBmakeVar( STRcpy( $1), NULL, NULL);
-      }
-    | BRACKET_L expr binop expr BRACKET_R
-      {
-        $$ = TBmakeBinop( $3, $2, $4);
-      }
-    ;
-
 constant: floatval
           {
             $$ = $1;
@@ -351,20 +337,119 @@ boolval: TRUEVAL
          }
        ;
 
-binop: PLUS      { $$ = BO_add; }
-     | MINUS     { $$ = BO_sub; }
-     | STAR      { $$ = BO_mul; }
-     | SLASH     { $$ = BO_div; }
-     | PERCENT   { $$ = BO_mod; }
-     | LE        { $$ = BO_le; }
-     | LT        { $$ = BO_lt; }
-     | GE        { $$ = BO_ge; }
-     | GT        { $$ = BO_gt; }
-     | EQ        { $$ = BO_eq; }
-     | OR        { $$ = BO_or; }
-     | AND       { $$ = BO_and; }
+expr:
+    PARENTHESIS_L expr PARENTHESIS_R
+        {
+          $$ = $2;
+        }
+      | PARENTHESIS_L type PARENTHESIS_R expr
+        {
+          $$ = TBmakeCast( $2, $4);
+        }
+      | constant
+        {
+          $$ = $1;
+        }
+      | ID
+        {
+          $$ = TBmakeVar( STRcpy( $1), NULL, NULL);
+        }
+      | binop 
+        {
+          $$ = $1;
+        }
+      | ID PARENTHESIS_L PARENTHESIS_R 
+        {
+          $$ = $TBmakeFuncall( STRcpy( $1), NULL, NULL);
+        }
+      | ID PARENTHESIS_L exprs PARENTHESIS_R 
+        {
+          $$ = $TBmakeFuncall( STRcpy( $1), NULL, $3);
+        }
+    ;
+
+monop: MINUS expr
+        {
+          $$ = TBmakeMonop( MO_minus, $2);
+        }
+      | NEG expr
+        {
+          $$ = TBmakeMonop( MO_neg, $2);
+        }
+      ;
+
+binop: expr PLUS expr      
+        { 
+          $$ = TBmakeBinop( BO_add, $1, $3); 
+        }
+      | expr MINUS expr    
+        { 
+          $$ = TBmakeBinop( BO_sub, $1, $3); 
+        }
+      | expr STAR expr    
+        { 
+          $$ = TBmakeBinop( BO_mul, $1, $3); 
+        }
+      | expr SLASH expr    
+        { 
+          $$ = TBmakeBinop( BO_div, $1, $3); 
+        }
+      | expr PERCENT expr   
+        { 
+          $$ = TBmakeBinop( BO_mod, $1, $3); 
+        }
+      | expr LE expr      
+        { 
+          $$ = TBmakeBinop( BO_le, $1, $3);
+        }
+      | expr LT expr        
+        { 
+          $$ = TBmakeBinop( BO_lt, $1, $3);
+        }
+      | expr GE expr        
+        { 
+          $$ = TBmakeBinop( BO_ge, $1, $3);
+        }
+      | expr GT expr       
+        { 
+          $$ = TBmakeBinop( BO_gt, $1, $3);
+        }
+      | expr EQ expr       
+        { 
+          $$ = TBmakeBinop( BO_eq, $1, $3);
+        }
+      | expr OR expr       
+        { 
+          $$ = TBmakeBinop( BO_or, $1, $3);
+        }
+      | expr AND expr       
+        { 
+          $$ = TBmakeBinop( BO_and, $1, $3);
+        }
+      | expr NE expr 
+        { 
+          $$ = TBmakeBinop( BO_ne, $1, $3);
+        }
      ;
-      
+
+type: INT      
+        { 
+          $$ = T_int; 
+        }
+      | FLOAT     
+        { 
+          $$ = T_float; 
+        }
+      | BOOL      
+        { 
+          $$ = T_bool; 
+        }
+      | VOID     
+        { 
+          $$ = T_void; 
+        }
+      ;
+   
 %%
 
 static int yyerror( char *error)
