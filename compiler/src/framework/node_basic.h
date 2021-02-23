@@ -77,36 +77,19 @@ extern node    *TBmakeFunbody(node * Vardecls, node * Localfundefs, node * Stmts
  *****************************************************************************/
 
 #define FUNHEADER_PARAMS( n) ((n)->sons.N_funheader->Params)
-#define FUNHEADER_RETTYPE( n) ((n)->sons.N_funheader->RetType)
 #define FUNHEADER_TYPE( n) ((n)->attribs.N_funheader->Type)
 #define FUNHEADER_NAME( n) ((n)->attribs.N_funheader->Name)
-extern node    *TBmakeFunheader(type Type, char *Name, node * Params, node * RetType);
+extern node    *TBmakeFunheader(node * Params);
 
 /*****************************************************************************
- * macros and functions for N_rettype
+ * macros and functions for N_params
  *****************************************************************************/
 
-#define RETTYPE_BSCTYPE( n) ((n)->sons.N_rettype->BscType)
-#define RETTYPE_FLAGSTRUCTURE( n) ((n)->attribs.N_rettype->flags)
-#define RETTYPE_ISVOID( n) ((n)->attribs.N_rettype->flags.IsVoid)
-extern node    *TBmakeRettype(node * BscType);
-
-/*****************************************************************************
- * macros and functions for N_bsctype
- *****************************************************************************/
-
-#define BSCTYPE_BOOL( n) ((n)->sons.N_bsctype->Bool)
-#define BSCTYPE_NUM( n) ((n)->sons.N_bsctype->Num)
-#define BSCTYPE_FLOAT( n) ((n)->sons.N_bsctype->Float)
-extern node    *TBmakeBsctype(node * Bool, node * Num, node * Float);
-
-/*****************************************************************************
- * macros and functions for N_param
- *****************************************************************************/
-
-#define PARAM_NAME( n) ((n)->attribs.N_param->Name)
-#define PARAM_TYPE( n) ((n)->attribs.N_param->Type)
-extern node    *TBmakeParam(char *Name, type Type);
+#define PARAMS_PARAM( n) ((n)->sons.N_params->Param)
+#define PARAMS_NEXT( n) ((n)->sons.N_params->Next)
+#define PARAMS_NAME( n) ((n)->attribs.N_params->Name)
+#define PARAMS_TYPE( n) ((n)->attribs.N_params->Type)
+extern node    *TBmakeParams(char *Name, type Type, node * Param, node * Next);
 
 /*****************************************************************************
  * macros and functions for N_globdec
@@ -130,16 +113,22 @@ extern node    *TBmakeGlobdec(char *Name, type Type);
 extern node    *TBmakeGlobdef(char *Name, type Type, node * Expr);
 
 /*****************************************************************************
+ * macros and functions for N_vardecls
+ *****************************************************************************/
+
+#define VARDECLS_VARDECL( n) ((n)->sons.N_vardecls->VarDecl)
+#define VARDECLS_NEXT( n) ((n)->sons.N_vardecls->Next)
+extern node    *TBmakeVardecls(node * VarDecl, node * Next);
+
+/*****************************************************************************
  * macros and functions for N_vardecl
  *****************************************************************************/
 
-#define VARDECL_NEXT( n) ((n)->sons.N_vardecl->Next)
-#define VARDECL_EXPR( n) ((n)->sons.N_vardecl->Expr)
 #define VARDECL_NAME( n) ((n)->attribs.N_vardecl->Name)
 #define VARDECL_TYPE( n) ((n)->attribs.N_vardecl->Type)
 #define VARDECL_FLAGSTRUCTURE( n) ((n)->attribs.N_vardecl->flags)
 #define VARDECL_ISEXPORT( n) ((n)->attribs.N_vardecl->flags.IsExport)
-extern node    *TBmakeVardecl(char *Name, type Type, node * Next, node * Expr);
+extern node    *TBmakeVardecl(char *Name, type Type);
 
 /*****************************************************************************
  * macros and functions for N_ifelse
@@ -151,11 +140,11 @@ extern node    *TBmakeVardecl(char *Name, type Type, node * Next, node * Expr);
 extern node    *TBmakeIfelse(node * Cond, node * Then, node * Else);
 
 /*****************************************************************************
- * macros and functions for N_exprstmt
+ * macros and functions for N_param
  *****************************************************************************/
 
-#define EXPRSTMT_EXPR( n) ((n)->sons.N_exprstmt->Expr)
-extern node    *TBmakeExprstmt(node * Expr);
+#define PARAM_TYPE( n) ((n)->attribs.N_param->Type)
+extern node    *TBmakeParam(type Type);
 
 /*****************************************************************************
  * macros and functions for N_while
@@ -215,6 +204,14 @@ extern node    *TBmakeAssign(node * Let, node * Expr);
 #define BINOP_RIGHT( n) ((n)->sons.N_binop->Right)
 #define BINOP_OP( n) ((n)->attribs.N_binop->Op)
 extern node    *TBmakeBinop(binop Op, node * Left, node * Right);
+
+/*****************************************************************************
+ * macros and functions for N_monop
+ *****************************************************************************/
+
+#define MONOP_OPERAND( n) ((n)->sons.N_monop->Operand)
+#define MONOP_OP( n) ((n)->attribs.N_monop->Op)
+extern node    *TBmakeMonop(monop Op, node * Operand);
 
 /*****************************************************************************
  * macros and functions for N_varlet

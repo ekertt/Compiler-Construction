@@ -32,11 +32,6 @@ struct SONS_N_BINOP {
 };
 struct SONS_N_BOOL {
 };
-struct SONS_N_BSCTYPE {
-	node           *Bool;
-	node           *Num;
-	node           *Float;
-};
 struct SONS_N_DECLS {
 	node           *Decl;
 	node           *Next;
@@ -47,9 +42,6 @@ struct SONS_N_DOWHILE {
 };
 struct SONS_N_ERROR {
 	node           *Next;
-};
-struct SONS_N_EXPRSTMT {
-	node           *Expr;
 };
 struct SONS_N_FLOAT {
 };
@@ -77,7 +69,6 @@ struct SONS_N_FUNDEFS {
 };
 struct SONS_N_FUNHEADER {
 	node           *Params;
-	node           *RetType;
 };
 struct SONS_N_GLOBDEC {
 };
@@ -89,15 +80,19 @@ struct SONS_N_IFELSE {
 	node           *Then;
 	node           *Else;
 };
+struct SONS_N_MONOP {
+	node           *Operand;
+};
 struct SONS_N_NUM {
 };
 struct SONS_N_PARAM {
 };
+struct SONS_N_PARAMS {
+	node           *Param;
+	node           *Next;
+};
 struct SONS_N_PROGRAM {
 	node           *Decls;
-};
-struct SONS_N_RETTYPE {
-	node           *BscType;
 };
 struct SONS_N_RETURN {
 	node           *Expr;
@@ -111,8 +106,10 @@ struct SONS_N_SYMBOLTABLEENTRY {
 struct SONS_N_VAR {
 };
 struct SONS_N_VARDECL {
+};
+struct SONS_N_VARDECLS {
+	node           *VarDecl;
 	node           *Next;
-	node           *Expr;
 };
 struct SONS_N_VARLET {
 };
@@ -128,11 +125,9 @@ struct SONUNION {
 	struct SONS_N_ASSIGN *N_assign;
 	struct SONS_N_BINOP *N_binop;
 	struct SONS_N_BOOL *N_bool;
-	struct SONS_N_BSCTYPE *N_bsctype;
 	struct SONS_N_DECLS *N_decls;
 	struct SONS_N_DOWHILE *N_dowhile;
 	struct SONS_N_ERROR *N_error;
-	struct SONS_N_EXPRSTMT *N_exprstmt;
 	struct SONS_N_FLOAT *N_float;
 	struct SONS_N_FOR *N_for;
 	struct SONS_N_FUNBODY *N_funbody;
@@ -143,15 +138,17 @@ struct SONUNION {
 	struct SONS_N_GLOBDEC *N_globdec;
 	struct SONS_N_GLOBDEF *N_globdef;
 	struct SONS_N_IFELSE *N_ifelse;
+	struct SONS_N_MONOP *N_monop;
 	struct SONS_N_NUM *N_num;
 	struct SONS_N_PARAM *N_param;
+	struct SONS_N_PARAMS *N_params;
 	struct SONS_N_PROGRAM *N_program;
-	struct SONS_N_RETTYPE *N_rettype;
 	struct SONS_N_RETURN *N_return;
 	struct SONS_N_STMTS *N_stmts;
 	struct SONS_N_SYMBOLTABLEENTRY *N_symboltableentry;
 	struct SONS_N_VAR *N_var;
 	struct SONS_N_VARDECL *N_vardecl;
+	struct SONS_N_VARDECLS *N_vardecls;
 	struct SONS_N_VARLET *N_varlet;
 	struct SONS_N_WHILE *N_while;
 };

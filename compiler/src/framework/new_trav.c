@@ -79,23 +79,6 @@ node           *EVALbool(node * arg_node, info * arg_info) {
 }
 /** <!--******************************************************************-->
  *
- * @fn EVALbsctype
- *
- * @brief Frees the node and its sons/attributes
- *
- * @param arg_node BscType node to process
- * @param arg_info pointer to info structure
- *
- * @return processed node
- *
- ***************************************************************************/
-node           *EVALbsctype(node * arg_node, info * arg_info) {
-	DBUG_ENTER("EVALbsctype");
-	arg_node = TRAVcont(arg_node, arg_info);
-	DBUG_RETURN(arg_node);
-}
-/** <!--******************************************************************-->
- *
  * @fn EVALdecls
  *
  * @brief Frees the node and its sons/attributes
@@ -142,23 +125,6 @@ node           *EVALdowhile(node * arg_node, info * arg_info) {
  ***************************************************************************/
 node           *EVALerror(node * arg_node, info * arg_info) {
 	DBUG_ENTER("EVALerror");
-	arg_node = TRAVcont(arg_node, arg_info);
-	DBUG_RETURN(arg_node);
-}
-/** <!--******************************************************************-->
- *
- * @fn EVALexprstmt
- *
- * @brief Frees the node and its sons/attributes
- *
- * @param arg_node ExprStmt node to process
- * @param arg_info pointer to info structure
- *
- * @return processed node
- *
- ***************************************************************************/
-node           *EVALexprstmt(node * arg_node, info * arg_info) {
-	DBUG_ENTER("EVALexprstmt");
 	arg_node = TRAVcont(arg_node, arg_info);
 	DBUG_RETURN(arg_node);
 }
@@ -334,6 +300,23 @@ node           *EVALifelse(node * arg_node, info * arg_info) {
 }
 /** <!--******************************************************************-->
  *
+ * @fn EVALmonop
+ *
+ * @brief Frees the node and its sons/attributes
+ *
+ * @param arg_node MonOp node to process
+ * @param arg_info pointer to info structure
+ *
+ * @return processed node
+ *
+ ***************************************************************************/
+node           *EVALmonop(node * arg_node, info * arg_info) {
+	DBUG_ENTER("EVALmonop");
+	arg_node = TRAVcont(arg_node, arg_info);
+	DBUG_RETURN(arg_node);
+}
+/** <!--******************************************************************-->
+ *
  * @fn EVALnum
  *
  * @brief Frees the node and its sons/attributes
@@ -368,6 +351,23 @@ node           *EVALparam(node * arg_node, info * arg_info) {
 }
 /** <!--******************************************************************-->
  *
+ * @fn EVALparams
+ *
+ * @brief Frees the node and its sons/attributes
+ *
+ * @param arg_node Params node to process
+ * @param arg_info pointer to info structure
+ *
+ * @return processed node
+ *
+ ***************************************************************************/
+node           *EVALparams(node * arg_node, info * arg_info) {
+	DBUG_ENTER("EVALparams");
+	arg_node = TRAVcont(arg_node, arg_info);
+	DBUG_RETURN(arg_node);
+}
+/** <!--******************************************************************-->
+ *
  * @fn EVALprogram
  *
  * @brief Frees the node and its sons/attributes
@@ -380,23 +380,6 @@ node           *EVALparam(node * arg_node, info * arg_info) {
  ***************************************************************************/
 node           *EVALprogram(node * arg_node, info * arg_info) {
 	DBUG_ENTER("EVALprogram");
-	arg_node = TRAVcont(arg_node, arg_info);
-	DBUG_RETURN(arg_node);
-}
-/** <!--******************************************************************-->
- *
- * @fn EVALrettype
- *
- * @brief Frees the node and its sons/attributes
- *
- * @param arg_node RetType node to process
- * @param arg_info pointer to info structure
- *
- * @return processed node
- *
- ***************************************************************************/
-node           *EVALrettype(node * arg_node, info * arg_info) {
-	DBUG_ENTER("EVALrettype");
 	arg_node = TRAVcont(arg_node, arg_info);
 	DBUG_RETURN(arg_node);
 }
@@ -482,6 +465,23 @@ node           *EVALvar(node * arg_node, info * arg_info) {
  ***************************************************************************/
 node           *EVALvardecl(node * arg_node, info * arg_info) {
 	DBUG_ENTER("EVALvardecl");
+	arg_node = TRAVcont(arg_node, arg_info);
+	DBUG_RETURN(arg_node);
+}
+/** <!--******************************************************************-->
+ *
+ * @fn EVALvardecls
+ *
+ * @brief Frees the node and its sons/attributes
+ *
+ * @param arg_node VarDecls node to process
+ * @param arg_info pointer to info structure
+ *
+ * @return processed node
+ *
+ ***************************************************************************/
+node           *EVALvardecls(node * arg_node, info * arg_info) {
+	DBUG_ENTER("EVALvardecls");
 	arg_node = TRAVcont(arg_node, arg_info);
 	DBUG_RETURN(arg_node);
 }

@@ -63,34 +63,28 @@ TRAVsons(node * arg_node, info * arg_info)
 		break;
 	case N_funheader:
 		TRAV(FUNHEADER_PARAMS(arg_node), arg_info);
-		TRAV(FUNHEADER_RETTYPE(arg_node), arg_info);
 		break;
-	case N_rettype:
-		TRAV(RETTYPE_BSCTYPE(arg_node), arg_info);
-		break;
-	case N_bsctype:
-		TRAV(BSCTYPE_BOOL(arg_node), arg_info);
-		TRAV(BSCTYPE_NUM(arg_node), arg_info);
-		TRAV(BSCTYPE_FLOAT(arg_node), arg_info);
-		break;
-	case N_param:
+	case N_params:
+		TRAV(PARAMS_PARAM(arg_node), arg_info);
+		TRAV(PARAMS_NEXT(arg_node), arg_info);
 		break;
 	case N_globdec:
 		break;
 	case N_globdef:
 		TRAV(GLOBDEF_EXPR(arg_node), arg_info);
 		break;
+	case N_vardecls:
+		TRAV(VARDECLS_VARDECL(arg_node), arg_info);
+		TRAV(VARDECLS_NEXT(arg_node), arg_info);
+		break;
 	case N_vardecl:
-		TRAV(VARDECL_NEXT(arg_node), arg_info);
-		TRAV(VARDECL_EXPR(arg_node), arg_info);
 		break;
 	case N_ifelse:
 		TRAV(IFELSE_COND(arg_node), arg_info);
 		TRAV(IFELSE_THEN(arg_node), arg_info);
 		TRAV(IFELSE_ELSE(arg_node), arg_info);
 		break;
-	case N_exprstmt:
-		TRAV(EXPRSTMT_EXPR(arg_node), arg_info);
+	case N_param:
 		break;
 	case N_while:
 		TRAV(WHILE_COND(arg_node), arg_info);
@@ -120,6 +114,9 @@ TRAVsons(node * arg_node, info * arg_info)
 	case N_binop:
 		TRAV(BINOP_LEFT(arg_node), arg_info);
 		TRAV(BINOP_RIGHT(arg_node), arg_info);
+		break;
+	case N_monop:
+		TRAV(MONOP_OPERAND(arg_node), arg_info);
 		break;
 	case N_varlet:
 		break;
@@ -172,16 +169,10 @@ TRAVnumSons(node * node)
 		result = 3;
 		break;
 	case N_funheader:
-		result = 2;
-		break;
-	case N_rettype:
 		result = 1;
 		break;
-	case N_bsctype:
-		result = 3;
-		break;
-	case N_param:
-		result = 0;
+	case N_params:
+		result = 2;
 		break;
 	case N_globdec:
 		result = 0;
@@ -189,14 +180,17 @@ TRAVnumSons(node * node)
 	case N_globdef:
 		result = 1;
 		break;
-	case N_vardecl:
+	case N_vardecls:
 		result = 2;
+		break;
+	case N_vardecl:
+		result = 0;
 		break;
 	case N_ifelse:
 		result = 3;
 		break;
-	case N_exprstmt:
-		result = 1;
+	case N_param:
+		result = 0;
 		break;
 	case N_while:
 		result = 2;
@@ -218,6 +212,9 @@ TRAVnumSons(node * node)
 		break;
 	case N_binop:
 		result = 2;
+		break;
+	case N_monop:
+		result = 1;
 		break;
 	case N_varlet:
 		result = 0;
@@ -331,39 +328,18 @@ TRAVgetSon(int no, node * parent)
 		case 0:
 			result = FUNHEADER_PARAMS(parent);
 			break;
-		case 1:
-			result = FUNHEADER_RETTYPE(parent);
-			break;
 		default:
 			DBUG_ASSERT((FALSE), "index out of range!");
 			break;
 		} break;
-	case N_rettype:
+	case N_params:
 		switch (no) {
 		case 0:
-			result = RETTYPE_BSCTYPE(parent);
-			break;
-		default:
-			DBUG_ASSERT((FALSE), "index out of range!");
-			break;
-		} break;
-	case N_bsctype:
-		switch (no) {
-		case 0:
-			result = BSCTYPE_BOOL(parent);
+			result = PARAMS_PARAM(parent);
 			break;
 		case 1:
-			result = BSCTYPE_NUM(parent);
+			result = PARAMS_NEXT(parent);
 			break;
-		case 2:
-			result = BSCTYPE_FLOAT(parent);
-			break;
-		default:
-			DBUG_ASSERT((FALSE), "index out of range!");
-			break;
-		} break;
-	case N_param:
-		switch (no) {
 		default:
 			DBUG_ASSERT((FALSE), "index out of range!");
 			break;
@@ -383,14 +359,20 @@ TRAVgetSon(int no, node * parent)
 			DBUG_ASSERT((FALSE), "index out of range!");
 			break;
 		} break;
-	case N_vardecl:
+	case N_vardecls:
 		switch (no) {
 		case 0:
-			result = VARDECL_NEXT(parent);
+			result = VARDECLS_VARDECL(parent);
 			break;
 		case 1:
-			result = VARDECL_EXPR(parent);
+			result = VARDECLS_NEXT(parent);
 			break;
+		default:
+			DBUG_ASSERT((FALSE), "index out of range!");
+			break;
+		} break;
+	case N_vardecl:
+		switch (no) {
 		default:
 			DBUG_ASSERT((FALSE), "index out of range!");
 			break;
@@ -410,11 +392,8 @@ TRAVgetSon(int no, node * parent)
 			DBUG_ASSERT((FALSE), "index out of range!");
 			break;
 		} break;
-	case N_exprstmt:
+	case N_param:
 		switch (no) {
-		case 0:
-			result = EXPRSTMT_EXPR(parent);
-			break;
 		default:
 			DBUG_ASSERT((FALSE), "index out of range!");
 			break;
@@ -501,6 +480,15 @@ TRAVgetSon(int no, node * parent)
 			break;
 		case 1:
 			result = BINOP_RIGHT(parent);
+			break;
+		default:
+			DBUG_ASSERT((FALSE), "index out of range!");
+			break;
+		} break;
+	case N_monop:
+		switch (no) {
+		case 0:
+			result = MONOP_OPERAND(parent);
 			break;
 		default:
 			DBUG_ASSERT((FALSE), "index out of range!");

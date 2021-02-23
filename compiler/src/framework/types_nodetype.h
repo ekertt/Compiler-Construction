@@ -17,6 +17,6 @@
 
 #define MAX_NODES 29
 typedef enum {
-N_undefined = 0, N_program = 1, N_decls = 2, N_fundec = 3, N_fundef = 4, N_fundefs = 5, N_funbody = 6, N_funheader = 7, N_rettype = 8, N_bsctype = 9, N_param = 10, N_globdec = 11, N_globdef = 12, N_vardecl = 13, N_ifelse = 14, N_exprstmt = 15, N_while = 16, N_for = 17, N_dowhile = 18, N_return = 19, N_stmts = 20, N_assign = 21, N_binop = 22, N_varlet = 23, N_var = 24, N_num = 25, N_float = 26, N_bool = 27, N_symboltableentry = 28, N_error = 29} nodetype;
+N_undefined = 0, N_program = 1, N_decls = 2, N_fundec = 3, N_fundef = 4, N_fundefs = 5, N_funbody = 6, N_funheader = 7, N_params = 8, N_globdec = 9, N_globdef = 10, N_vardecls = 11, N_vardecl = 12, N_ifelse = 13, N_param = 14, N_while = 15, N_for = 16, N_dowhile = 17, N_return = 18, N_stmts = 19, N_assign = 20, N_binop = 21, N_monop = 22, N_varlet = 23, N_var = 24, N_num = 25, N_float = 26, N_bool = 27, N_symboltableentry = 28, N_error = 29} nodetype;
 
 #endif				/* _SAC_TYPES_NODETYPE_H_ */

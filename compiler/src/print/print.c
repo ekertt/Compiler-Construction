@@ -66,6 +66,20 @@ PRTfor (node * arg_node, info * arg_info)
 }
 
 node *
+PRTparam (node * arg_node, info * arg_info)
+{
+  DBUG_ENTER ("PRTparam");
+  DBUG_RETURN (arg_node);
+}
+
+node *
+PRTmonop (node * arg_node, info * arg_info)
+{
+  DBUG_ENTER ("PRTmonop");
+  DBUG_RETURN (arg_node);
+}
+
+node *
 PRTreturn (node * arg_node, info * arg_info)
 {
   DBUG_ENTER ("PRTreturn");
@@ -87,9 +101,9 @@ PRTwhile (node * arg_node, info * arg_info)
 }
 
 node *
-PRTexprstmt (node * arg_node, info * arg_info)
+PRTvardecls (node * arg_node, info * arg_info)
 {
-  DBUG_ENTER ("PRTexprstmt");
+  DBUG_ENTER ("PRTvardecls");
   DBUG_RETURN (arg_node);
 }
 
@@ -122,23 +136,9 @@ PRTglobdec (node * arg_node, info * arg_info)
 }
 
 node *
-PRTparam (node * arg_node, info * arg_info)
+PRTparams (node * arg_node, info * arg_info)
 {
   DBUG_ENTER ("PRTparam");
-  DBUG_RETURN (arg_node);
-}
-
-node *
-PRTbsctype (node * arg_node, info * arg_info)
-{
-  DBUG_ENTER ("PRTbsctype");
-  DBUG_RETURN (arg_node);
-}
-
-node *
-PRTrettype (node * arg_node, info * arg_info)
-{
-  DBUG_ENTER ("PRTrettype");
   DBUG_RETURN (arg_node);
 }
 

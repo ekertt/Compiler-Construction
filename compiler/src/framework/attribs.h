@@ -30,8 +30,6 @@ struct ATTRIBS_N_BINOP {
 struct ATTRIBS_N_BOOL {
 	bool		Value;
 };
-struct ATTRIBS_N_BSCTYPE {
-};
 struct ATTRIBS_N_DECLS {
 };
 struct ATTRIBS_N_DOWHILE {
@@ -39,8 +37,6 @@ struct ATTRIBS_N_DOWHILE {
 struct ATTRIBS_N_ERROR {
 	char           *message;
 	compiler_phase_t anyphase;
-};
-struct ATTRIBS_N_EXPRSTMT {
 };
 struct ATTRIBS_N_FLOAT {
 	float		Value;
@@ -82,19 +78,20 @@ struct ATTRIBS_N_GLOBDEF {
 };
 struct ATTRIBS_N_IFELSE {
 };
+struct ATTRIBS_N_MONOP {
+	monop		Op;
+};
 struct ATTRIBS_N_NUM {
 	int		Value;
 };
 struct ATTRIBS_N_PARAM {
+	type		Type;
+};
+struct ATTRIBS_N_PARAMS {
 	char           *Name;
 	type		Type;
 };
 struct ATTRIBS_N_PROGRAM {
-};
-struct ATTRIBS_N_RETTYPE {
-	struct {
-		unsigned int	IsVoid:1;
-	}		flags;
 };
 struct ATTRIBS_N_RETURN {
 };
@@ -113,6 +110,8 @@ struct ATTRIBS_N_VARDECL {
 		unsigned int	IsExport:1;
 	}		flags;
 };
+struct ATTRIBS_N_VARDECLS {
+};
 struct ATTRIBS_N_VARLET {
 	char           *Name;
 	node           *Decl;
@@ -127,11 +126,9 @@ struct ATTRIBUNION {
 	struct ATTRIBS_N_ASSIGN *N_assign;
 	struct ATTRIBS_N_BINOP *N_binop;
 	struct ATTRIBS_N_BOOL *N_bool;
-	struct ATTRIBS_N_BSCTYPE *N_bsctype;
 	struct ATTRIBS_N_DECLS *N_decls;
 	struct ATTRIBS_N_DOWHILE *N_dowhile;
 	struct ATTRIBS_N_ERROR *N_error;
-	struct ATTRIBS_N_EXPRSTMT *N_exprstmt;
 	struct ATTRIBS_N_FLOAT *N_float;
 	struct ATTRIBS_N_FOR *N_for;
 	struct ATTRIBS_N_FUNBODY *N_funbody;
@@ -142,15 +139,17 @@ struct ATTRIBUNION {
 	struct ATTRIBS_N_GLOBDEC *N_globdec;
 	struct ATTRIBS_N_GLOBDEF *N_globdef;
 	struct ATTRIBS_N_IFELSE *N_ifelse;
+	struct ATTRIBS_N_MONOP *N_monop;
 	struct ATTRIBS_N_NUM *N_num;
 	struct ATTRIBS_N_PARAM *N_param;
+	struct ATTRIBS_N_PARAMS *N_params;
 	struct ATTRIBS_N_PROGRAM *N_program;
-	struct ATTRIBS_N_RETTYPE *N_rettype;
 	struct ATTRIBS_N_RETURN *N_return;
 	struct ATTRIBS_N_STMTS *N_stmts;
 	struct ATTRIBS_N_SYMBOLTABLEENTRY *N_symboltableentry;
 	struct ATTRIBS_N_VAR *N_var;
 	struct ATTRIBS_N_VARDECL *N_vardecl;
+	struct ATTRIBS_N_VARDECLS *N_vardecls;
 	struct ATTRIBS_N_VARLET *N_varlet;
 	struct ATTRIBS_N_WHILE *N_while;
 };

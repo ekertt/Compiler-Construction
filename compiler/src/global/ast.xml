@@ -18,6 +18,7 @@
     <type name="Bool" ctype="bool" init="FALSE" copy="literal" />
     <type name="Float" ctype="float" init="0.0" copy="literal" />
     <type name="BinOp" ctype="binop" init="BO_unknown" copy="literal" />
+    <type name="MonOp" ctype="monop" init="MO_unknown" copy="literal" />
     <type name="Link" ctype="node*" init="NULL" copy="lookup" />
     <type name="CompilerPhase" ctype="compiler_phase_t" init="PH_initial" copy="literal" />
   </attributetypes>
@@ -72,6 +73,7 @@
     <nodeset name="Expr">
       <target>
         <node name="BinOp" />
+        <node name="MonOp" />
         <node name="Var" />
         <node name="Num" />
         <node name="Float" />
@@ -81,7 +83,6 @@
     <nodeset name="Stmt">
       <target>
         <node name="Assign"/>
-        <node name="ExprStmt"/>
         <node name="IfElse"/>
         <node name="While"/>
         <node name="DoWhile"/>
@@ -276,29 +277,19 @@
         <son name="Params">
         <targets>
           <target mandatory="no">
-            <node name="Param"/>
+            <node name="Params"/>
             <phases>
               <all/>
             </phases>
           </target>
         </targets>
         </son>
-        <son name="RetType">
-          <targets>
-            <target mandatory="no">
-              <node name="RetType"/>
-              <phases>
-                <all/>
-              </phases>
-            </target>
-          </targets>
-        </son>
       </sons>
       <attributes>
         <attribute name="Type">
           <type name="Type">
             <targets>
-              <target mandatory="yes">
+              <target mandatory="no">
                 <any/>
                 <phases>
                   <all/>
@@ -310,7 +301,7 @@
         <attribute name="Name">
           <type name="String">
             <targets>
-              <target mandatory="yes">
+              <target mandatory="no">
                 <any/>
                 <phases>
                   <all/>
@@ -324,71 +315,30 @@
       </flags>
     </node>
 <!--
- Node RetType:
--->
-    <node name="RetType">
-      <sons>
-        <son name="BscType">
-          <targets>
-            <target mandatory="yes">
-              <node name="BscType"/>
-              <phases>
-                <all/>
-              </phases>
-            </target>
-          </targets>
-        </son>
-      </sons>
-      <attributes>
-      </attributes>
-      <flags>
-        <flag name="IsVoid" />
-      </flags>
-    </node>
-<!--
- Node BscType:
--->
-    <node name="BscType">
-      <sons>
-        <son name="Bool">
-          <targets>
-            <target mandatory="yes">
-              <node name="Bool"/>
-              <phases>
-                <all/>
-              </phases>
-            </target>
-          </targets>
-        </son>
-        <son name="Num">
-          <targets>
-            <target mandatory="yes">
-              <node name="Num"/>
-              <phases>
-                <all/>
-              </phases>
-            </target>
-          </targets>
-        </son>
-        <son name="Float">
-          <targets>
-            <target mandatory="yes">
-              <node name="Float"/>
-              <phases>
-                <all/>
-              </phases>
-            </target>
-          </targets>
-        </son>
-      </sons>
-      <attributes>
-      </attributes>
-    </node>
-<!--
  Node Param:
 -->
-    <node name="Param">
+    <node name="Params">
       <sons>
+        <son name="Param">
+          <targets>
+            <target mandatory="yes">
+              <node name="Param"/>
+              <phases>
+                <all/>
+              </phases>
+            </target>
+          </targets>
+        </son>
+        <son name="Next">
+          <targets>
+            <target mandatory="no">
+              <node name="Params"/>
+              <phases>
+                <all/>
+              </phases>
+            </target>
+          </targets>
+        </son>
       </sons>
       <attributes>
       <attribute name="Name">
@@ -500,57 +450,67 @@
       </flags>
     </node>
 <!--
- Node VarDecl:
+ Node VarDecls:
 -->
-    <node name="VarDecl">
+    <node name="VarDecls">
       <sons>
-        <son name="Next">
-          <description>remaining var declarations in sequence</description>
+        <son name="VarDecl">
           <targets>
             <target mandatory="no">
-              <node name="Stmts" />
+              <node name="VarDecl"/>
               <phases>
-                <all />
+                <all/>
               </phases>
             </target>
           </targets>
         </son>
-        <son name="Expr">
+        <son name="Next">
           <targets>
             <target mandatory="no">
-              <set name="Expr" />
+              <node name="VarDecls"/>
               <phases>
-                <all />
+                <all/>
               </phases>
             </target>
           </targets>
         </son>
       </sons>
       <attributes>
-      <attribute name="Name">
-        <type name="String">
-          <targets>
-            <target mandatory="yes">
-              <any/>
-              <phases>
-                <all/>
-              </phases>
-            </target>
-          </targets>
-        </type>
-      </attribute>
-      <attribute name="Type">
-        <type name="Type">
-          <targets>
-            <target mandatory="yes">
-              <any/>
-              <phases>
-                <all/>
-              </phases>
-            </target>
-          </targets>
-        </type>
-      </attribute>
+      </attributes>
+      <flags>
+      </flags>
+    </node>
+<!--
+ Node VarDecl:
+-->
+    <node name="VarDecl">
+      <sons>
+      </sons>
+      <attributes>
+        <attribute name="Name">
+          <type name="String">
+            <targets>
+              <target mandatory="yes">
+                <any/>
+                <phases>
+                  <all/>
+                </phases>
+              </target>
+            </targets>
+          </type>
+        </attribute>
+        <attribute name="Type">
+          <type name="Type">
+            <targets>
+              <target mandatory="yes">
+                <any/>
+                <phases>
+                  <all/>
+                </phases>
+              </target>
+            </targets>
+          </type>
+        </attribute>
       </attributes>
       <flags>
         <flag name="IsExport" />
@@ -594,21 +554,25 @@
       </sons>
     </node>
 <!--
- Node ExprStmt:
+ Node Param:
 -->
-    <node name="ExprStmt">
+    <node name="Param">
       <sons>
-        <son name="Expr">
-          <targets>
-            <target mandatory="yes">
-              <set name="Expr"/>
-              <phases>
-                <all/>
-              </phases>
-            </target>
-          </targets>
-        </son>
       </sons>
+      <attributes>
+        <attribute name="Type">
+          <type name="Type">
+            <targets>
+              <target mandatory="yes">
+                <any/>
+                <phases>
+                  <all/>
+                </phases>
+              </target>
+            </targets>
+          </type>
+        </attribute>
+      </attributes>
     </node>
 <!--
  Node While:
@@ -841,6 +805,40 @@
         <description>operator type</description>
         <attribute name="Op">
           <type name="BinOp">
+            <targets>
+              <target mandatory="yes">
+                <any />
+                <phases>
+                  <all />
+                </phases>
+              </target>
+            </targets>
+          </type>
+        </attribute>
+      </attributes>
+    </node>
+<!--
+ Node MonOp:
+-->
+    <node name="MonOp">
+      <description>represents binary operator application</description>
+      <sons>
+        <son name="Operand">
+          <description>left operand expression</description>
+          <targets>
+            <target mandatory="yes">
+              <set name="Expr" />
+              <phases>
+                <all />
+              </phases>
+            </target>
+          </targets>
+        </son>
+      </sons>
+      <attributes>
+        <description>operator type</description>
+        <attribute name="Op">
+          <type name="MonOp">
             <targets>
               <target mandatory="yes">
                 <any />

@@ -22,9 +22,26 @@
     <list default="true" id="9fb6c117-d8a8-4520-9544-909fb9799612" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/../A1/Donovan/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../A1/Donovan/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/ast.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/ast.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/ast.png" beforeDir="false" afterPath="$PROJECT_DIR$/doc/ast.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/framework/attribs.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/framework/attribs.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/framework/check.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/framework/check.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/framework/check.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/framework/check.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/framework/check_node.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/framework/check_node.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/framework/check_node.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/framework/check_node.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/framework/copy_node.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/framework/copy_node.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/framework/copy_node.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/framework/copy_node.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/framework/free_node.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/framework/free_node.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/framework/free_node.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/framework/free_node.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/framework/new_trav.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/framework/new_trav.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/framework/new_trav.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/framework/new_trav.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/framework/node_basic.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/framework/node_basic.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/framework/node_basic.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/framework/node_basic.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/framework/sons.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/framework/sons.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/framework/traverse_helper.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/framework/traverse_helper.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/framework/traverse_tables.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/framework/traverse_tables.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/framework/types_nodetype.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/framework/types_nodetype.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/global/ast.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/global/ast.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/global/ast_donovan.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/global/ast_donovan.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/global/mytypes.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/global/mytypes.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/print/print.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/print/print.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/print/print.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/print/print.h" afterDir="false" />
     </list>
@@ -55,19 +72,6 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
-  <component name="RunManager">
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -76,7 +80,10 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1613405369197</updated>
-      <workItem from="1613405370519" duration="12236000" />
+      <workItem from="1613405370519" duration="13018000" />
+      <workItem from="1613464408403" duration="186000" />
+      <workItem from="1613465340778" duration="131000" />
+      <workItem from="1613489689759" duration="4796000" />
     </task>
     <servers />
   </component>
@@ -93,5 +100,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>
