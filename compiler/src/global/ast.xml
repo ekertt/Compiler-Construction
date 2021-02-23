@@ -363,6 +363,7 @@
         </attributes>
         <flags>
             <flag name="IsExport" />
+            <flag name="IsExtern" />
         </flags>
     </node>
     <node name="FunBody">
@@ -650,6 +651,7 @@
         </attributes>
         <flags>
             <flag name="IsExport" />
+            <flag name="IsExtern" />
         </flags>
     </node>
     <node name="Param">

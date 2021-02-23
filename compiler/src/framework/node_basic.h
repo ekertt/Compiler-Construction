@@ -108,6 +108,7 @@ extern node    *TBmakeFundefs(node * Fundef, node * Next);
 #define FUNDEF_NAME( n) ((n)->attribs.N_fundef->Name)
 #define FUNDEF_FLAGSTRUCTURE( n) ((n)->attribs.N_fundef->flags)
 #define FUNDEF_ISEXPORT( n) ((n)->attribs.N_fundef->flags.IsExport)
+#define FUNDEF_ISEXTERN( n) ((n)->attribs.N_fundef->flags.IsExtern)
 extern node    *TBmakeFundef(type Type, char *Name, node * FunBody, node * Params);
 
 /*****************************************************************************
@@ -174,6 +175,7 @@ extern node    *TBmakeGlobdecl(type Type, char *Name, node * Dims);
 #define GLOBDEF_NAME( n) ((n)->attribs.N_globdef->Name)
 #define GLOBDEF_FLAGSTRUCTURE( n) ((n)->attribs.N_globdef->flags)
 #define GLOBDEF_ISEXPORT( n) ((n)->attribs.N_globdef->flags.IsExport)
+#define GLOBDEF_ISEXTERN( n) ((n)->attribs.N_globdef->flags.IsExtern)
 extern node    *TBmakeGlobdef(type Type, char *Name, node * Dims, node * Init);
 
 /*****************************************************************************

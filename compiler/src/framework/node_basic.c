@@ -359,6 +359,7 @@ node           *TBmakeFundef(type Type, char *Name, node * FunBody, node * Param
 	FUNDEF_TYPE(this) = Type;
 	FUNDEF_NAME(this) = Name;
 	FUNDEF_ISEXPORT(this) = FALSE;
+	FUNDEF_ISEXTERN(this) = FALSE;
 #ifndef DBUG_OFF
 	DBUG_PRINT("MAKE", ("doing son target checks"));
 	if ((FUNDEF_FUNBODY(this) != NULL) && (NODE_TYPE(FUNDEF_FUNBODY(this)) != N_funbody)) {
@@ -611,6 +612,7 @@ node           *TBmakeGlobdef(type Type, char *Name, node * Dims, node * Init){
 	GLOBDEF_TYPE(this) = Type;
 	GLOBDEF_NAME(this) = Name;
 	GLOBDEF_ISEXPORT(this) = FALSE;
+	GLOBDEF_ISEXTERN(this) = FALSE;
 #ifndef DBUG_OFF
 	DBUG_PRINT("MAKE", ("doing son target checks"));
 	if ((GLOBDEF_DIMS(this) != NULL) && (NODE_TYPE(GLOBDEF_DIMS(this)) != N_exprs)) {

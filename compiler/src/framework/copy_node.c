@@ -370,6 +370,7 @@ node           *COPYfundef(node * arg_node, info * arg_info) {
 	FUNDEF_NAME(result) = STRcpy(FUNDEF_NAME(arg_node));
 	/* Copy flags */
 	FUNDEF_ISEXPORT(result) = FUNDEF_ISEXPORT(arg_node);
+	FUNDEF_ISEXTERN(result) = FUNDEF_ISEXTERN(arg_node);
 	/* Copy sons */
 	FUNDEF_FUNBODY(result) = COPYTRAV(FUNDEF_FUNBODY(arg_node), arg_info);
 	FUNDEF_PARAMS(result) = COPYTRAV(FUNDEF_PARAMS(arg_node), arg_info);
@@ -443,6 +444,7 @@ node           *COPYglobdef(node * arg_node, info * arg_info) {
 	GLOBDEF_NAME(result) = STRcpy(GLOBDEF_NAME(arg_node));
 	/* Copy flags */
 	GLOBDEF_ISEXPORT(result) = GLOBDEF_ISEXPORT(arg_node);
+	GLOBDEF_ISEXTERN(result) = GLOBDEF_ISEXTERN(arg_node);
 	/* Copy sons */
 	GLOBDEF_DIMS(result) = COPYTRAV(GLOBDEF_DIMS(arg_node), arg_info);
 	GLOBDEF_INIT(result) = COPYTRAV(GLOBDEF_INIT(arg_node), arg_info);

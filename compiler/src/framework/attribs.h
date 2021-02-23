@@ -64,6 +64,7 @@ struct ATTRIBS_N_FUNDEF {
 	char           *Name;
 	struct {
 		unsigned int	IsExport:1;
+		unsigned int	IsExtern:1;
 	}		flags;
 };
 struct ATTRIBS_N_FUNDEFS {
@@ -77,6 +78,7 @@ struct ATTRIBS_N_GLOBDEF {
 	char           *Name;
 	struct {
 		unsigned int	IsExport:1;
+		unsigned int	IsExtern:1;
 	}		flags;
 };
 struct ATTRIBS_N_IDS {
