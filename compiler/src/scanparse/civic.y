@@ -26,7 +26,7 @@ static int yyerror( char *errname);
  int                 cint;
  float               cflt;
  binop               cbinop;
-monop              cmonop;
+ monop              cmonop;
  type                ctype;
  node               *node;
 }
@@ -361,6 +361,10 @@ expr:
           $$ = TBmakeVar( STRcpy( $1), NULL, NULL);
         }
       | binop 
+        {
+          $$ = $1;
+        }
+      | monop 
         {
           $$ = $1;
         }
