@@ -498,6 +498,48 @@ PRTfunbody (node * arg_node, info * arg_info)
 
 /** <!--******************************************************************-->
  *
+ * @fn PRTsymboltable
+ *
+ * @brief Prints the node and its sons/attributes
+ *
+ * @param arg_node letrec node to process
+ * @param arg_info pointer to info structure
+ *
+ * @return processed node
+ *
+ ***************************************************************************/
+
+node *PRTsymboltable (node * arg_node, info * arg_info)
+{
+  DBUG_ENTER ("PRTsymboltable");
+  DBUG_PRINT ("PRT", ("PRTsymboltable"));
+
+  DBUG_RETURN (arg_node);
+}
+
+/** <!--******************************************************************-->
+ *
+ * @fn PRTsymboltable
+ *
+ * @brief Prints the node and its sons/attributes
+ *
+ * @param arg_node letrec node to process
+ * @param arg_info pointer to info structure
+ *
+ * @return processed node
+ *
+ ***************************************************************************/
+
+node *PRTsymboltableentry (node * arg_node, info * arg_info)
+{
+  DBUG_ENTER ("PRTsymboltableentry");
+  DBUG_PRINT ("PRT", ("PRTsymboltableentry"));
+
+  DBUG_RETURN (arg_node);
+}
+
+/** <!--******************************************************************-->
+ *
  * @fn PRTifelse
  *
  * @brief Prints the node and its sons/attributes

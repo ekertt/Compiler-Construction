@@ -26,6 +26,8 @@ extern node *PRTcast (node * arg_node, info * arg_info);
 extern node *PRTfundefs (node * arg_node, info * arg_info);
 extern node *PRTfundef (node * arg_node, info * arg_info);
 extern node *PRTfunbody (node * arg_node, info * arg_info);
+extern node *PRTsymboltable (node * arg_node, info * arg_info);
+extern node *PRTsymboltableentry (node * arg_node, info * arg_info);
 extern node *PRTifelse (node * arg_node, info * arg_info);
 extern node *PRTwhile (node * arg_node, info * arg_info);
 extern node *PRTdowhile (node * arg_node, info * arg_info);
