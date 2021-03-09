@@ -40,7 +40,7 @@ MakeEmptyNode()
  * N_Program :
  *****************************************************************************/
 
-node           *TBmakeProgram(node * Decls) {
+node           *TBmakeProgram(node * Decls, node * SymbolTable) {
 	node           *this;
 	DBUG_ENTER("TBmakeProgram");
 	DBUG_PRINT("MAKE", ("allocating node structure"));
@@ -55,10 +55,84 @@ node           *TBmakeProgram(node * Decls) {
 	NODE_TYPE(this) = N_program;
 	DBUG_PRINT("MAKE", ("assigning son Decls initial value: %s ", Decls));
 	PROGRAM_DECLS(this) = Decls;
+	DBUG_PRINT("MAKE", ("assigning son SymbolTable initial value: %s ", SymbolTable));
+	PROGRAM_SYMBOLTABLE(this) = SymbolTable;
 #ifndef DBUG_OFF
 	DBUG_PRINT("MAKE", ("doing son target checks"));
 	if ((PROGRAM_DECLS(this) != NULL) && (NODE_TYPE(PROGRAM_DECLS(this)) != N_decls)) {
 		CTIwarn("Field Decls of node N_Program has non-allowed target node.");
+	}
+	if ((PROGRAM_SYMBOLTABLE(this) != NULL) && (NODE_TYPE(PROGRAM_SYMBOLTABLE(this)) != N_symboltable)) {
+		CTIwarn("Field SymbolTable of node N_Program has non-allowed target node.");
+	}
+#endif				/* DBUG_OFF */
+	DBUG_RETURN(this);
+}
+
+/*****************************************************************************
+ * N_SymbolTable :
+ *****************************************************************************/
+
+node           *TBmakeSymboltable(node * Entry) {
+	node           *this;
+	DBUG_ENTER("TBmakeSymboltable");
+	DBUG_PRINT("MAKE", ("allocating node structure"));
+	this = MakeEmptyNode();
+	NODE_TYPE(this) = N_symboltable;
+	DBUG_PRINT("MAKE", ("address: %s ", this));
+	DBUG_PRINT("MAKE", ("allocating sons structure"));
+	this->sons.N_symboltable = MEMmalloc(sizeof(struct SONS_N_SYMBOLTABLE));
+	DBUG_PRINT("MAKE", ("allocating attrib structure"));
+	this->attribs.N_symboltable = MEMmalloc(sizeof(struct ATTRIBS_N_SYMBOLTABLE));
+	DBUG_PRINT("MAKE", ("setting node type"));
+	NODE_TYPE(this) = N_symboltable;
+	DBUG_PRINT("MAKE", ("assigning son Entry initial value: %s ", Entry));
+	SYMBOLTABLE_ENTRY(this) = Entry;
+	SYMBOLTABLE_PARENT(this) = NULL;
+	SYMBOLTABLE_RETURNTYPE(this) = T_unknown;
+#ifndef DBUG_OFF
+	DBUG_PRINT("MAKE", ("doing son target checks"));
+	if ((SYMBOLTABLE_ENTRY(this) != NULL) && (NODE_TYPE(SYMBOLTABLE_ENTRY(this)) != N_symboltableentry)) {
+		CTIwarn("Field Entry of node N_SymbolTable has non-allowed target node.");
+	}
+#endif				/* DBUG_OFF */
+	DBUG_RETURN(this);
+}
+
+/*****************************************************************************
+ * N_SymbolTableEntry :
+ *****************************************************************************/
+
+node           *TBmakeSymboltableentry(char *Name, type Type, int Offset, int Depth, node * Link, node * Next, node * Table){
+	node           *this;
+	DBUG_ENTER("TBmakeSymboltableentry");
+	DBUG_PRINT("MAKE", ("allocating node structure"));
+	this = MakeEmptyNode();
+	NODE_TYPE(this) = N_symboltableentry;
+	DBUG_PRINT("MAKE", ("address: %s ", this));
+	DBUG_PRINT("MAKE", ("allocating sons structure"));
+	this->sons.N_symboltableentry = MEMmalloc(sizeof(struct SONS_N_SYMBOLTABLEENTRY));
+	DBUG_PRINT("MAKE", ("allocating attrib structure"));
+	this->attribs.N_symboltableentry = MEMmalloc(sizeof(struct ATTRIBS_N_SYMBOLTABLEENTRY));
+	DBUG_PRINT("MAKE", ("setting node type"));
+	NODE_TYPE(this) = N_symboltableentry;
+	DBUG_PRINT("MAKE", ("assigning son Next initial value: %s ", Next));
+	SYMBOLTABLEENTRY_NEXT(this) = Next;
+	DBUG_PRINT("MAKE", ("assigning son Table initial value: %s ", Table));
+	SYMBOLTABLEENTRY_TABLE(this) = Table;
+	SYMBOLTABLEENTRY_NAME(this) = Name;
+	SYMBOLTABLEENTRY_TYPE(this) = Type;
+	SYMBOLTABLEENTRY_OFFSET(this) = Offset;
+	SYMBOLTABLEENTRY_DEPTH(this) = Depth;
+	SYMBOLTABLEENTRY_PARAM(this) = FALSE;
+	SYMBOLTABLEENTRY_LINK(this) = Link;
+#ifndef DBUG_OFF
+	DBUG_PRINT("MAKE", ("doing son target checks"));
+	if ((SYMBOLTABLEENTRY_NEXT(this) != NULL) && (NODE_TYPE(SYMBOLTABLEENTRY_NEXT(this)) != N_symboltableentry)) {
+		CTIwarn("Field Next of node N_SymbolTableEntry has non-allowed target node.");
+	}
+	if ((SYMBOLTABLEENTRY_TABLE(this) != NULL) && (NODE_TYPE(SYMBOLTABLEENTRY_TABLE(this)) != N_symboltable)) {
+		CTIwarn("Field Table of node N_SymbolTableEntry has non-allowed target node.");
 	}
 #endif				/* DBUG_OFF */
 	DBUG_RETURN(this);

@@ -470,6 +470,40 @@ node           *EVALstmts(node * arg_node, info * arg_info) {
 }
 /** <!--******************************************************************-->
  *
+ * @fn EVALsymboltable
+ *
+ * @brief Frees the node and its sons/attributes
+ *
+ * @param arg_node SymbolTable node to process
+ * @param arg_info pointer to info structure
+ *
+ * @return processed node
+ *
+ ***************************************************************************/
+node           *EVALsymboltable(node * arg_node, info * arg_info) {
+	DBUG_ENTER("EVALsymboltable");
+	arg_node = TRAVcont(arg_node, arg_info);
+	DBUG_RETURN(arg_node);
+}
+/** <!--******************************************************************-->
+ *
+ * @fn EVALsymboltableentry
+ *
+ * @brief Frees the node and its sons/attributes
+ *
+ * @param arg_node SymbolTableEntry node to process
+ * @param arg_info pointer to info structure
+ *
+ * @return processed node
+ *
+ ***************************************************************************/
+node           *EVALsymboltableentry(node * arg_node, info * arg_info) {
+	DBUG_ENTER("EVALsymboltableentry");
+	arg_node = TRAVcont(arg_node, arg_info);
+	DBUG_RETURN(arg_node);
+}
+/** <!--******************************************************************-->
+ *
  * @fn EVALvar
  *
  * @brief Frees the node and its sons/attributes

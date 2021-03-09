@@ -102,6 +102,18 @@ struct ATTRIBS_N_RETURN {
 };
 struct ATTRIBS_N_STMTS {
 };
+struct ATTRIBS_N_SYMBOLTABLE {
+	node           *Parent;
+	type		ReturnType;
+};
+struct ATTRIBS_N_SYMBOLTABLEENTRY {
+	char           *Name;
+	type		Type;
+	int		Offset;
+	int		Depth;
+	bool		Param;
+	node           *Link;
+};
 struct ATTRIBS_N_VAR {
 	char           *Name;
 	node           *Decl;
@@ -147,6 +159,8 @@ struct ATTRIBUNION {
 	struct ATTRIBS_N_PROGRAM *N_program;
 	struct ATTRIBS_N_RETURN *N_return;
 	struct ATTRIBS_N_STMTS *N_stmts;
+	struct ATTRIBS_N_SYMBOLTABLE *N_symboltable;
+	struct ATTRIBS_N_SYMBOLTABLEENTRY *N_symboltableentry;
 	struct ATTRIBS_N_VAR *N_var;
 	struct ATTRIBS_N_VARDECL *N_vardecl;
 	struct ATTRIBS_N_VARLET *N_varlet;

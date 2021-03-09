@@ -46,6 +46,8 @@ extern node    *CHKparam(node * arg_node, info * arg_info);
 extern node    *CHKprogram(node * arg_node, info * arg_info);
 extern node    *CHKreturn(node * arg_node, info * arg_info);
 extern node    *CHKstmts(node * arg_node, info * arg_info);
+extern node    *CHKsymboltable(node * arg_node, info * arg_info);
+extern node    *CHKsymboltableentry(node * arg_node, info * arg_info);
 extern node    *CHKvar(node * arg_node, info * arg_info);
 extern node    *CHKvardecl(node * arg_node, info * arg_info);
 extern node    *CHKvarlet(node * arg_node, info * arg_info);

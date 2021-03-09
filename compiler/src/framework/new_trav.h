@@ -43,6 +43,8 @@ extern node    *EVALparam(node * arg_node, info * arg_info);
 extern node    *EVALprogram(node * arg_node, info * arg_info);
 extern node    *EVALreturn(node * arg_node, info * arg_info);
 extern node    *EVALstmts(node * arg_node, info * arg_info);
+extern node    *EVALsymboltable(node * arg_node, info * arg_info);
+extern node    *EVALsymboltableentry(node * arg_node, info * arg_info);
 extern node    *EVALvar(node * arg_node, info * arg_info);
 extern node    *EVALvardecl(node * arg_node, info * arg_info);
 extern node    *EVALvarlet(node * arg_node, info * arg_info);

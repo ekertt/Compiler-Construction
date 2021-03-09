@@ -26,7 +26,31 @@
  *****************************************************************************/
 
 #define PROGRAM_DECLS( n) ((n)->sons.N_program->Decls)
-extern node    *TBmakeProgram(node * Decls);
+#define PROGRAM_SYMBOLTABLE( n) ((n)->sons.N_program->SymbolTable)
+extern node    *TBmakeProgram(node * Decls, node * SymbolTable);
+
+/*****************************************************************************
+ * macros and functions for N_symboltable
+ *****************************************************************************/
+
+#define SYMBOLTABLE_ENTRY( n) ((n)->sons.N_symboltable->Entry)
+#define SYMBOLTABLE_PARENT( n) ((n)->attribs.N_symboltable->Parent)
+#define SYMBOLTABLE_RETURNTYPE( n) ((n)->attribs.N_symboltable->ReturnType)
+extern node    *TBmakeSymboltable(node * Entry);
+
+/*****************************************************************************
+ * macros and functions for N_symboltableentry
+ *****************************************************************************/
+
+#define SYMBOLTABLEENTRY_NEXT( n) ((n)->sons.N_symboltableentry->Next)
+#define SYMBOLTABLEENTRY_TABLE( n) ((n)->sons.N_symboltableentry->Table)
+#define SYMBOLTABLEENTRY_NAME( n) ((n)->attribs.N_symboltableentry->Name)
+#define SYMBOLTABLEENTRY_TYPE( n) ((n)->attribs.N_symboltableentry->Type)
+#define SYMBOLTABLEENTRY_OFFSET( n) ((n)->attribs.N_symboltableentry->Offset)
+#define SYMBOLTABLEENTRY_DEPTH( n) ((n)->attribs.N_symboltableentry->Depth)
+#define SYMBOLTABLEENTRY_PARAM( n) ((n)->attribs.N_symboltableentry->Param)
+#define SYMBOLTABLEENTRY_LINK( n) ((n)->attribs.N_symboltableentry->Link)
+extern node    *TBmakeSymboltableentry(char *Name, type Type, int Offset, int Depth, node * Link, node * Next, node * Table);
 
 /*****************************************************************************
  * macros and functions for N_decls

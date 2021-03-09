@@ -1269,10 +1269,29 @@ node           *CHKprogram(node * arg_node, info * arg_info) {
 	}
 
 	/*
+	 * Son check: PROGRAM_SYMBOLTABLE
+	 */
+	if ((FALSE) || (TRUE)) {
+		if (PROGRAM_SYMBOLTABLE(arg_node) != NULL) {
+			if (!((FALSE) || (NODE_TYPE(PROGRAM_SYMBOLTABLE(arg_node)) == N_symboltable))) {
+				CHKcorrectTypeInsertError(arg_node, "PROGRAM_SYMBOLTABLE hasnt the right type." " It should be: " "N_symboltable");
+			}
+		}
+	} else {
+		CHKnotExist(PROGRAM_SYMBOLTABLE(arg_node), arg_node, "attribute PROGRAM_SYMBOLTABLE must be NULL");
+	}
+
+	/*
 	 * trav functions: to get all sons
 	 */
 	if (PROGRAM_DECLS(arg_node) != NULL) {
 		PROGRAM_DECLS(arg_node) = TRAVdo(PROGRAM_DECLS(arg_node), arg_info);
+	}
+	/*
+	 * trav functions: to get all sons
+	 */
+	if (PROGRAM_SYMBOLTABLE(arg_node) != NULL) {
+		PROGRAM_SYMBOLTABLE(arg_node) = TRAVdo(PROGRAM_SYMBOLTABLE(arg_node), arg_info);
 	} DBUG_RETURN(arg_node);
 }
 /** <!--******************************************************************-->
@@ -1363,6 +1382,121 @@ node           *CHKstmts(node * arg_node, info * arg_info) {
 	 */
 	if (STMTS_STMT(arg_node) != NULL) {
 		STMTS_STMT(arg_node) = TRAVdo(STMTS_STMT(arg_node), arg_info);
+	} DBUG_RETURN(arg_node);
+}
+/** <!--******************************************************************-->
+ *
+ * @fn CHKsymboltable
+ *
+ * @brief Check the node and its sons/attributes
+ *
+ * @param arg_node SymbolTable node to process
+ * @param arg_info pointer to info structure
+ *
+ * @return processed node
+ *
+ ***************************************************************************/
+node           *CHKsymboltable(node * arg_node, info * arg_info) {
+	DBUG_ENTER("CHKsymboltable");
+
+	/*
+	 * Son check: SYMBOLTABLE_ENTRY
+	 */
+	if ((FALSE) || (TRUE)) {
+		if (SYMBOLTABLE_ENTRY(arg_node) != NULL) {
+			if (!((FALSE) || (NODE_TYPE(SYMBOLTABLE_ENTRY(arg_node)) == N_symboltableentry))) {
+				CHKcorrectTypeInsertError(arg_node, "SYMBOLTABLE_ENTRY hasnt the right type." " It should be: " "N_symboltableentry");
+			}
+		}
+	} else {
+		CHKnotExist(SYMBOLTABLE_ENTRY(arg_node), arg_node, "attribute SYMBOLTABLE_ENTRY must be NULL");
+	}
+
+	/*
+	 * Attribute check: SYMBOLTABLE_PARENT
+	 */
+	if ((FALSE) || (TRUE)) {
+	} else {
+		CHKnotExist(SYMBOLTABLE_PARENT(arg_node), arg_node, "attribute SYMBOLTABLE_PARENT must be NULL");
+	}
+
+	/*
+	 * trav functions: to get all sons
+	 */
+	if (SYMBOLTABLE_ENTRY(arg_node) != NULL) {
+		SYMBOLTABLE_ENTRY(arg_node) = TRAVdo(SYMBOLTABLE_ENTRY(arg_node), arg_info);
+	} DBUG_RETURN(arg_node);
+}
+/** <!--******************************************************************-->
+ *
+ * @fn CHKsymboltableentry
+ *
+ * @brief Check the node and its sons/attributes
+ *
+ * @param arg_node SymbolTableEntry node to process
+ * @param arg_info pointer to info structure
+ *
+ * @return processed node
+ *
+ ***************************************************************************/
+node           *CHKsymboltableentry(node * arg_node, info * arg_info) {
+	DBUG_ENTER("CHKsymboltableentry");
+
+	/*
+	 * Son check: SYMBOLTABLEENTRY_NEXT
+	 */
+	if ((FALSE) || (TRUE)) {
+		if (SYMBOLTABLEENTRY_NEXT(arg_node) != NULL) {
+			if (!((FALSE) || (NODE_TYPE(SYMBOLTABLEENTRY_NEXT(arg_node)) == N_symboltableentry))) {
+				CHKcorrectTypeInsertError(arg_node, "SYMBOLTABLEENTRY_NEXT hasnt the right type." " It should be: " "N_symboltableentry");
+			}
+		}
+	} else {
+		CHKnotExist(SYMBOLTABLEENTRY_NEXT(arg_node), arg_node, "attribute SYMBOLTABLEENTRY_NEXT must be NULL");
+	}
+
+	/*
+	 * Son check: SYMBOLTABLEENTRY_TABLE
+	 */
+	if ((FALSE) || (TRUE)) {
+		if (SYMBOLTABLEENTRY_TABLE(arg_node) != NULL) {
+			if (!((FALSE) || (NODE_TYPE(SYMBOLTABLEENTRY_TABLE(arg_node)) == N_symboltable))) {
+				CHKcorrectTypeInsertError(arg_node, "SYMBOLTABLEENTRY_TABLE hasnt the right type." " It should be: " "N_symboltable");
+			}
+		}
+	} else {
+		CHKnotExist(SYMBOLTABLEENTRY_TABLE(arg_node), arg_node, "attribute SYMBOLTABLEENTRY_TABLE must be NULL");
+	}
+
+	/*
+	 * Attribute check: SYMBOLTABLEENTRY_LINK
+	 */
+	if ((FALSE) || (TRUE)) {
+		CHKexistAttribute(SYMBOLTABLEENTRY_LINK(arg_node), arg_node, "mandatory attribute SYMBOLTABLEENTRY_LINK is NULL");
+	} else {
+		CHKnotExist(SYMBOLTABLEENTRY_LINK(arg_node), arg_node, "attribute SYMBOLTABLEENTRY_LINK must be NULL");
+	}
+
+	/*
+	 * Attribute check: SYMBOLTABLEENTRY_NAME
+	 */
+	if ((FALSE) || (TRUE)) {
+		CHKexistAttribute(SYMBOLTABLEENTRY_NAME(arg_node), arg_node, "mandatory attribute SYMBOLTABLEENTRY_NAME is NULL");
+	} else {
+		CHKnotExist(SYMBOLTABLEENTRY_NAME(arg_node), arg_node, "attribute SYMBOLTABLEENTRY_NAME must be NULL");
+	}
+
+	/*
+	 * trav functions: to get all sons
+	 */
+	if (SYMBOLTABLEENTRY_NEXT(arg_node) != NULL) {
+		SYMBOLTABLEENTRY_NEXT(arg_node) = TRAVdo(SYMBOLTABLEENTRY_NEXT(arg_node), arg_info);
+	}
+	/*
+	 * trav functions: to get all sons
+	 */
+	if (SYMBOLTABLEENTRY_TABLE(arg_node) != NULL) {
+		SYMBOLTABLEENTRY_TABLE(arg_node) = TRAVdo(SYMBOLTABLEENTRY_TABLE(arg_node), arg_info);
 	} DBUG_RETURN(arg_node);
 }
 /** <!--******************************************************************-->
@@ -1624,6 +1758,8 @@ typedef enum {
 	CHK_monop_op,
 	CHK_num_value,
 	CHK_param_name,
+	CHK_symboltable_parent,
+	CHK_symboltableentry_name,
 	CHK_var_name,
 	CHK_vardecl_name,
 	CHK_varlet_name,

@@ -629,6 +629,7 @@ node           *FREEprogram(node * arg_node, info * arg_info) {
 	DBUG_ENTER("FREEprogram");
 	DBUG_PRINT("FREE", ("Processing node N_program at " F_PTR, arg_node));
 	PROGRAM_DECLS(arg_node) = FREETRAV(PROGRAM_DECLS(arg_node), arg_info);
+	PROGRAM_SYMBOLTABLE(arg_node) = FREETRAV(PROGRAM_SYMBOLTABLE(arg_node), arg_info);
 	result = NULL;
 	arg_node->sons.N_program = MEMfree(arg_node->sons.N_program);
 	arg_node->attribs.N_program = MEMfree(arg_node->attribs.N_program);
@@ -682,6 +683,58 @@ node           *FREEstmts(node * arg_node, info * arg_info) {
 	arg_node->sons.N_stmts = MEMfree(arg_node->sons.N_stmts);
 	arg_node->attribs.N_stmts = MEMfree(arg_node->attribs.N_stmts);
 	DBUG_PRINT("FREE", ("Processing node N_stmts at " F_PTR, arg_node));
+	arg_node = MEMfree(arg_node);
+	DBUG_RETURN(result);
+}
+/** <!--******************************************************************-->
+ *
+ * @fn FREEsymboltable
+ *
+ * @brief Frees the node and its sons/attributes
+ *
+ * @param arg_node SymbolTable node to process
+ * @param arg_info pointer to info structure
+ *
+ * @return processed node
+ *
+ ***************************************************************************/
+node           *FREEsymboltable(node * arg_node, info * arg_info) {
+	node           *result = NULL;
+	DBUG_ENTER("FREEsymboltable");
+	DBUG_PRINT("FREE", ("Processing node N_symboltable at " F_PTR, arg_node));
+	SYMBOLTABLE_PARENT(arg_node) = FREEattribLink(SYMBOLTABLE_PARENT(arg_node), arg_node);
+	SYMBOLTABLE_ENTRY(arg_node) = FREETRAV(SYMBOLTABLE_ENTRY(arg_node), arg_info);
+	result = NULL;
+	arg_node->sons.N_symboltable = MEMfree(arg_node->sons.N_symboltable);
+	arg_node->attribs.N_symboltable = MEMfree(arg_node->attribs.N_symboltable);
+	DBUG_PRINT("FREE", ("Processing node N_symboltable at " F_PTR, arg_node));
+	result = MEMfree(arg_node);
+	DBUG_RETURN(result);
+}
+/** <!--******************************************************************-->
+ *
+ * @fn FREEsymboltableentry
+ *
+ * @brief Frees the node and its sons/attributes
+ *
+ * @param arg_node SymbolTableEntry node to process
+ * @param arg_info pointer to info structure
+ *
+ * @return processed node
+ *
+ ***************************************************************************/
+node           *FREEsymboltableentry(node * arg_node, info * arg_info) {
+	node           *result = NULL;
+	DBUG_ENTER("FREEsymboltableentry");
+	DBUG_PRINT("FREE", ("Processing node N_symboltableentry at " F_PTR, arg_node));
+	SYMBOLTABLEENTRY_NEXT(arg_node) = FREECOND(SYMBOLTABLEENTRY_NEXT(arg_node), arg_info);
+	SYMBOLTABLEENTRY_NAME(arg_node) = FREEattribString(SYMBOLTABLEENTRY_NAME(arg_node), arg_node);
+	SYMBOLTABLEENTRY_LINK(arg_node) = FREEattribLink(SYMBOLTABLEENTRY_LINK(arg_node), arg_node);
+	SYMBOLTABLEENTRY_TABLE(arg_node) = FREETRAV(SYMBOLTABLEENTRY_TABLE(arg_node), arg_info);
+	result = SYMBOLTABLEENTRY_NEXT(arg_node);
+	arg_node->sons.N_symboltableentry = MEMfree(arg_node->sons.N_symboltableentry);
+	arg_node->attribs.N_symboltableentry = MEMfree(arg_node->attribs.N_symboltableentry);
+	DBUG_PRINT("FREE", ("Processing node N_symboltableentry at " F_PTR, arg_node));
 	arg_node = MEMfree(arg_node);
 	DBUG_RETURN(result);
 }

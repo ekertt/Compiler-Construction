@@ -40,6 +40,14 @@ TRAVsons(node * arg_node, info * arg_info)
 	switch (NODE_TYPE(arg_node)) {
 	case N_program:
 		TRAV(PROGRAM_DECLS(arg_node), arg_info);
+		TRAV(PROGRAM_SYMBOLTABLE(arg_node), arg_info);
+		break;
+	case N_symboltable:
+		TRAV(SYMBOLTABLE_ENTRY(arg_node), arg_info);
+		break;
+	case N_symboltableentry:
+		TRAV(SYMBOLTABLEENTRY_NEXT(arg_node), arg_info);
+		TRAV(SYMBOLTABLEENTRY_TABLE(arg_node), arg_info);
 		break;
 	case N_decls:
 		TRAV(DECLS_DECL(arg_node), arg_info);
@@ -163,7 +171,13 @@ TRAVnumSons(node * node)
 
 	switch (NODE_TYPE(node)) {
 	case N_program:
+		result = 2;
+		break;
+	case N_symboltable:
 		result = 1;
+		break;
+	case N_symboltableentry:
+		result = 2;
 		break;
 	case N_decls:
 		result = 2;
@@ -273,6 +287,30 @@ TRAVgetSon(int no, node * parent)
 		switch (no) {
 		case 0:
 			result = PROGRAM_DECLS(parent);
+			break;
+		case 1:
+			result = PROGRAM_SYMBOLTABLE(parent);
+			break;
+		default:
+			DBUG_ASSERT((FALSE), "index out of range!");
+			break;
+		} break;
+	case N_symboltable:
+		switch (no) {
+		case 0:
+			result = SYMBOLTABLE_ENTRY(parent);
+			break;
+		default:
+			DBUG_ASSERT((FALSE), "index out of range!");
+			break;
+		} break;
+	case N_symboltableentry:
+		switch (no) {
+		case 0:
+			result = SYMBOLTABLEENTRY_NEXT(parent);
+			break;
+		case 1:
+			result = SYMBOLTABLEENTRY_TABLE(parent);
 			break;
 		default:
 			DBUG_ASSERT((FALSE), "index out of range!");

@@ -579,11 +579,12 @@ node           *COPYparam(node * arg_node, info * arg_info) {
  *
  ***************************************************************************/
 node           *COPYprogram(node * arg_node, info * arg_info) {
-	node           *result = TBmakeProgram(NULL);
+	node           *result = TBmakeProgram(NULL, NULL);
 	DBUG_ENTER("COPYprogram");
 	LUTinsertIntoLutP(INFO_LUT(arg_info), arg_node, result);
 	/* Copy sons */
 	PROGRAM_DECLS(result) = COPYTRAV(PROGRAM_DECLS(arg_node), arg_info);
+	PROGRAM_SYMBOLTABLE(result) = COPYTRAV(PROGRAM_SYMBOLTABLE(arg_node), arg_info);
 	/* Return value */
 	DBUG_RETURN(result);
 }
@@ -627,6 +628,59 @@ node           *COPYstmts(node * arg_node, info * arg_info) {
 	/* Copy sons */
 	STMTS_STMT(result) = COPYTRAV(STMTS_STMT(arg_node), arg_info);
 	STMTS_NEXT(result) = COPYTRAV(STMTS_NEXT(arg_node), arg_info);
+	/* Return value */
+	DBUG_RETURN(result);
+}
+/** <!--******************************************************************-->
+ *
+ * @fn COPYsymboltable
+ *
+ * @brief Copies the node and its sons/attributes
+ *
+ * @param arg_node SymbolTable node to process
+ * @param arg_info pointer to info structure
+ *
+ * @return processed node
+ *
+ ***************************************************************************/
+node           *COPYsymboltable(node * arg_node, info * arg_info) {
+	node           *result = TBmakeSymboltable(NULL);
+	DBUG_ENTER("COPYsymboltable");
+	LUTinsertIntoLutP(INFO_LUT(arg_info), arg_node, result);
+	/* Copy attributes */
+	SYMBOLTABLE_PARENT(result) = LUTsearchInLutPp(INFO_LUT(arg_info), SYMBOLTABLE_PARENT(arg_node));
+	SYMBOLTABLE_RETURNTYPE(result) = SYMBOLTABLE_RETURNTYPE(arg_node);
+	/* Copy sons */
+	SYMBOLTABLE_ENTRY(result) = COPYTRAV(SYMBOLTABLE_ENTRY(arg_node), arg_info);
+	/* Return value */
+	DBUG_RETURN(result);
+}
+/** <!--******************************************************************-->
+ *
+ * @fn COPYsymboltableentry
+ *
+ * @brief Copies the node and its sons/attributes
+ *
+ * @param arg_node SymbolTableEntry node to process
+ * @param arg_info pointer to info structure
+ *
+ * @return processed node
+ *
+ ***************************************************************************/
+node           *COPYsymboltableentry(node * arg_node, info * arg_info) {
+	node           *result = TBmakeSymboltableentry(NULL, T_unknown, 0, 0, NULL, NULL, NULL);
+	DBUG_ENTER("COPYsymboltableentry");
+	LUTinsertIntoLutP(INFO_LUT(arg_info), arg_node, result);
+	/* Copy attributes */
+	SYMBOLTABLEENTRY_NAME(result) = STRcpy(SYMBOLTABLEENTRY_NAME(arg_node));
+	SYMBOLTABLEENTRY_TYPE(result) = SYMBOLTABLEENTRY_TYPE(arg_node);
+	SYMBOLTABLEENTRY_OFFSET(result) = SYMBOLTABLEENTRY_OFFSET(arg_node);
+	SYMBOLTABLEENTRY_DEPTH(result) = SYMBOLTABLEENTRY_DEPTH(arg_node);
+	SYMBOLTABLEENTRY_PARAM(result) = SYMBOLTABLEENTRY_PARAM(arg_node);
+	SYMBOLTABLEENTRY_LINK(result) = LUTsearchInLutPp(INFO_LUT(arg_info), SYMBOLTABLEENTRY_LINK(arg_node));
+	/* Copy sons */
+	SYMBOLTABLEENTRY_NEXT(result) = COPYTRAV(SYMBOLTABLEENTRY_NEXT(arg_node), arg_info);
+	SYMBOLTABLEENTRY_TABLE(result) = COPYTRAV(SYMBOLTABLEENTRY_TABLE(arg_node), arg_info);
 	/* Return value */
 	DBUG_RETURN(result);
 }

@@ -43,6 +43,8 @@ extern node    *COPYparam(node * arg_node, info * arg_info);
 extern node    *COPYprogram(node * arg_node, info * arg_info);
 extern node    *COPYreturn(node * arg_node, info * arg_info);
 extern node    *COPYstmts(node * arg_node, info * arg_info);
+extern node    *COPYsymboltable(node * arg_node, info * arg_info);
+extern node    *COPYsymboltableentry(node * arg_node, info * arg_info);
 extern node    *COPYvar(node * arg_node, info * arg_info);
 extern node    *COPYvardecl(node * arg_node, info * arg_info);
 extern node    *COPYvarlet(node * arg_node, info * arg_info);

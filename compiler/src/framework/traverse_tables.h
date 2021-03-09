@@ -17,7 +17,7 @@
 
 #include "types.h"
 
-typedef travfun_p travfunarray_t[31];
+typedef travfun_p travfunarray_t[33];
 
 typedef travfunarray_t travtables_t[8];
 

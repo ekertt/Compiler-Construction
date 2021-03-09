@@ -45,6 +45,8 @@ extern node    *CHKMparam(node * arg_node, info * arg_info);
 extern node    *CHKMprogram(node * arg_node, info * arg_info);
 extern node    *CHKMreturn(node * arg_node, info * arg_info);
 extern node    *CHKMstmts(node * arg_node, info * arg_info);
+extern node    *CHKMsymboltable(node * arg_node, info * arg_info);
+extern node    *CHKMsymboltableentry(node * arg_node, info * arg_info);
 extern node    *CHKMvar(node * arg_node, info * arg_info);
 extern node    *CHKMvardecl(node * arg_node, info * arg_info);
 extern node    *CHKMvarlet(node * arg_node, info * arg_info);

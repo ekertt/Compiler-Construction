@@ -106,6 +106,7 @@ struct SONS_N_PARAM {
 };
 struct SONS_N_PROGRAM {
 	node           *Decls;
+	node           *SymbolTable;
 };
 struct SONS_N_RETURN {
 	node           *Expr;
@@ -113,6 +114,13 @@ struct SONS_N_RETURN {
 struct SONS_N_STMTS {
 	node           *Stmt;
 	node           *Next;
+};
+struct SONS_N_SYMBOLTABLE {
+	node           *Entry;
+};
+struct SONS_N_SYMBOLTABLEENTRY {
+	node           *Next;
+	node           *Table;
 };
 struct SONS_N_VAR {
 	node           *Indices;
@@ -160,6 +168,8 @@ struct SONUNION {
 	struct SONS_N_PROGRAM *N_program;
 	struct SONS_N_RETURN *N_return;
 	struct SONS_N_STMTS *N_stmts;
+	struct SONS_N_SYMBOLTABLE *N_symboltable;
+	struct SONS_N_SYMBOLTABLEENTRY *N_symboltableentry;
 	struct SONS_N_VAR *N_var;
 	struct SONS_N_VARDECL *N_vardecl;
 	struct SONS_N_VARLET *N_varlet;
