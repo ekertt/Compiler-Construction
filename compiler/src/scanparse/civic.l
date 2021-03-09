@@ -33,7 +33,7 @@
 %%
 
 "("                        { FILTER( PARENTHESIS_L); }
-")"                        { FILTER( PARENTHESIS_L); }
+")"                        { FILTER( PARENTHESIS_R); }
 ","                        { FILTER( COMMA); }
 ";"                        { FILTER( SEMICOLON); }
 "{"                        { FILTER( CURLY_L); }

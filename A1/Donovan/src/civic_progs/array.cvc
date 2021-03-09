@@ -1,0 +1,199 @@
+# include <civic.h>
+
+/**
+*   Function that prints the int array 'vec' to stdout
+*   @param int[] 
+*/
+void printIntVec( int[ n] vec) {
+    
+    // Loop through all of the values
+    for ( int i = 0, n) {
+
+        printNewlines( 1);
+
+        // Print the value to stdout
+        printInt( vec[ i]);
+
+        printNewlines( 1);
+    }
+
+    printNewlines( 1);
+}
+
+/**
+*   Function that prints the float array 'vec' to stdout
+*   @param float[] 
+*/
+void printFloatVec( float[ n] vec) {
+
+    // Loop through all of the values
+    for ( int i = 0, n) {
+
+        printNewlines( 1);
+
+        // print the value
+        printFloat( vec[ i]);
+
+        printNewlines( 1);
+    }
+
+    printNewlines( 1);
+}
+
+/**
+*   Function that prints the int array 'mat' to stdout
+*   @param int[] 
+*/
+void printIntMat( int[ m, n] mat) {
+
+    printNewlines( 1);
+
+    // Loop through all of the 'm' values
+    for ( int m = 0, n) {
+
+        // Loop through all of the 'n' values
+        for ( int n = 0, n) {
+            
+            // print the value
+            printInt( mat[ m, n]);
+
+            printSpaces( 1);
+        }
+
+        printNewlines( 2);
+    }
+}
+
+/**
+*   Function that prints the float array 'mat' to stdout
+*   @param float[] 
+*/
+void printFloatMat( float[ m, n] mat) {
+
+    printNewlines( 1);
+
+    // Loop through all of the 'm' values
+    for ( int m = 0, n) {
+
+        // Loop through all of the 'n' values
+        for ( int n = 0, n) {
+        
+            // print the value
+            printFloat( mat[ m, n]);
+
+            printSpaces( 1);
+        }
+
+        printNewlines( 2);
+    }
+}
+
+/**
+*   Function that scans the int array 'vec' to stdin
+*   @param int[] 
+*/
+void scanIntVec( int[ n] vec) {
+
+    int input;
+
+    // Loop through all of the inputs 
+    for ( int i = 0, n) {
+
+        // Scan the value from stdin
+        // Ask the user for input
+        input = scanInt( );
+
+        vec[ i] = input;
+    }
+}
+
+/**
+*   Function that scans the float array 'vec' to stdin
+*   @param float[] 
+*/
+void scanFloatVec( float[ n] vec) {
+
+    float input;
+
+    // Loop through all of the inputs 
+    for ( int i = 0, n) {
+
+        // Scan the value from stdin
+        // Ask the user for input
+        input = scanFloat( );
+
+        vec[ i] = input;
+    }
+}
+
+/**
+*   Function that scans the int array 'mat' to stdin
+*   @param int[] 
+*/
+void scanIntMat( int[ m, n] mat) {
+
+    int input;
+
+    // Loop through all of the inputs 
+    for ( int m = 0, n) {
+
+        for ( int n = 0, n) {
+            
+            // Scan the value from stdin
+            // Ask the user for input
+            input = scanInt( );
+
+            mat[ m, n] = input;
+
+            printNewlines( 1);
+        }
+    }
+}
+
+/**
+*   Function that scans the float array 'mat' to stdin
+*   @param float[] 
+*/
+void scanFloatMat( float[ m, n] mat) {
+
+    float input;
+
+    // Loop through all of the inputs 
+    for ( int m = 0, n) {
+
+        for ( int n = 0, n) {
+            
+            // Scan the value from stdin
+            // Ask the user for input
+            input = scanFloat( );
+
+            mat[ m, n] = input;
+
+            printNewlines( 1);
+        }
+    }
+}
+
+/**
+*   Function that multiplies two floating point matrices a, b and stores result in c
+*   @param float[] 
+*   @param float[] 
+*   @param float[] 
+*/
+void matMul( float[ m, n] a, float[ o, p] b, float[ q, l] c) {
+
+    float multiplication;
+
+    // Loop through all of the inputs 
+    for ( int m = 0, n) {
+
+        for ( int n = 0, n) {
+            
+            // Calculate the matrice result
+            multiplication = a[ m, n] * b[ m, n];
+
+            // Assigne multiplication to c
+            c[ m, n] = multiplication;
+        }
+    }
+}

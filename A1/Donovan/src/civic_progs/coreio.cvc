@@ -1,0 +1,121 @@
+# include "core.cvc"
+# include <civic.h>
+
+/**
+*   Function that prints first 'n' Fibonacci numbers
+*   @param int 
+*   @return void
+*/
+void fibs( int n) {
+
+    // Stop the recursion at zero
+    if ( n == 0) {
+        
+        printInt( fib( n));
+
+        printNewlines( 1);
+
+        // Exit recursion
+        return; 
+    }
+
+    // Call fib Function
+    printInt( fib( n));
+
+    printSpaces( 1);
+
+    // Start recursion
+    fibs( n - 1);
+}
+
+
+/**
+*   Function that prints first 'n' prime numbers
+*   @param int 
+*   @return void
+*/
+void primes( int n) {
+    
+    // --- Nested isprime starts here ---
+
+    /**
+    *   Function that returns true if 'n' is a prime number otherwise it will return false
+    *   @param int 
+    *   @return int
+    */
+    bool isprime( int n) {
+
+    int startDivisor = 2; 
+    
+        /**
+        *   Function that recursively calculates the prime numbers for a given 'n'
+        *   @param int
+        *   @param int 
+        *   @return int
+        */
+        bool primeNumberCheckRecursive (int isItPrime, int currentDivisor) {
+            
+            // Base case 1 is prime
+            if ( isItPrime <= 1) {
+                
+                return false;
+            }
+
+            // Base case 2 is prime
+            if ( isItPrime == 2) {
+                
+                return true;
+            }
+
+            // Base case 
+            if ( isItPrime == currentDivisor) {
+                
+                return true;
+            }
+
+            // Base case remainder present
+            if ( n % currentDivisor == 0) {
+                
+                return false;
+            }
+
+            // Return bool
+            return primeNumberCheckRecursive( n, currentDivisor + 1);
+        }
+
+        return primeNumberCheckRecursive( n, startDivisor);
+    }
+
+    // --- Ends here ---
+
+    // Base case
+    if ( n <= 1) {
+        
+        printNewlines( 1);
+        
+        return;
+    }
+    
+    // Smallest possible prime
+    if ( n == 2) {
+            
+        printInt( n);
+
+        printNewlines( 1);
+
+        // Exit recursion
+        return;
+    }
+
+    // Check if prime
+    if ( isprime( n)) {
+        
+        // Print prime
+        printInt( n);
+
+        printSpaces( 1);
+    }
+
+    // Recursion
+    primes( n - 1);
+}

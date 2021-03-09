@@ -14,7 +14,7 @@
  * @{
  */
 
-
+#include <stdarg.h>
 #include "print.h"
 #include "traverse.h"
 #include "tree_basic.h"
@@ -28,9 +28,11 @@
  */
 struct INFO {
   bool firsterror;
+  size_t tabs;
 };
 
 #define INFO_FIRSTERROR(n) ((n)->firsterror)
+#define INFO_TABS(n) ((n)->tabs)
 
 static info *MakeInfo()
 {
@@ -39,10 +41,33 @@ static info *MakeInfo()
   result = MEMmalloc(sizeof(info));
 
   INFO_FIRSTERROR(result) = FALSE;
+  INFO_TABS(result) = 0;
   
   return result;
 }
 
+void tabs(info *info)
+{
+  if (info == NULL) 
+  {
+    return;
+  }
+  
+  for (size_t i=0; i < INFO_TABS(info); i++) 
+  {
+    printf("\t");
+  }
+}
+
+void print(info *info, char *fmt, ...)
+{
+  tabs(info);
+
+  va_list args;
+  va_start (args, fmt);
+  vprintf (fmt, args);
+  va_end (args);
+}
 
 static info *FreeInfo( info *info)
 {
@@ -121,7 +146,7 @@ PRTvardecl (node * arg_node, info * arg_info)
   DBUG_ENTER ("PRTvardecl");
   DBUG_PRINT ("PRT", ("PRTvardecl"));
 
-  // printTabs(arg_info);
+  tabs(arg_info);
 
   printf("%s %s", typeInString(VARDECL_TYPE(arg_node)), VARDECL_NAME(arg_node));
 
@@ -273,6 +298,8 @@ PRTexprstmt (node * arg_node, info * arg_info)
 {
   DBUG_ENTER ("PRTexprstmt");
   DBUG_PRINT ("PRT", ("PRTexprstmt"));
+
+  tabs(arg_info);
   
   EXPRSTMT_EXPR(arg_node) = TRAVdo(EXPRSTMT_EXPR(arg_node), arg_info);
 
@@ -300,7 +327,7 @@ PRTreturn (node * arg_node, info * arg_info)
   DBUG_ENTER ("PRTreturn");
   DBUG_PRINT ("PRT", ("PRTreturn"));
 
-  printf("%s", "return");
+  print(arg_info, "return");
 
   if(RETURN_EXPR(arg_node))
   {
@@ -414,9 +441,9 @@ PRTfundef (node * arg_node, info * arg_info)
 
   if (FUNDEF_ISEXTERN(arg_node))
   {
-    printf("%s", "extern");
+    printf("%s", "extern ");
   } else if (FUNDEF_ISEXPORT(arg_node)) {
-    printf("%s", "export");
+    printf("%s", "export ");
   }
 
   printf("%s %s", typeInString(FUNDEF_TYPE (arg_node)), FUNDEF_NAME (arg_node));
@@ -427,17 +454,18 @@ PRTfundef (node * arg_node, info * arg_info)
 
   if (FUNDEF_FUNBODY (arg_node) != NULL)
   {
-    printf("\n{\n");
-    // INFO_TABS(arg_info) += 1;
+    print(arg_info, "\n{\n");
+
+    INFO_TABS(arg_info) += 1;
 
     FUNDEF_FUNBODY(arg_node) = TRAVopt( FUNDEF_FUNBODY(arg_node), arg_info);
 
-    // INFO_TABS(arg_info) -= 1;
-    printf("}\n");
+    INFO_TABS(arg_info) -= 1;
+
+    print(arg_info, "}\n\n");
   } else {
     printf(";\n");
   }
-  
   
   DBUG_RETURN (arg_node);
 }
@@ -487,24 +515,31 @@ PRTifelse (node * arg_node, info * arg_info)
   DBUG_ENTER ("PRTifelse");
   DBUG_PRINT ("PRT", ("PRTifelse"));
 
-  printf("if ( ");
+  print(arg_info, "if ( ");
   IFELSE_COND( arg_node) = TRAVdo( IFELSE_COND( arg_node), arg_info);
   printf(" )\n");
-  printf("{\n");
-  // INFO_TABS ( arg_info) += 1;
-  IFELSE_THEN( arg_node) = TRAVopt( IFELSE_THEN( arg_node), arg_info);
-  // INFO_TABS ( arg_info) -= 1;
+  print(arg_info, "{\n");
 
-  printf("}\n");
+  INFO_TABS ( arg_info) += 1;
+
+  IFELSE_THEN( arg_node) = TRAVopt( IFELSE_THEN( arg_node), arg_info);
+
+  INFO_TABS ( arg_info) -= 1;
+
+  print(arg_info, "}\n");
 
   if (IFELSE_ELSE( arg_node))
   {
-    printf("else\n");
-    printf("{\n");
-    // INFO_TABS ( arg_info) += 1;
+    print(arg_info, "else\n");
+    print(arg_info, "{\n");
+    
+    INFO_TABS ( arg_info) += 1;
+
     IFELSE_ELSE( arg_node) = TRAVopt( IFELSE_ELSE( arg_node), arg_info);
-    // INFO_TABS ( arg_info) -= 1;
-    printf("}\n");
+    
+    INFO_TABS ( arg_info) -= 1;
+
+    print(arg_info, "}\n");
   }
 
   DBUG_RETURN (arg_node);
@@ -536,9 +571,11 @@ PRTwhile (node * arg_node, info * arg_info)
   printf( " )\n");
   printf("{\n");
 
-  // INFO_TABS ( arg_info)++;
+  INFO_TABS ( arg_info)++;
+  
   WHILE_BLOCK ( arg_node) = TRAVopt ( WHILE_BLOCK ( arg_node), arg_info);
-  // INFO_TABS ( arg_info)--;
+  
+  INFO_TABS ( arg_info)--;
 
   printf("}\n");
   
@@ -568,9 +605,11 @@ PRTdowhile (node * arg_node, info * arg_info)
   
   printf("{\n");
 
-  // INFO_TABS(arg_info)++;
+  INFO_TABS(arg_info)++;
+  
   DOWHILE_BLOCK( arg_node) = TRAVopt( DOWHILE_BLOCK( arg_node), arg_info);
-  // INFO_TABS(arg_info)--;
+  
+  INFO_TABS(arg_info)--;
 
   printf("}\n");
   
@@ -602,7 +641,7 @@ PRTfor (node * arg_node, info * arg_info)
   DBUG_ENTER ("PRTfor");
   DBUG_PRINT ("PRT", ("PRTfor"));
 
-  printf("for ( int %s = ", FOR_LOOPVAR(arg_node)); 
+  print(arg_info, "for ( int %s = ", FOR_LOOPVAR(arg_node)); 
 
   FOR_START( arg_node) = TRAVdo( FOR_START( arg_node), arg_info);
 
@@ -617,14 +656,15 @@ PRTfor (node * arg_node, info * arg_info)
 
   printf(")\n");
 
-  printf("{\n");
+  print(arg_info, "{\n");
 
-  // INFO_TABS(arg_info)++;
+  INFO_TABS(arg_info)++;
+  
   FOR_BLOCK( arg_node) = TRAVopt( FOR_BLOCK( arg_node), arg_info);
   
-  // INFO_TABS(arg_info)--;
+  INFO_TABS(arg_info)--;
 
-  printf("}\n");
+  print(arg_info, "}\n");
   
   DBUG_RETURN (arg_node);
 }
@@ -803,6 +843,8 @@ node *
 PRTassign (node * arg_node, info * arg_info)
 {
   DBUG_ENTER ("PRTassign");
+
+  tabs(arg_info);
 
   if (ASSIGN_LET( arg_node) != NULL) {
     ASSIGN_LET( arg_node) = TRAVdo( ASSIGN_LET( arg_node), arg_info);

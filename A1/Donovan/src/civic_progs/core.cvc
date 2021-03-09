@@ -1,0 +1,98 @@
+# include <civic.h>
+
+/**
+*   Function that calculates the greatest common dominator between a given 'a' and 'b'
+*   @param int 
+*   @return int
+*/
+int gcd( int a, int b) {
+    
+    // Base case
+    if ( b == 0) {
+        return a;
+    }
+
+    // Return int
+    return gcd( b, a % b);
+}
+
+/**
+*   Function that calculates the factorial for a given 'n'
+*   @param int 
+*   @return int
+*/
+int fac( int n) {
+    
+    // Base case
+    if ( n == 0) {
+        return 1;
+    }
+
+    // Return int
+    return n * fac( n - 1);
+}
+
+/**
+*   Function that calculates 'n'th fibonacci number in the list
+*   @param int 
+*   @return int
+*/
+int fib( int n) {
+    
+    // Base case
+    if ( n <= 1) {
+        return n;
+    }
+
+    // Return int
+    return fib( n - 1) + fib( n - 2);
+}
+
+/**
+*   Function that returns true if 'n' is a prime number otherwise it will return false
+*   @param int 
+*   @return int
+*/
+bool isprime( int n) {
+
+    int startDivisor = 2; 
+    
+    /**
+    *   Function that recursively calculates the prime numbers for a given 'n'
+    *   @param int
+    *   @param int 
+    *   @return int
+    */
+    bool primeNumberCheckRecursive (int isItPrime, int currentDivisor) {
+        
+        // Base case 1 is prime
+        if ( isItPrime <= 1) {
+            
+            return false;
+        }
+
+        // Base case 2 is prime
+        if ( isItPrime == 2) {
+            
+            return true;
+        }
+
+        // Base case 
+        if ( isItPrime == currentDivisor) {
+            
+            return true;
+        }
+
+        // Base case remainder present
+        if ( n % currentDivisor == 0) {
+            
+            return false;
+        }
+
+        // Return bool
+        return primeNumberCheckRecursive( n, currentDivisor + 1);
+    }
+
+    // Return bool
+    return primeNumberCheckRecursive( n, startDivisor);
+}
