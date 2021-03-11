@@ -30,7 +30,15 @@
 
             <traversal id="CA" name="Context Analysis" default="sons" include="context_analysis.h">
                 <travuser>
-                    <node name="BinOp" />
+                    <node name="Program" />
+                    <node name="GlobDef" />
+                    <node name="FunDef" />
+                    <node name="Param" />
+                    <node name="FunCall" />
+                    <node name="Exprs" />
+                    <node name="VarDecl" />
+                    <node name="VarLet" />
+                    <node name="Var" />
                 </travuser>
             </traversal>
         </general>
