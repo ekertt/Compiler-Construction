@@ -30,8 +30,6 @@ struct INFO {
 #define INFO_PARAMS(n)  ((n)->params)
 #define INFO_ARGUMENTS(n)  ((n)->arguments)
 
-
-
 /*
  * INFO functions
  */

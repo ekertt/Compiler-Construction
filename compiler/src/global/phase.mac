@@ -35,7 +35,7 @@ PHASE( ca,
 
 SUBPHASE( st, 
           "Symbol Table",
-          CAdoProcessSymbolTable, 
+          STdoProcessSymbolTable, 
           ALWAYS,
           ca)
       
