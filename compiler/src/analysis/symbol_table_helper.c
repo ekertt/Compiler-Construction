@@ -68,6 +68,7 @@ static info *FreeInfo(info *info)
 
 }
 
+// INSERT FIND AND LAST NEEDED
 void STdisplay(node *table, size_t tabs)
 {
     STprint(SYMBOLTABLE_ENTRY(table), tabs);
@@ -105,5 +106,5 @@ void STprint(node *list, size_t tabs)
     // if (SYMBOLTABLEENTRY_TABLE(list) != NULL)
     //     STdisplay(SYMBOLTABLEENTRY_TABLE(list), tabs + 1);
 
-    STprint(SYMBOLTABLEENTRY_NEXT(list), tabs);
+    STdisplay(SYMBOLTABLEENTRY_NEXT(list), tabs);
 }
