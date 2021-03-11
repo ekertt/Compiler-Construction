@@ -56,7 +56,7 @@ static int yyerror( char *errname);
 %left LT GT LET LE GE
 %left PLUS MINUS
 %left STAR SLASH PERCENT
-%left NEG
+%right NEG CAST
 
 %nonassoc ID
 %nonassoc PARENTHESIS_L
@@ -379,6 +379,9 @@ expr:
         {
           $$ = $1;
         }
+      | BRACKET_L type BRACKET_R expr %prec CAST {
+        $$ = TBmakeCast($2, $4);
+      }
       | ID PARENTHESIS_L PARENTHESIS_R 
         {
           $$ = TBmakeFuncall( STRcpy( $1), NULL, NULL);
