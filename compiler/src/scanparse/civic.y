@@ -1,6 +1,4 @@
 %{
-
-
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -33,12 +31,12 @@ static int yyerror( char *errname);
 
 %token PARENTHESIS_L PARENTHESIS_R BRACKET_L BRACKET_R COMMA SEMICOLON CURLY_L CURLY_R
 %token MINUS PLUS STAR SLASH PERCENT LE LT GE GT EQ NE OR AND NEG
-%token TRUEVAL FALSEVAL LET INT BOOL VOID
+%token TRUEVAL FALSEVAL LET INT BOOL VOID FLOAT
 %token EXTERN EXPORT RETURN
 %token IF ELSE DO WHILE FOR
 
 %token <cint> NUM
-%token <cflt> FLOAT
+%token <cflt> FLOATNUM
 %token <id> ID
 
 %type <node> intval floatval boolval constant expr
@@ -334,7 +332,7 @@ constant: floatval
           }
         ;
 
-floatval: FLOAT
+floatval: FLOATNUM
            {
              $$ = TBmakeFloat( $1);
            }
