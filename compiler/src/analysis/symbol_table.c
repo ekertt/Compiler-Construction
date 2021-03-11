@@ -8,10 +8,11 @@
  *
  *****************************************************************************/
 #include "symbol_table.h"
+#include "symbol_table_helper.h"
 
 #include "types.h"
 #include "tree_basic.h"
-#include "traverse.h"
+#include "traverse.h"fad
 #include "dbug.h"
 #include "print.h"
 #include "memory.h"
@@ -147,6 +148,16 @@ node *STvarlet(node * arg_node, info * arg_info)
 node *STdoProcessSymbolTable(node *syntaxtree) {
     DBUG_ENTER("STdoProcessSymbolTable");
     DBUG_PRINT ("ST", ("STdoProcessSymbolTable"));
+
+    info *info = MakeInfo(NULL);
+
+    TRAVpush(TR_st);
+    syntaxtree = TRAVdo(syntaxtree, info);
+    TRAVpop();
+
+    STprint(INFO_SYMBOL_TABLE((info), 0));
+
+    FreeInfo(info);
 
     DBUG_RETURN(syntaxtree);
 }
