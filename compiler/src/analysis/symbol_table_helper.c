@@ -65,17 +65,7 @@ static info *FreeInfo(info *info)
 
 *node STadd(node *table, node *entry)
 {
-    //TODO add STsearch variable by name
 
-    //TODO add same for fundef
-
-    node *link = SYMBOLTABLEENTRY_LINK(entry);
-
-    if (NODE_TYPE(link) == N_globdef && GLOBDEF)
-    {
-        /* code */
-    }
-    
 }
 
 void STdisplay(node *table, size_t tabs)
@@ -112,8 +102,8 @@ void STprint(node *list, size_t tabs)
     }
     printf(", Name: %s\n", SYMBOLTABLEENTRY_NAME(list));
 
-    if (SYMBOLTABLEENTRY_TABLE(list) != NULL)
-        STdisplay(SYMBOLTABLEENTRY_TABLE(list), tabs + 1);
+    // if (SYMBOLTABLEENTRY_TABLE(list) != NULL)
+    //     STdisplay(SYMBOLTABLEENTRY_TABLE(list), tabs + 1);
 
-    STdisplayEntry(SYMBOLTABLEENTRY_NEXT(list), tabs);
+    STprint(SYMBOLTABLEENTRY_NEXT(list), tabs);
 }
