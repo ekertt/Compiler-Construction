@@ -29,28 +29,15 @@ ENDPHASE( ld)
 
 /******************************************************************************/
 
+PHASE( ca,
+        "Context analysis",
+        ALWAYS)
 
-PHASE( pet,
-       "Perform example transformations",
-       ALWAYS)
-
-SUBPHASE( ri, 
-          "Rename identifiers",
-          RIdoRenameIdentifiers, 
+SUBPHASE( st, 
+          "Symbol Table",
+          CAdoProcessSymbolTable, 
           ALWAYS,
-          pet)      
-
-SUBPHASE( si, 
-          "Sum Integers",
-          SIdoSumInts, 
-          ALWAYS,
-          pet)   
-   
-SUBPHASE( os, 
-          "Optimise subtraction",
-          OSdoOptSub, 
-          ALWAYS,
-          pet)   
+          ca)
       
 ENDPHASE( pet) 
 

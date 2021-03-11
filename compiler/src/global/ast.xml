@@ -28,7 +28,7 @@
             <traversal id="FREE" name="Free Syntax Tree" default="user" include="free_node.h" />
             <traversal id="CHK" name="Check Syntax Tree" default="user" include="check.h" />
 
-            <traversal id="CA" name="Context Analysis" default="sons" include="context_analysis.h">
+            <traversal id="ST" name="Context Analysis (Symbol table)" default="sons" include="symbol_table.h">
                 <travuser>
                     <node name="Program" />
                     <node name="GlobDef" />

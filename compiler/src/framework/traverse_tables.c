@@ -18,7 +18,7 @@
 #include "copy_node.h"
 #include "free_node.h"
 #include "check.h"
-#include "context_analysis.h"
+#include "symbol_table.h"
 
 
 travtables_t	travtables = {
@@ -38,8 +38,8 @@ travtables_t	travtables = {
 	/* TR_chk */
 	,{&TRAVerror, &CHKprogram, &CHKsymboltable, &CHKsymboltableentry, &CHKdecls, &CHKexprs, &CHKarrexpr, &CHKids, &CHKexprstmt, &CHKreturn, &CHKfuncall, &CHKcast, &CHKfundefs, &CHKfundef, &CHKfunbody, &CHKifelse, &CHKwhile, &CHKdowhile, &CHKfor, &CHKglobdecl, &CHKglobdef, &CHKparam, &CHKvardecl, &CHKstmts, &CHKassign, &CHKbinop, &CHKmonop, &CHKvarlet, &CHKvar, &CHKnum, &CHKfloat, &CHKbool, &CHKerror}
 
-	/* TR_ca */
-	,{&TRAVerror, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &CAbinop, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons}
+	/* TR_st */
+	,{&TRAVerror, &STprogram, &TRAVsons, &TRAVsons, &TRAVsons, &STexprs, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &STfuncall, &TRAVsons, &TRAVsons, &STfundef, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &STglobdef, &STparam, &STvardecl, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &STvarlet, &STvar, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons}
 };
 
 preposttable_t	pretable = {
@@ -54,5 +54,5 @@ preposttable_t	posttable = {
 
 const char     *travnames[6] = {
 	"unknown"
-	,"prt", "copy", "free", "chk", "ca"
+	,"prt", "copy", "free", "chk", "st"
 };
