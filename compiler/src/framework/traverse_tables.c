@@ -18,9 +18,7 @@
 #include "copy_node.h"
 #include "free_node.h"
 #include "check.h"
-#include "rename_identifiers.h"
-#include "sum_ints.h"
-#include "opt_sub.h"
+#include "context_analysis.h"
 
 
 travtables_t	travtables = {
@@ -40,27 +38,21 @@ travtables_t	travtables = {
 	/* TR_chk */
 	,{&TRAVerror, &CHKprogram, &CHKsymboltable, &CHKsymboltableentry, &CHKdecls, &CHKexprs, &CHKarrexpr, &CHKids, &CHKexprstmt, &CHKreturn, &CHKfuncall, &CHKcast, &CHKfundefs, &CHKfundef, &CHKfunbody, &CHKifelse, &CHKwhile, &CHKdowhile, &CHKfor, &CHKglobdecl, &CHKglobdef, &CHKparam, &CHKvardecl, &CHKstmts, &CHKassign, &CHKbinop, &CHKmonop, &CHKvarlet, &CHKvar, &CHKnum, &CHKfloat, &CHKbool, &CHKerror}
 
-	/* TR_ri */
-	,{&TRAVerror, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &RIvarlet, &RIvar, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons}
-
-	/* TR_si */
-	,{&TRAVerror, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &SInum, &TRAVsons, &TRAVsons, &TRAVsons}
-
-	/* TR_os */
-	,{&TRAVerror, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &OSbinop, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons}
+	/* TR_ca */
+	,{&TRAVerror, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &CAbinop, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons}
 };
 
 preposttable_t	pretable = {
 	NULL
-	,NULL, NULL, NULL, NULL, NULL, NULL, NULL
+	,NULL, NULL, NULL, NULL, NULL
 };
 
 preposttable_t	posttable = {
 	NULL
-	,NULL, NULL, NULL, NULL, NULL, NULL, NULL
+	,NULL, NULL, NULL, NULL, NULL
 };
 
-const char     *travnames[8] = {
+const char     *travnames[6] = {
 	"unknown"
-	,"prt", "copy", "free", "chk", "ri", "si", "os"
+	,"prt", "copy", "free", "chk", "ca"
 };
