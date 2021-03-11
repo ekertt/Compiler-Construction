@@ -379,9 +379,10 @@ expr:
         {
           $$ = $1;
         }
-      | BRACKET_L type BRACKET_R expr %prec CAST {
+      | BRACKET_L type BRACKET_R expr %prec CAST 
+        {
         $$ = TBmakeCast($2, $4);
-      }
+        }
       | ID PARENTHESIS_L PARENTHESIS_R 
         {
           $$ = TBmakeFuncall( STRcpy( $1), NULL, NULL);
