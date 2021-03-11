@@ -52,6 +52,19 @@ static int yyerror( char *errname);
 
 %start program
 
+%left OR
+%left AND
+%left EQ NE
+%left LT GT LET LE GE
+%left PLUS MINUS
+%left STAR SLASH PERCENT
+%left NEG
+
+%nonassoc ID
+%nonassoc PARENTHESIS_L
+%nonassoc PARENTHESIS_R
+%nonassoc ELSE
+
 %%
 
 program: decls 
