@@ -36,7 +36,7 @@ static int yyerror( char *errname);
 %token IF ELSE DO WHILE FOR
 
 %token <cint> NUM
-%token <cflt> FLOATNUM
+%token <cflt> FLOATVAL
 %token <id> ID
 
 %type <node> intval floatval boolval constant expr
@@ -332,7 +332,7 @@ constant: floatval
           }
         ;
 
-floatval: FLOATNUM
+floatval: FLOATVAL
            {
              $$ = TBmakeFloat( $1);
            }
