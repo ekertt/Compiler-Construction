@@ -1,3 +1,12 @@
+/*****************************************************************************
+ *
+ * Module: symbol table
+ *
+ * Prefix: ST
+ *
+ * Description: this initializes the symbol table
+ *
+ *****************************************************************************/
 #include "symbol_table.h"
 
 #include "types.h"
@@ -40,6 +49,8 @@ static info *MakeInfo(node *parent)
 
   DBUG_ENTER( "MakeInfo");
 
+  result = (info *)MEMmalloc(sizeof(info));
+  
   DBUG_RETURN( result);
 }
 
@@ -52,11 +63,13 @@ static info *FreeInfo( info *info)
   DBUG_RETURN( info);
 }
 
-node *STprogram(node * arg_node, info * arg_info)
+node *STprogram(node * arg_node, info * arg_info)  
 {
     DBUG_ENTER("STprogram");
     DBUG_PRINT ("ST", ("STprogram"));
 
+    PROGRAM_SYMBOLTABLE ( arg_node) = INFO_SYMBOL_TABLE ( arg_info);
+    PROGRAM_DECLS( arg_node) = TRAVopt ( PROGRAM_DECLS( arg_node), arg_info);
 
     DBUG_RETURN( arg_node);
 }
@@ -65,6 +78,9 @@ node *STglobdef(node * arg_node, info * arg_info)
 {
     DBUG_ENTER("STglobdef");
     DBUG_PRINT ("ST", ("STglobdef"));
+
+    node *symboltable = INFO_SYMBOL_TABLE( arg_info);
+    node *symboltableentry = TBmakeSymboltableentry( STRcpy( GLOBDEF_NAME( arg_node)), GLOBDEF_TYPE( arg_node), 0, 0, arg_node, NULL, NULL);
 
     DBUG_RETURN( arg_node);
 }
