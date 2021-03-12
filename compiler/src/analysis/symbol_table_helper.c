@@ -65,7 +65,13 @@ static info *FreeInfo(info *info)
 
 *node STadd(node *table, node *entry)
 {
+    DBUG_ENTER('STadd');
+    // Check if symbol table entry exisits throw error if true
 
+    // Check last symbol table entries
+
+    // return symbol table entry
+    DBUG_RETURN(entry);
 }
 
 // INSERT FIND AND LAST NEEDED
