@@ -35,8 +35,8 @@ struct INFO
 node *STadd(node *table, node *entry)
 {
     DBUG_ENTER("STadd");
-    printf("Finding: %s\n", SYMBOLTABLEENTRY_NAME(entry));
-    printf("Table ok?: %d", table != NULL);
+    printf("Finding: %s ", SYMBOLTABLEENTRY_NAME(entry));
+    // printf("Table ok?: %d ", table != NULL);
 
     if (STfind(table, SYMBOLTABLEENTRY_NAME(entry)) != NULL)
     {
@@ -44,21 +44,21 @@ node *STadd(node *table, node *entry)
         return NULL;
     }
 
-    printf("¯\\_(ツ)_/¯");
-
     node *latestEntry = STlatestEntry(SYMBOLTABLE_ENTRY(table));
 
     if (latestEntry == NULL)
     {
-        return SYMBOLTABLE_ENTRY( table) = entry;
+        return SYMBOLTABLE_ENTRY(table) = entry;
     }
 
-    SYMBOLTABLEENTRY_NEXT( latestEntry) = entry;
-    DBUG_RETURN( entry);
+    SYMBOLTABLEENTRY_NEXT(latestEntry) = entry;
+    DBUG_RETURN(entry);
 }
 
-node *STfind(node *symbol_table, const char *name) {
-    if (SYMBOLTABLE_ENTRY(symbol_table) == NULL) {
+node *STfind(node *symbol_table, const char *name)
+{
+    if (SYMBOLTABLE_ENTRY(symbol_table) == NULL)
+    {
         return NULL;
     }
 
@@ -66,12 +66,15 @@ node *STfind(node *symbol_table, const char *name) {
     return STfindEntry(entry, name);
 }
 
-node *STfindEntry(node *entry, const char *name) {
-    if(STReq(SYMBOLTABLEENTRY_NAME(entry), name)) {
+node *STfindEntry(node *entry, const char *name)
+{
+    if (STReq(SYMBOLTABLEENTRY_NAME(entry), name))
+    {
         return entry;
     }
 
-    if (SYMBOLTABLEENTRY_NEXT(entry) != NULL) {
+    if (SYMBOLTABLEENTRY_NEXT(entry) != NULL)
+    {
         return STfindEntry(SYMBOLTABLEENTRY_NEXT(entry), name);
     }
 
@@ -82,16 +85,15 @@ node *STlatestEntry(node *linkedlist)
 {
     if (linkedlist == NULL)
     {
-        return NULL;
+        return linkedlist;
     }
-
 
     if (SYMBOLTABLEENTRY_NEXT(linkedlist) == NULL)
     {
         return linkedlist;
     }
 
-    return STlatestEntry(linkedlist);
+    return STlatestEntry(SYMBOLTABLEENTRY_NEXT(linkedlist));
 }
 
 // INSERT FIND AND LAST NEEDED
