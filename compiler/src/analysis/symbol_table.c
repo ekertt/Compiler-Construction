@@ -51,6 +51,8 @@ static info *MakeInfo(node *parent)
     DBUG_ENTER("MakeInfo");
 
     result = (info *)MEMmalloc(sizeof(info));
+    node *table = TBmakeSymboltable(NULL);
+    INFO_SYMBOL_TABLE( result) = table;
 
     DBUG_RETURN(result);
 }
@@ -82,13 +84,10 @@ node *STglobdef(node *arg_node, info *arg_info)
     DBUG_ENTER("STglobdef");
     DBUG_PRINT("ST", ("STglobdef"));
 
-
     node *symboltable = INFO_SYMBOL_TABLE(arg_info);
     node *symboltableentry = TBmakeSymboltableentry(STRcpy(GLOBDEF_NAME(arg_node)), GLOBDEF_TYPE(arg_node), 0, 0, arg_node, NULL, NULL);
 
-    if (!STadd(symboltable, symboltableentry)) {
-        CTIerrorLine ( NODE_LINE ( arg_node), "Multiple definition of `%s'\n", GLOBDEF_NAME ( arg_node));
-    }
+    STadd(symboltable, symboltableentry);
 
     DBUG_RETURN(arg_node);
 }

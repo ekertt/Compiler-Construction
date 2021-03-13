@@ -19,6 +19,7 @@
 #include "free.h"
 #include "str.h"
 #include "ctinfo.h"
+#include "string.h"
 
 /*
  * INFO structure
@@ -31,102 +32,61 @@ struct INFO
     int arguments;
 };
 
-/*
- * INFO macros
- */
-
-#define INFO_SYMBOL_TABLE(n) ((n)->table)
-#define INFO_PARAMS(n) ((n)->params)
-#define INFO_ARGUMENTS(n) ((n)->arguments)
-
-/*
- * INFO functions
- */
-
-static info *MakeInfo(node *parent)
-{
-    info *result;
-
-    DBUG_ENTER("MakeInfo");
-
-    result = (info *)MEMmalloc(sizeof(info));
-
-    DBUG_RETURN(result);
-}
-
-static info *FreeInfo(info *info)
-{
-    DBUG_ENTER("FreeInfo");
-
-    info = MEMfree(info);
-
-    DBUG_RETURN(info);
-}
-
-node *STcheckForDuplicates(node *list, const char *name)
-{
-
-    //TODO: check if this is enough
-    if (list == NULL)
-    {
-        return NULL;
-    }
-
-
-
-    // if (strcmp(SYMBOLTABLEENTRY_NAME(list), name) != 0)
-    // {
-    //     return STsearchVariableEntry(SYMBOLTABLEENTRY_NEXT(list), name, type);
-    // }
-
-    return list;
-}
-
 node *STadd(node *table, node *entry)
 {
     DBUG_ENTER("STadd");
+    printf("Finding: %s\n", SYMBOLTABLEENTRY_NAME(entry));
+    printf("Table ok?: %d", table != NULL);
 
-    // check for duplicates
-    if (STcheckForDuplicates(table, SYMBOLTABLEENTRY_NAME(entry)) != NULL)
+    if (STfind(table, SYMBOLTABLEENTRY_NAME(entry)) != NULL)
     {
         CTIerror("Redefinition of var %s at line %d", SYMBOLTABLEENTRY_NAME(entry), NODE_LINE(entry), NODE_COL(entry));
         return NULL;
     }
 
-    // TODO: fix the offset?
+    printf("¯\\_(ツ)_/¯");
 
     node *latestEntry = STlatestEntry(SYMBOLTABLE_ENTRY(table));
 
     if (latestEntry == NULL)
     {
-        return SYMBOLTABLE_ENTRY(table) = entry;
+        return SYMBOLTABLE_ENTRY( table) = entry;
     }
 
-    return SYMBOLTABLEENTRY_NEXT(table) = entry;
-    DBUG_RETURN(entry);
+    SYMBOLTABLEENTRY_NEXT( latestEntry) = entry;
+    DBUG_RETURN( entry);
 }
 
-node *STsearchLink(node *linkedlist, const char *name, type type)
-{
-    if (linkedlist == NULL)
-    {
-        return linkedlist;
-    }
-    else if (SYMBOLTABLEENTRY_NEXT(linkedlist) == NULL)
-    {
-        return linkedlist;
+node *STfind(node *symbol_table, const char *name) {
+    if (SYMBOLTABLE_ENTRY(symbol_table) == NULL) {
+        return NULL;
     }
 
-    return STlatestEntry(linkedlist);
+    node *entry = SYMBOLTABLE_ENTRY(symbol_table);
+    return STfindEntry(entry, name);
+}
+
+node *STfindEntry(node *entry, const char *name) {
+    if(STReq(SYMBOLTABLEENTRY_NAME(entry), name)) {
+        return entry;
+    }
+
+    if (SYMBOLTABLEENTRY_NEXT(entry) != NULL) {
+        return STfindEntry(SYMBOLTABLEENTRY_NEXT(entry), name);
+    }
+
+    return NULL;
 }
 
 node *STlatestEntry(node *linkedlist)
 {
     if (linkedlist == NULL)
     {
-        return linkedlist;
+        return NULL;
     }
-    else if (SYMBOLTABLEENTRY_NEXT(linkedlist) == NULL)
+
+
+    if (SYMBOLTABLEENTRY_NEXT(linkedlist) == NULL)
     {
         return linkedlist;
     }

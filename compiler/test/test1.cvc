@@ -1,2 +1,3 @@
-int test = 0;
-bool test = true;
+int t = 0;
+bool y = true;
+bool y = false;
