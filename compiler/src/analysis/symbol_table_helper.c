@@ -35,8 +35,6 @@ struct INFO
 node *STadd(node *table, node *entry)
 {
     DBUG_ENTER("STadd");
-    printf("Finding: %s ", SYMBOLTABLEENTRY_NAME(entry));
-    // printf("Table ok?: %d ", table != NULL);
 
     if (STfind(table, SYMBOLTABLEENTRY_NAME(entry)) != NULL)
     {
@@ -96,7 +94,6 @@ node *STlatestEntry(node *linkedlist)
     return STlatestEntry(SYMBOLTABLEENTRY_NEXT(linkedlist));
 }
 
-// INSERT FIND AND LAST NEEDED
 void STdisplay(node *table, size_t tabs)
 {
     STprint(SYMBOLTABLE_ENTRY(table), tabs);
@@ -136,5 +133,5 @@ void STprint(node *list, size_t tabs)
     // if (SYMBOLTABLEENTRY_TABLE(list) != NULL)
     //     STdisplay(SYMBOLTABLEENTRY_TABLE(list), tabs + 1);
 
-    STdisplay(SYMBOLTABLEENTRY_NEXT(list), tabs);
+    STprint(SYMBOLTABLEENTRY_NEXT(list), tabs);
 }

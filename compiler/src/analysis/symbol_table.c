@@ -19,8 +19,6 @@
 #include "free.h"
 #include "str.h"
 #include "ctinfo.h"
-#include "stdio.h"
-
 /*
  * INFO structure
  */
@@ -52,7 +50,7 @@ static info *MakeInfo(node *parent)
 
     result = (info *)MEMmalloc(sizeof(info));
     node *table = TBmakeSymboltable(NULL);
-    INFO_SYMBOL_TABLE( result) = table;
+    INFO_SYMBOL_TABLE(result) = table;
 
     DBUG_RETURN(result);
 }
@@ -73,8 +71,6 @@ node *STprogram(node *arg_node, info *arg_info)
 
     PROGRAM_SYMBOLTABLE(arg_node) = INFO_SYMBOL_TABLE(arg_info);
     PROGRAM_DECLS(arg_node) = TRAVopt(PROGRAM_DECLS(arg_node), arg_info);
-
-    INFO_SYMBOL_TABLE(arg_info) = TBmakeSymboltable(NULL);
 
     DBUG_RETURN(arg_node);
 }
