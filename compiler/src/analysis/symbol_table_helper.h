@@ -1,5 +1,5 @@
-#ifndef _SYMBOL_TABLE_H_
-#define _SYMBOL_TABLE_H_
+#ifndef _SYMBOL_TABLE_HELPER_H_
+#define _SYMBOL_TABLE_HELPER_H_
 #include "types.h"
 
 extern node *STdoProcessSymbolTable(node *syntaxtree);

@@ -63,15 +63,53 @@ static info *FreeInfo(info *info)
     DBUG_RETURN(info);
 }
 
-*node STadd(node *table, node *entry)
+node *STadd(node *table, node *entry)
 {
     DBUG_ENTER('STadd');
-    // Check if symbol table entry exisits throw error if true
 
-    // Check last symbol table entries
+    // check for duplicates
 
-    // return symbol table entry
+
+    // TODO: fix the offset?
+
+    node *latestEntry = STlatestEntry(SYMBOLTABLE_ENTRY( table));
+
+    if (latestEntry == NULL)
+    {
+        return SYMBOLTABLE_ENTRY( table) = entry;
+    }
+
+    return SYMBOLTABLEENTRY_NEXT( table) = entry;
     DBUG_RETURN(entry);
+    
+}
+
+node *STsearchLink(node *linkedlist, const char *name, type type)
+{
+    if (linkedlist == NULL)
+    {
+        return linkedlist;
+    }
+    else if (SYMBOLTABLEENTRY_NEXT( linkedlist) == NULL)
+    {
+        return linkedlist;
+    }
+
+    return STlatestEntry( linkedlist);
+}
+
+node *STlatestEntry(node *linkedlist)
+{
+    if (linkedlist == NULL)
+    {
+        return linkedlist;
+    }
+    else if (SYMBOLTABLEENTRY_NEXT( linkedlist) == NULL)
+    {
+        return linkedlist;
+    }
+
+    return STlatestEntry( linkedlist);
 }
 
 // INSERT FIND AND LAST NEEDED
@@ -90,6 +128,7 @@ void STprint(node *list, size_t tabs)
 
     // print the type
     printf("Type: ");
+    
     switch (SYMBOLTABLEENTRY_TYPE(list))
     {
     case T_void:
@@ -107,6 +146,7 @@ void STprint(node *list, size_t tabs)
     case T_unknown:
         DBUG_ASSERT(0, "unknown type detected!");
     }
+
     printf(", Name: %s\n", SYMBOLTABLEENTRY_NAME(list));
 
     // if (SYMBOLTABLEENTRY_TABLE(list) != NULL)

@@ -99,7 +99,7 @@ node *STdoProcessSymbolTable(node *syntaxtree)
     syntaxtree = TRAVdo(syntaxtree, info);
     TRAVpop();
 
-    STprint(INFO_SYMBOL_TABLE((info), 0));
+    // STprint(INFO_SYMBOL_TABLE((info), 0));
 
     FreeInfo(info);
 
