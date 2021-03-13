@@ -12,7 +12,7 @@
 
 #include "types.h"
 #include "tree_basic.h"
-#include "traverse.h" fad
+#include "traverse.h"
 #include "dbug.h"
 #include "print.h"
 #include "memory.h"
@@ -63,25 +63,47 @@ static info *FreeInfo(info *info)
     DBUG_RETURN(info);
 }
 
+node *STcheckForDuplicates(node *list, const char *name)
+{
+
+    //TODO: check if this is enough
+    if (list == NULL)
+    {
+        return NULL;
+    }
+
+
+
+    // if (strcmp(SYMBOLTABLEENTRY_NAME(list), name) != 0)
+    // {
+    //     return STsearchVariableEntry(SYMBOLTABLEENTRY_NEXT(list), name, type);
+    // }
+
+    return list;
+}
+
 node *STadd(node *table, node *entry)
 {
-    DBUG_ENTER('STadd');
+    DBUG_ENTER("STadd");
 
     // check for duplicates
-
+    if (STcheckForDuplicates(table, SYMBOLTABLEENTRY_NAME(entry)) != NULL)
+    {
+        CTIerror("Redefinition of var %s at line %d", SYMBOLTABLEENTRY_NAME(entry), NODE_LINE(entry), NODE_COL(entry));
+        return NULL;
+    }
 
     // TODO: fix the offset?
 
-    node *latestEntry = STlatestEntry(SYMBOLTABLE_ENTRY( table));
+    node *latestEntry = STlatestEntry(SYMBOLTABLE_ENTRY(table));
 
     if (latestEntry == NULL)
     {
-        return SYMBOLTABLE_ENTRY( table) = entry;
+        return SYMBOLTABLE_ENTRY(table) = entry;
     }
 
-    return SYMBOLTABLEENTRY_NEXT( table) = entry;
+    return SYMBOLTABLEENTRY_NEXT(table) = entry;
     DBUG_RETURN(entry);
-    
 }
 
 node *STsearchLink(node *linkedlist, const char *name, type type)
@@ -90,12 +112,12 @@ node *STsearchLink(node *linkedlist, const char *name, type type)
     {
         return linkedlist;
     }
-    else if (SYMBOLTABLEENTRY_NEXT( linkedlist) == NULL)
+    else if (SYMBOLTABLEENTRY_NEXT(linkedlist) == NULL)
     {
         return linkedlist;
     }
 
-    return STlatestEntry( linkedlist);
+    return STlatestEntry(linkedlist);
 }
 
 node *STlatestEntry(node *linkedlist)
@@ -104,12 +126,12 @@ node *STlatestEntry(node *linkedlist)
     {
         return linkedlist;
     }
-    else if (SYMBOLTABLEENTRY_NEXT( linkedlist) == NULL)
+    else if (SYMBOLTABLEENTRY_NEXT(linkedlist) == NULL)
     {
         return linkedlist;
     }
 
-    return STlatestEntry( linkedlist);
+    return STlatestEntry(linkedlist);
 }
 
 // INSERT FIND AND LAST NEEDED
@@ -128,7 +150,7 @@ void STprint(node *list, size_t tabs)
 
     // print the type
     printf("Type: ");
-    
+
     switch (SYMBOLTABLEENTRY_TYPE(list))
     {
     case T_void:

@@ -12,13 +12,14 @@
 
 #include "types.h"
 #include "tree_basic.h"
-#include "traverse.h" fad
+#include "traverse.h"
 #include "dbug.h"
 #include "print.h"
 #include "memory.h"
 #include "free.h"
 #include "str.h"
 #include "ctinfo.h"
+#include "stdio.h"
 
 /*
  * INFO structure
@@ -71,6 +72,8 @@ node *STprogram(node *arg_node, info *arg_info)
     PROGRAM_SYMBOLTABLE(arg_node) = INFO_SYMBOL_TABLE(arg_info);
     PROGRAM_DECLS(arg_node) = TRAVopt(PROGRAM_DECLS(arg_node), arg_info);
 
+    INFO_SYMBOL_TABLE(arg_info) = TBmakeSymboltable(NULL);
+
     DBUG_RETURN(arg_node);
 }
 
@@ -79,8 +82,13 @@ node *STglobdef(node *arg_node, info *arg_info)
     DBUG_ENTER("STglobdef");
     DBUG_PRINT("ST", ("STglobdef"));
 
+
     node *symboltable = INFO_SYMBOL_TABLE(arg_info);
     node *symboltableentry = TBmakeSymboltableentry(STRcpy(GLOBDEF_NAME(arg_node)), GLOBDEF_TYPE(arg_node), 0, 0, arg_node, NULL, NULL);
+
+    if (!STadd(symboltable, symboltableentry)) {
+        CTIerrorLine ( NODE_LINE ( arg_node), "Multiple definition of `%s'\n", GLOBDEF_NAME ( arg_node));
+    }
 
     DBUG_RETURN(arg_node);
 }
@@ -99,7 +107,7 @@ node *STdoProcessSymbolTable(node *syntaxtree)
     syntaxtree = TRAVdo(syntaxtree, info);
     TRAVpop();
 
-    // STprint(INFO_SYMBOL_TABLE((info), 0));
+    STdisplay(INFO_SYMBOL_TABLE(info), 0);
 
     FreeInfo(info);
 
