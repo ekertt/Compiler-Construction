@@ -154,6 +154,25 @@ node *STvardecl(node *arg_node, info *arg_info)
     DBUG_RETURN(arg_node);
 }
 
+node *STvarlet(node *arg_node, info *arg_info)
+{
+    DBUG_ENTER("STvarlet");
+    DBUG_PRINT("ST", ("STvarlet"));
+
+    node *variable = STfindInParent(INFO_SYMBOL_TABLE ( arg_info), VARLET_NAME ( arg_node));
+    
+    if (variable == NULL)
+    {
+        CTIerrorLine ( NODE_LINE ( arg_node), "`%s` is not declared in this scope\n", VARLET_NAME ( arg_node));
+    }
+    else
+    {
+        VARLET_DECL ( arg_node) = SYMBOLTABLEENTRY_LINK(variable);
+    }
+
+    DBUG_RETURN(arg_node);
+}
+
 /*
  * Traversal start function
  */

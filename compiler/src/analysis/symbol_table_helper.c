@@ -79,6 +79,25 @@ node *STfindEntry(node *entry, const char *name)
     return NULL;
 }
 
+node *STfindInParent(node *symboltable, const char *name)
+{
+    node *variable = STfind(symboltable, name);
+
+    if (variable != NULL)
+    {
+        return variable;
+    }
+
+    node *parent = SYMBOLTABLE_PARENT( symboltable);
+    
+    if (parent == NULL)
+    {
+        return NULL;
+    }
+
+    return STfindInParent(parent, name);
+}
+
 node *STlatestEntry(node *linkedlist)
 {
     if (linkedlist == NULL)
