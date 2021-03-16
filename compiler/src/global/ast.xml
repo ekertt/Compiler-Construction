@@ -35,10 +35,10 @@
                     <node name="FunDef" />
                     <node name="Param" />
                     <!-- <node name="FunCall" /> -->
-                    <!-- <node name="Exprs" /> -->
+                    <node name="Exprs" />
                     <node name="VarDecl" />
-                    <!-- <node name="VarLet" /> -->
-                    <!-- <node name="Var" /> -->
+                    <node name="VarLet" />
+                    <node name="Var" />
                 </travuser>
             </traversal>
         </general>

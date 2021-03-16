@@ -159,16 +159,48 @@ node *STvarlet(node *arg_node, info *arg_info)
     DBUG_ENTER("STvarlet");
     DBUG_PRINT("ST", ("STvarlet"));
 
-    node *variable = STfindInParent(INFO_SYMBOL_TABLE ( arg_info), VARLET_NAME ( arg_node));
-    
+    node *variable = STfindInParent(INFO_SYMBOL_TABLE(arg_info), VARLET_NAME(arg_node));
+
     if (variable == NULL)
     {
-        CTIerrorLine ( NODE_LINE ( arg_node), "`%s` is not declared in this scope\n", VARLET_NAME ( arg_node));
+        CTIerrorLine(NODE_LINE(arg_node), "`%s` is not declared in this scope\n", VARLET_NAME(arg_node));
     }
     else
     {
-        VARLET_DECL ( arg_node) = SYMBOLTABLEENTRY_LINK(variable);
+        VARLET_DECL(arg_node) = SYMBOLTABLEENTRY_LINK(variable);
     }
+
+    DBUG_RETURN(arg_node);
+}
+
+node *STvar(node *arg_node, info *arg_info)
+{
+    DBUG_ENTER("STvar");
+    DBUG_PRINT("ST", ("STvar"));
+
+    node *entry = STfindInParent(INFO_SYMBOL_TABLE(arg_info), VAR_NAME(arg_node));
+
+    if (entry != NULL)
+    {
+        VAR_DECL(arg_node) = SYMBOLTABLEENTRY_LINK(entry);
+    }
+    else
+    {
+        CTIerrorLine(NODE_LINE(arg_node), "`%s` was not declared in this scope\n", VAR_NAME(arg_node));
+    }
+
+    DBUG_RETURN(arg_node);
+}
+
+node *STexprs(node *arg_node, info *arg_info)
+{
+    DBUG_ENTER("STexprs");
+    DBUG_PRINT("ST", ("STexprs"));
+
+    INFO_ARGUMENTS(arg_info) += 1;
+
+    EXPRS_EXPR(arg_node) = TRAVdo(EXPRS_EXPR(arg_node), arg_info);
+    EXPRS_NEXT(arg_node) = TRAVopt(EXPRS_NEXT(arg_node), arg_info);
 
     DBUG_RETURN(arg_node);
 }
