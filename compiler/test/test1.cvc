@@ -1,7 +1,7 @@
 extern int d;
 int a = 10;
 
-export int main (  ) 
+export int main ( int a ) 
 {
         int y = 10;
         printInt(a);

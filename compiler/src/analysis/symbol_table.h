@@ -10,7 +10,7 @@ extern node *STfundef (node * arg_node, info * arg_info);
 extern node *STparam (node * arg_node, info * arg_info);
 // extern node *STfuncall (node * arg_node, info * arg_info);
 // extern node *STexprs (node * arg_node, info * arg_info);
-// extern node *STvardecl (node * arg_node, info * arg_info);
+extern node *STvardecl (node * arg_node, info * arg_info);
 // extern node *STvarlet (node * arg_node, info * arg_info);
 // extern node *STvar (node * arg_node, info * arg_info);
 
