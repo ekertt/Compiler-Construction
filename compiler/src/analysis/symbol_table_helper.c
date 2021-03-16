@@ -99,6 +99,26 @@ void STdisplay(node *table, size_t tabs)
     STprint(SYMBOLTABLE_ENTRY(table), tabs);
 }
 
+// size_t countParams(node *table)
+// {
+//     size_t counter = 0;
+
+//     node *symboltableentry = SYMBOLTABLE_ENTRY(table);
+
+//     for (; symboltableentry != NULL; symboltableentry = SYMBOLTABLEENTRY_NEXT(symboltableentry))
+//     {
+//         if (SYMBOLTABLEENTRY_PARAM(symboltableentry))
+//         {
+//             counter++;
+//         }
+//         else
+//         {
+//             continue;
+//         }
+//     }
+//     return counter;
+// }
+
 void STprint(node *list, size_t tabs)
 {
     if (list == NULL)
@@ -130,8 +150,8 @@ void STprint(node *list, size_t tabs)
 
     printf(", Name: %s\n", SYMBOLTABLEENTRY_NAME(list));
 
-    // if (SYMBOLTABLEENTRY_TABLE(list) != NULL)
-    //     STdisplay(SYMBOLTABLEENTRY_TABLE(list), tabs + 1);
+    if (SYMBOLTABLEENTRY_TABLE(list) != NULL)
+        STdisplay(SYMBOLTABLEENTRY_TABLE(list), tabs + 1);
 
     STprint(SYMBOLTABLEENTRY_NEXT(list), tabs);
 }

@@ -1,3 +1,14 @@
-int t = 0;
-bool y = true;
-bool z = true;
+extern int d;
+int a = 10;
+
+export int main (  ) 
+{
+        int y = 10;
+        printInt(a);
+        return 0;
+}
+
+int foo ( int a, float b, int c ) 
+{
+        return ( ( a + b) + c);
+}

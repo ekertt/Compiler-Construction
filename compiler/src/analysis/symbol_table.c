@@ -88,6 +88,52 @@ node *STglobdef(node *arg_node, info *arg_info)
     DBUG_RETURN(arg_node);
 }
 
+node *STfundef(node *arg_node, info *arg_info)
+{
+    DBUG_ENTER("STfundef");
+    DBUG_PRINT("ST", ("STfundef"));
+
+    node *symboltable = INFO_SYMBOL_TABLE(arg_info);
+
+    info *symbolTableInfo = MakeInfo(symboltable);
+    SYMBOLTABLE_RETURNTYPE(INFO_SYMBOL_TABLE(symbolTableInfo)) = FUNDEF_TYPE(arg_node);
+
+    node *symboltableentry = TBmakeSymboltableentry(STRcpy(FUNDEF_NAME(arg_node)), FUNDEF_TYPE(arg_node), 0, 0, arg_node, NULL, INFO_SYMBOL_TABLE(symbolTableInfo));
+
+    STadd(symboltable, symboltableentry);
+
+    FUNDEF_PARAMS(arg_node) = TRAVopt(FUNDEF_PARAMS(arg_node), symbolTableInfo);
+    FUNDEF_FUNBODY(arg_node) = TRAVopt(FUNDEF_FUNBODY(arg_node), symbolTableInfo);
+
+    FreeInfo(symbolTableInfo);
+
+    DBUG_RETURN(arg_node);
+}
+
+node *STparam(node *arg_node, info *arg_info)
+{
+    DBUG_ENTER("STparam");
+    DBUG_PRINT("ST", ("STparam"));
+
+    node *symboltable = INFO_SYMBOL_TABLE(arg_info);
+    node *symboltableentry = TBmakeSymboltableentry(STRcpy(PARAM_NAME(arg_node)), PARAM_TYPE(arg_node), 0, 1, arg_node, NULL, NULL);
+
+    STadd(symboltable, symboltableentry);
+
+    PARAM_NEXT(arg_node) = TRAVopt(PARAM_NEXT(arg_node), arg_info);
+
+    DBUG_RETURN(arg_node);
+}
+
+// node *STfuncall(node *arg_node, info *arg_info)
+// {
+//     DBUG_ENTER("STfuncall");
+//     DBUG_PRINT("ST", ("STfuncall"));
+
+
+//     DBUG_RETURN(arg_node);
+// }
+
 /*
  * Traversal start function
  */
