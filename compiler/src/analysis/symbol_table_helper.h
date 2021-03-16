@@ -11,6 +11,7 @@ node *STfindEntry(node *entry, const char *name);
 
 extern void STdisplay(node *table, size_t tabs);
 extern void STprint(node *list, size_t tabs);
+extern node *STfindInParent(node *symboltable, const char *name);
 // extern size_t countParams(node *table);
 // extern node *findFundef(node *table, const char *name);
 // extern node *STsearchFundefEntry(node *table, const char *name);
