@@ -117,7 +117,7 @@ node *TCfundef(node *arg_node, info *arg_info)
     DBUG_PRINT("TC", ("TCfundef"));
 
     node *symboltable = INFO_SYMBOL_TABLE(arg_info);
-    node *symboltableentry = STsearchFundef(symboltable, FUNDEF_NAME(arg_node));
+    node *symboltableentry = STfindFundef(symboltable, FUNDEF_NAME(arg_node));
 
     INFO_SYMBOL_TABLE(arg_info) = SYMBOLTABLEENTRY_TABLE(symboltableentry);
     FUNDEF_FUNBODY(arg_node) = TRAVopt(FUNDEF_FUNBODY(arg_node), arg_info);

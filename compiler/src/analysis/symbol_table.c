@@ -151,26 +151,6 @@ void STdisplay(node *table, size_t tabs)
     STprint(SYMBOLTABLE_ENTRY(table), tabs);
 }
 
-// size_t countParams(node *table)
-// {
-//     size_t counter = 0;
-
-//     node *symboltableentry = SYMBOLTABLE_ENTRY(table);
-
-//     for (; symboltableentry != NULL; symboltableentry = SYMBOLTABLEENTRY_NEXT(symboltableentry))
-//     {
-//         if (SYMBOLTABLEENTRY_PARAM(symboltableentry))
-//         {
-//             counter++;
-//         }
-//         else
-//         {
-//             continue;
-//         }
-//     }
-//     return counter;
-// }
-
 void STprint(node *list, size_t tabs)
 {
     if (list == NULL)
@@ -179,7 +159,6 @@ void STprint(node *list, size_t tabs)
     for (size_t i = 0; i < tabs; i++)
         printf("\t");
 
-    // print the type
     printf("Type: ");
 
     switch (SYMBOLTABLEENTRY_TYPE(list))
@@ -271,7 +250,7 @@ node *STparam(node *arg_node, info *arg_info)
     DBUG_RETURN(arg_node);
 }
 
-size_t STparams(node *table)
+size_t STcountParams(node *table)
 {
     size_t count = 0;
 
@@ -288,30 +267,30 @@ size_t STparams(node *table)
     return count;
 }
 
-node *STsearchFundef(node *table, const char *name)
+node *STfindFundef(node *table, const char *name)
 {
     node *entry = SYMBOLTABLE_ENTRY(table);
 
-    return STsearchFundefEntry(entry, name);
+    return STfindFundefEntry(entry, name);
 }
 
-node *STsearchFundefEntry(node *list, const char *name)
+node *STfindFundefEntry(node *list, const char *name)
 {
     if (list == NULL)
         return NULL;
 
     if (SYMBOLTABLEENTRY_TABLE(list) == NULL)
-        return STsearchFundefEntry(SYMBOLTABLEENTRY_NEXT(list), name);
+        return STfindFundefEntry(SYMBOLTABLEENTRY_NEXT(list), name);
 
     if (strcmp(SYMBOLTABLEENTRY_NAME(list), name) != 0)
-        return STsearchFundefEntry(SYMBOLTABLEENTRY_NEXT(list), name);
+        return STfindFundefEntry(SYMBOLTABLEENTRY_NEXT(list), name);
 
     return list;
 }
 
-node *STdeepSearchFundef(node *table, const char *name)
+node *STdeepFindFundef(node *table, const char *name)
 {
-    node *found = STsearchFundef(table, name);
+    node *found = STfindFundef(table, name);
 
     if (found != NULL)
         return found;
@@ -321,20 +300,20 @@ node *STdeepSearchFundef(node *table, const char *name)
     if (parent == NULL)
         return NULL;
 
-    return STdeepSearchFundef(parent, name);
+    return STdeepFindFundef(parent, name);
 }
 
-node *PSTfuncall(node *arg_node, info *arg_info)
+node *STfuncall(node *arg_node, info *arg_info)
 {
-    DBUG_ENTER("PSTfuncall");
-    DBUG_PRINT("PST", ("PSTfuncall"));
+    DBUG_ENTER("STfuncall");
+    DBUG_PRINT("ST", ("STfuncall"));
 
     node *table = INFO_SYMBOL_TABLE(arg_info);
 
-    node *entry = STdeepSearchFundef(table, FUNCALL_NAME(arg_node));
+    node *entry = STdeepFindFundef(table, FUNCALL_NAME(arg_node));
 
     if (entry == NULL)
-        CTIerrorLine(NODE_LINE(arg_node), "`%s()` was not declared in this scope\n", FUNCALL_NAME(arg_node));
+        CTIerrorLine(NODE_LINE(arg_node), "`%s()` was not declared in this scope.\n", FUNCALL_NAME(arg_node));
 
     else
     {
@@ -347,23 +326,23 @@ node *PSTfuncall(node *arg_node, info *arg_info)
 
             FUNCALL_ARGS(arg_node) = TRAVopt(FUNCALL_ARGS(arg_node), arg_info);
 
-            size_t params = STparams(SYMBOLTABLEENTRY_TABLE(entry));
+            size_t params = STcountParams(SYMBOLTABLEENTRY_TABLE(entry));
 
             if (INFO_ARGUMENTS(arg_info) < params)
             {
-                CTIerrorLine(NODE_LINE(arg_node), "Too few arguments to function\n");
+                CTIerrorLine(NODE_LINE(arg_node), "Not enough arguments for function.\n");
             }
             else if (INFO_ARGUMENTS(arg_info) > params)
             {
-                CTIerrorLine(NODE_LINE(arg_node), "Too many arguments to function\n");
+                CTIerrorLine(NODE_LINE(arg_node), "Not enough arguments for function.\n");
             }
 
             INFO_ARGUMENTS(arg_info) = backarguments;
         }
 
-        else if (STparams(SYMBOLTABLEENTRY_TABLE(entry)) > 0)
+        else if (STcountParams(SYMBOLTABLEENTRY_TABLE(entry)) > 0)
         {
-            CTIerrorLine(NODE_LINE(arg_node), "Too few arguments to function\n");
+            CTIerrorLine(NODE_LINE(arg_node), "Not enough arguments for function.\n");
         }
     }
 
