@@ -29,6 +29,7 @@ struct INFO
     type type;
     node *fundef;
     size_t returntype;
+    size_t offset;
 };
 
 /*
@@ -39,6 +40,7 @@ struct INFO
 #define INFO_TYPE(n) ((n)->type)
 #define INFO_FUN_DEF(n) ((n)->fundef)
 #define INFO_RETURN(n) ((n)->returntype)
+#define INFO_OFFSET(n) ((n)->offset)
 
 /*
  * INFO functions
@@ -55,6 +57,7 @@ static info *MakeInfo()
     INFO_TYPE(result) = T_unknown;
     INFO_FUN_DEF(result) = NULL;
     INFO_RETURN(result) = 0;
+    INFO_OFFSET(result) = 0;
 
     DBUG_RETURN(result);
 }
@@ -213,8 +216,8 @@ node *TCbinop(node *arg_node, info *arg_info)
 
 node *TCfuncall(node *arg_node, info *arg_info)
 {
-    DBUG_ENTER("TCbinop");
-    DBUG_PRINT("TC", ("TCbinop"));
+    DBUG_ENTER("TCfuncall");
+    DBUG_PRINT("TC", ("TCfuncall"));
 
     node *symboltableentry = STdeepFindFundef(INFO_SYMBOL_TABLE(arg_info), FUNCALL_NAME(arg_node));
     INFO_FUN_DEF(arg_info) = symboltableentry;
@@ -223,6 +226,56 @@ node *TCfuncall(node *arg_node, info *arg_info)
     INFO_TYPE(arg_info) = SYMBOLTABLEENTRY_TYPE(symboltableentry);
 
     DBUG_RETURN(arg_node);
+}
+
+node *TCexprs(node *arg_node, info *arg_info)
+{
+    DBUG_ENTER("TCexprs");
+    DBUG_PRINT("TC", ("TCexprs"));
+
+    EXPRS_EXPR(arg_node) = TRAVdo(EXPRS_EXPR(arg_node), arg_info);
+    INFO_OFFSET(arg_info) += 1;
+    EXPRS_NEXT(arg_node) = TRAVopt(EXPRS_NEXT(arg_node), arg_info);
+    INFO_OFFSET(arg_info) -= 1;
+
+    DBUG_RETURN(arg_node);
+}
+
+node *TCvar(node *arg_node, info *arg_info)
+{
+    DBUG_ENTER("TCvar");
+    DBUG_PRINT("TC", ("TCvar"));
+
+    node *node = STfindInParent(INFO_SYMBOL_TABLE(arg_info), VAR_NAME(arg_node));
+    INFO_TYPE(arg_info) = SYMBOLTABLEENTRY_TYPE(node);
+
+    DBUG_RETURN(arg_node);
+}
+
+node *TCcast(node *arg_node, info *arg_info)
+{
+    DBUG_ENTER("TCcast");
+    DBUG_PRINT("TC", ("TCcast"));
+
+    INFO_TYPE(arg_info) = CAST_TYPE(arg_node);
+
+    DBUG_RETURN(arg_node);
+}
+
+node *TCassign(node *arg_node, info *arg_info)
+{
+    DBUG_ENTER("TCassign");
+    DBUG_PRINT ("TC", ("TCassign"));
+
+    type type = INFO_TYPE ( arg_info);
+    node *varlet = ASSIGN_LET ( arg_node);
+    node *node = STfindInParent( INFO_SYMBOL_TABLE ( arg_info), VARLET_NAME( varlet));
+
+    INFO_TYPE ( arg_info) = SYMBOLTABLEENTRY_TYPE ( node);
+    ASSIGN_EXPR ( arg_node) = TRAVdo ( ASSIGN_EXPR ( arg_node), arg_info);
+    INFO_TYPE ( arg_info) = type;
+
+    DBUG_RETURN( arg_node);
 }
 
 node *TCdoTypeCheck(node *syntaxtree)
