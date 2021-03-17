@@ -182,10 +182,8 @@ node *TCbinop(node *arg_node, info *arg_info)
     case BO_sub:
     case BO_mul:
     case BO_div:
-
         if (leftype != righttype)
             CTIerrorLine(NODE_LINE(arg_node), "invalid conversion from \n");
-
         break;
     case BO_lt:
     case BO_le:
@@ -193,29 +191,36 @@ node *TCbinop(node *arg_node, info *arg_info)
     case BO_ge:
     case BO_eq:
     case BO_ne:
-
         if (leftype != righttype)
             CTIerrorLine(NODE_LINE(arg_node), "invalid conversion from \n");
-
         INFO_TYPE(arg_info) = T_bool;
-
         break;
     case BO_and:
     case BO_or:
-
         if (righttype != T_bool)
             CTIerrorLine(NODE_LINE(arg_node), "invalid conversion from\n");
-
         break;
     case BO_mod:
         if (righttype != T_int)
             CTIerrorLine(NODE_LINE(arg_node), "Modulo operator only supports interger types\n");
-
         break;
-
     case BO_unknown:
         break;
     }
+
+    DBUG_RETURN(arg_node);
+}
+
+node *TCfuncall(node *arg_node, info *arg_info)
+{
+    DBUG_ENTER("TCbinop");
+    DBUG_PRINT("TC", ("TCbinop"));
+
+    node *symboltableentry = STdeepFindFundef(INFO_SYMBOL_TABLE(arg_info), FUNCALL_NAME(arg_node));
+    INFO_FUN_DEF(arg_info) = symboltableentry;
+
+    FUNCALL_ARGS(arg_node) = TRAVopt(FUNCALL_ARGS(arg_node), arg_info);
+    INFO_TYPE(arg_info) = SYMBOLTABLEENTRY_TYPE(symboltableentry);
 
     DBUG_RETURN(arg_node);
 }

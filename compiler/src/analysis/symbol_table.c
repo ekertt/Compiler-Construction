@@ -75,6 +75,26 @@ node *STadd(node *table, node *entry)
         return NULL;
     }
 
+    if (STfindFundef(table, SYMBOLTABLEENTRY_NAME(entry)) != NULL)
+    {
+        return NULL;
+    }
+
+    node *link = SYMBOLTABLEENTRY_LINK(entry);
+
+    if (NODE_TYPE(link) == N_globdef && GLOBDEF_ISEXTERN(link))
+    {
+        SYMBOLTABLEENTRY_OFFSET(entry) = STcountGlobDecls(table);
+    }
+    else if (NODE_TYPE(link) == N_fundef && FUNDEF_ISEXTERN(link))
+    {
+        SYMBOLTABLEENTRY_OFFSET(entry) = STcountFunDecls(table);
+    }
+    else
+    {
+        SYMBOLTABLEENTRY_OFFSET(entry) = STcount(table);
+    }
+
     node *latestEntry = STlatestEntry(SYMBOLTABLE_ENTRY(table));
 
     if (latestEntry == NULL)
@@ -187,6 +207,125 @@ void STprint(node *list, size_t tabs)
     STprint(SYMBOLTABLEENTRY_NEXT(list), tabs);
 }
 
+size_t STcountParams(node *table)
+{
+    size_t count = 0;
+
+    node *entry = SYMBOLTABLE_ENTRY(table);
+
+    for (; entry != NULL; entry = SYMBOLTABLEENTRY_NEXT(entry))
+    {
+        if (!SYMBOLTABLEENTRY_PARAM(entry))
+            continue;
+
+        count++;
+    }
+
+    return count;
+}
+
+size_t STcountGlobDecls(node *table)
+{
+    size_t count = 0;
+
+    node *entry = SYMBOLTABLE_ENTRY(table);
+
+    for (; entry != NULL; entry = SYMBOLTABLEENTRY_NEXT(entry))
+    {
+        node *link = SYMBOLTABLEENTRY_LINK(entry);
+
+        if (NODE_TYPE(link) != N_globdef)
+            continue;
+
+        if (!GLOBDEF_ISEXTERN(link))
+            continue;
+
+        count++;
+    }
+
+    return count;
+}
+
+size_t STcountFunDecls(node *table)
+{
+    size_t count = 0;
+
+    node *entry = SYMBOLTABLE_ENTRY(table);
+
+    for (; entry != NULL; entry = SYMBOLTABLEENTRY_NEXT(entry))
+    {
+        node *link = SYMBOLTABLEENTRY_LINK(entry);
+
+        if (NODE_TYPE(link) != N_fundef)
+            continue;
+
+        if (!FUNDEF_ISEXTERN(link))
+            continue;
+
+        count++;
+    }
+
+    return count;
+}
+
+size_t STcount(node *table)
+{
+    size_t count = 0;
+
+    node *entry = SYMBOLTABLE_ENTRY(table);
+
+    for (; entry != NULL; entry = SYMBOLTABLEENTRY_NEXT(entry))
+    {
+        node *link = SYMBOLTABLEENTRY_LINK(entry);
+
+        if (NODE_TYPE(link) == N_fundef && (FUNDEF_ISEXTERN(link) || FUNDEF_ISEXPORT(link)))
+            continue;
+
+        if (NODE_TYPE(link) == N_globdef && GLOBDEF_ISEXTERN(link))
+            continue;
+
+        count++;
+    }
+
+    return count;
+}
+
+node *STfindFundef(node *table, const char *name)
+{
+    node *entry = SYMBOLTABLE_ENTRY(table);
+
+    return STfindFundefEntry(entry, name);
+}
+
+node *STfindFundefEntry(node *list, const char *name)
+{
+    if (list == NULL)
+        return NULL;
+
+    if (SYMBOLTABLEENTRY_TABLE(list) == NULL)
+        return STfindFundefEntry(SYMBOLTABLEENTRY_NEXT(list), name);
+
+    if (strcmp(SYMBOLTABLEENTRY_NAME(list), name) != 0)
+        return STfindFundefEntry(SYMBOLTABLEENTRY_NEXT(list), name);
+
+    return list;
+}
+
+node *STdeepFindFundef(node *table, const char *name)
+{
+    node *found = STfindFundef(table, name);
+
+    if (found != NULL)
+        return found;
+
+    node *parent = SYMBOLTABLE_PARENT(table);
+
+    if (parent == NULL)
+        return NULL;
+
+    return STdeepFindFundef(parent, name);
+}
+
 //Stop helper functions
 
 node *STprogram(node *arg_node, info *arg_info)
@@ -248,59 +387,6 @@ node *STparam(node *arg_node, info *arg_info)
     PARAM_NEXT(arg_node) = TRAVopt(PARAM_NEXT(arg_node), arg_info);
 
     DBUG_RETURN(arg_node);
-}
-
-size_t STcountParams(node *table)
-{
-    size_t count = 0;
-
-    node *entry = SYMBOLTABLE_ENTRY(table);
-
-    for (; entry != NULL; entry = SYMBOLTABLEENTRY_NEXT(entry))
-    {
-        if (!SYMBOLTABLEENTRY_PARAM(entry))
-            continue;
-
-        count++;
-    }
-
-    return count;
-}
-
-node *STfindFundef(node *table, const char *name)
-{
-    node *entry = SYMBOLTABLE_ENTRY(table);
-
-    return STfindFundefEntry(entry, name);
-}
-
-node *STfindFundefEntry(node *list, const char *name)
-{
-    if (list == NULL)
-        return NULL;
-
-    if (SYMBOLTABLEENTRY_TABLE(list) == NULL)
-        return STfindFundefEntry(SYMBOLTABLEENTRY_NEXT(list), name);
-
-    if (strcmp(SYMBOLTABLEENTRY_NAME(list), name) != 0)
-        return STfindFundefEntry(SYMBOLTABLEENTRY_NEXT(list), name);
-
-    return list;
-}
-
-node *STdeepFindFundef(node *table, const char *name)
-{
-    node *found = STfindFundef(table, name);
-
-    if (found != NULL)
-        return found;
-
-    node *parent = SYMBOLTABLE_PARENT(table);
-
-    if (parent == NULL)
-        return NULL;
-
-    return STdeepFindFundef(parent, name);
 }
 
 node *STfuncall(node *arg_node, info *arg_info)

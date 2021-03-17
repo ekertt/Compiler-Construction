@@ -5,7 +5,7 @@ int b = 324;
 export int main ( int a ) 
 {
         int y = 10;
-        printInt(a);
+        foo(1,2,3);
         return 0;
 }
 

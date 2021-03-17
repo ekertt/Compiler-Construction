@@ -11,6 +11,7 @@ extern node *TCreturn(node *arg_node, info *arg_info);
 extern node *TCexprstmt(node *arg_node, info *arg_info);
 // extern node *TCassign(node *arg_node, info *arg_info);
 extern node *TCbinop(node *arg_node, info *arg_info);
+extern node *TCfuncall(node *arg_node, info *arg_info);
 
 extern node *TCdoTypeCheck(node *syntaxtree);
 

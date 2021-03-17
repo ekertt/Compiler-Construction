@@ -34,7 +34,7 @@
                     <node name="GlobDef" />
                     <node name="FunDef" />
                     <node name="Param" />
-                    <!-- <node name="FunCall" /> -->
+                    <node name="FunCall" />
                     <node name="Exprs" />
                     <node name="VarDecl" />
                     <node name="VarLet" />
@@ -59,6 +59,7 @@
                     <node name="FunDef" />
                     <node name="Return" />
                     <node name="BinOp" />
+                    <node name="FunCall" />
                     <node name="Program" />
                 </travuser>
             </traversal>

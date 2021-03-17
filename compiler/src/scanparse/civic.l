@@ -87,7 +87,7 @@
                            }
 
 [0-9]*[.][0-9]+            { yylval.cflt = atof(yytext);  
-                             FILTER( FLOAT);
+                             FILTER( FLOATVAL);
                            }
 
 \n.*                       { global.line += 1;

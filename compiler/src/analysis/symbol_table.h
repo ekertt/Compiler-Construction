@@ -30,5 +30,8 @@ extern node *STfindFundef(node *table, const char *name);
 extern node *STfindFundefEntry(node *list, const char *name);
 extern node *STdeepFindFundef(node *table, const char *name);
 extern size_t STcountParams(node *table);
+extern size_t STcount(node *table);
+extern size_t STcountFunDecls(node *table);
+extern size_t STcountGlobDecls(node *table);
 
 #endif

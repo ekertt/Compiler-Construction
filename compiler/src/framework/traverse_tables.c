@@ -41,13 +41,13 @@ travtables_t	travtables = {
 	,{&TRAVerror, &CHKprogram, &CHKsymboltable, &CHKsymboltableentry, &CHKdecls, &CHKexprs, &CHKarrexpr, &CHKids, &CHKexprstmt, &CHKreturn, &CHKfuncall, &CHKcast, &CHKfundefs, &CHKfundef, &CHKfunbody, &CHKifelse, &CHKwhile, &CHKdowhile, &CHKfor, &CHKglobdecl, &CHKglobdef, &CHKparam, &CHKvardecl, &CHKstmts, &CHKassign, &CHKbinop, &CHKmonop, &CHKvarlet, &CHKvar, &CHKnum, &CHKfloat, &CHKbool, &CHKerror}
 
 	/* TR_st */
-	,{&TRAVerror, &STprogram, &TRAVsons, &TRAVsons, &TRAVsons, &STexprs, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &STfundef, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &STglobdef, &STparam, &STvardecl, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &STvarlet, &STvar, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons}
+	,{&TRAVerror, &STprogram, &TRAVsons, &TRAVsons, &TRAVsons, &STexprs, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &STfuncall, &TRAVsons, &TRAVsons, &STfundef, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &STglobdef, &STparam, &STvardecl, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &STvarlet, &STvar, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons}
 
 	/* TR_ci */
 	,{&TRAVerror, &CIprogram, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &CIfunbody, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &CIglobdef, &TRAVsons, &CIvardecl, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons}
 
 	/* TR_tc */
-	,{&TRAVerror, &TCprogram, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TCreturn, &TRAVsons, &TRAVsons, &TRAVsons, &TCfundef, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TCbinop, &TRAVsons, &TRAVsons, &TRAVsons, &TCnum, &TCfloat, &TCbool, &TRAVsons}
+	,{&TRAVerror, &TCprogram, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TCreturn, &TCfuncall, &TRAVsons, &TRAVsons, &TCfundef, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TCbinop, &TRAVsons, &TRAVsons, &TRAVsons, &TCnum, &TCfloat, &TCbool, &TRAVsons}
 };
 
 preposttable_t	pretable = {
