@@ -8,7 +8,7 @@
  *
  *****************************************************************************/
 #include "change_var_init_to_regular.h"
-#include "symbol_table_helper.h"
+#include "symbol_table.h"
 
 #include "types.h"
 #include "tree_basic.h"
@@ -102,20 +102,17 @@ node *CIglobdef(node *arg_node, info *arg_info)
     DBUG_ENTER("CIglobdef");
     DBUG_PRINT("CI", ("CIglobdef"));
 
-    node *expr = GLOBDEF_INIT(arg_node);
-
-    if (expr == NULL)
-    {
-        DBUG_RETURN(arg_node);
-    }
-
-    node *varlet = TBmakeVarlet(STRcpy(GLOBDEF_NAME(arg_node)), arg_node, NULL);
-    node *assign = TBmakeAssign(varlet, COPYdoCopy(expr));
-
-    FREEdoFreeTree(expr);
+    node *expression = GLOBDEF_INIT(arg_node);
     GLOBDEF_INIT(arg_node) = NULL;
 
-    helper(arg_node, arg_info, assign, 0);
+    if (expression)
+    {
+        node *newstatements = TBmakeAssign(TBmakeVarlet(STRcpy(GLOBDEF_NAME(arg_node)), arg_node, NULL), COPYdoCopy(expression));
+
+        FREEdoFreeTree(expression);
+
+        helper(arg_node, arg_info, newstatements, 0);
+    }
 
     DBUG_RETURN(arg_node);
 }
@@ -125,40 +122,40 @@ node *CIvardecl(node *arg_node, info *arg_info)
     DBUG_ENTER("CIvardecl");
     DBUG_PRINT("CI", ("CIvardecl"));
 
-    node *expr = VARDECL_INIT(arg_node);
+    node *expression = VARDECL_INIT(arg_node);
+    VARDECL_INIT(arg_node) = NULL;
 
-    if (expr == NULL)
+    if (expression)
+    {
+        node *newstatements = TBmakeAssign(TBmakeVarlet(STRcpy(VARDECL_NAME(arg_node)), arg_node, NULL), COPYdoCopy(expression));
+
+        FREEdoFreeTree(expression);
+
+        helper(arg_node, arg_info, newstatements, 1);
+
+        VARDECL_NEXT(arg_node) = TRAVopt(VARDECL_NEXT(arg_node), arg_info);
+    }
+    else
     {
         VARDECL_NEXT(arg_node) = TRAVopt(VARDECL_NEXT(arg_node), arg_info);
         DBUG_RETURN(arg_node);
     }
-
-    node *varlet = TBmakeVarlet(STRcpy(VARDECL_NAME(arg_node)), arg_node, NULL);
-    node *assign = TBmakeAssign(varlet, COPYdoCopy(expr));
-
-    FREEdoFreeTree(expr);
-    VARDECL_INIT(arg_node) = NULL;
-
-    helper(arg_node, arg_info, assign, 1);
-
-    VARDECL_NEXT(arg_node) = TRAVopt(VARDECL_NEXT(arg_node), arg_info);
 
     DBUG_RETURN(arg_node);
 }
 
 void helper(node *arg_node, info *arg_info, node *assign, int type)
 {
-
-    if (INFO_BEGIN(arg_info) == NULL)
-    {
-        INFO_BEGIN(arg_info) = TBmakeStmts(assign, NULL);
-        INFO_END(arg_info) = INFO_BEGIN(arg_info);
-    }
-    else
+    if (INFO_BEGIN(arg_info) != NULL)
     {
         node *node = TBmakeStmts(assign, NULL);
         STMTS_NEXT(INFO_END(arg_info)) = node;
         INFO_END(arg_info) = node;
+    }
+    else
+    {
+        INFO_BEGIN(arg_info) = TBmakeStmts(assign, NULL);
+        INFO_END(arg_info) = INFO_BEGIN(arg_info);
     }
 }
 
