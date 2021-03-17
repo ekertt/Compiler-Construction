@@ -50,7 +50,11 @@ static info *MakeInfo(node *parent)
 
     result = (info *)MEMmalloc(sizeof(info));
     node *table = TBmakeSymboltable(NULL);
+    SYMBOLTABLE_RETURNTYPE ( table) = T_unknown;
+    SYMBOLTABLE_PARENT ( table) = parent;
     INFO_SYMBOL_TABLE(result) = table;
+    INFO_PARAMS ( result) = 0;
+    INFO_ARGUMENTS ( result) = 0;
 
     DBUG_RETURN(result);
 }
@@ -71,7 +75,6 @@ node *STadd(node *table, node *entry)
 
     if (STfind(table, SYMBOLTABLEENTRY_NAME(entry)) != NULL)
     {
-        CTIerror("Redefinition of var %s at line %d", SYMBOLTABLEENTRY_NAME(entry), NODE_LINE(entry), NODE_COL(entry));
         return NULL;
     }
 
@@ -106,30 +109,31 @@ node *STadd(node *table, node *entry)
     DBUG_RETURN(entry);
 }
 
-node *STfind(node *symbol_table, const char *name)
+node *STfind(node *symboltable, const char *name)
 {
-    if (SYMBOLTABLE_ENTRY(symbol_table) == NULL)
+    node *symboltableentry = SYMBOLTABLE_ENTRY(symboltable);
+
+    return STfindEntry(symboltableentry, name);
+}
+
+node *STfindEntry(node *symboltableentry, const char *name)
+{
+    if (symboltableentry == NULL) 
     {
         return NULL;
     }
 
-    node *entry = SYMBOLTABLE_ENTRY(symbol_table);
-    return STfindEntry(entry, name);
-}
-
-node *STfindEntry(node *entry, const char *name)
-{
-    if (STReq(SYMBOLTABLEENTRY_NAME(entry), name))
+    if (SYMBOLTABLEENTRY_NEXT(symboltableentry) != NULL)
     {
-        return entry;
+        return STfindEntry(SYMBOLTABLEENTRY_NEXT(symboltableentry), name);
+    }
+    
+    if (STReq(SYMBOLTABLEENTRY_NAME(symboltableentry), name))
+    {
+        return symboltableentry;
     }
 
-    if (SYMBOLTABLEENTRY_NEXT(entry) != NULL)
-    {
-        return STfindEntry(SYMBOLTABLEENTRY_NEXT(entry), name);
-    }
-
-    return NULL;
+    return symboltableentry;
 }
 
 node *STfindInParent(node *symboltable, const char *name)
@@ -300,13 +304,19 @@ node *STfindFundef(node *table, const char *name)
 node *STfindFundefEntry(node *list, const char *name)
 {
     if (list == NULL)
+    {
         return NULL;
+    }
 
     if (SYMBOLTABLEENTRY_TABLE(list) == NULL)
+   {
         return STfindFundefEntry(SYMBOLTABLEENTRY_NEXT(list), name);
+   } 
 
     if (strcmp(SYMBOLTABLEENTRY_NAME(list), name) != 0)
+    {
         return STfindFundefEntry(SYMBOLTABLEENTRY_NEXT(list), name);
+    }
 
     return list;
 }

@@ -44,12 +44,6 @@ SUBPHASE( ci,
           CIdoChangeVariableInitToRegular, 
           ALWAYS,
           ca)
-
-SUBPHASE( tc, 
-          "Type checking (Milestone 7)",
-          TCdoTypeCheck, 
-          ALWAYS,
-          ca)
       
 ENDPHASE( pet) 
 
