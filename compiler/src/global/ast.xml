@@ -41,6 +41,15 @@
                     <node name="Var" />
                 </travuser>
             </traversal>
+
+            <traversal id="CI" name="Turning Variable Initialisations into Regular Assignments (Milestone 6)" default="sons" include="change_var_init_to_regular.h">
+                <travuser>
+                    <node name="Program" />
+                    <node name="VarDecl" />
+                    <node name="GlobDef" />
+                    <node name="FunBody" />
+                </travuser>
+            </traversal>
         </general>
     </phases>
     <nodesets>

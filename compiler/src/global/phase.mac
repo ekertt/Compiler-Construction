@@ -38,6 +38,12 @@ SUBPHASE( st,
           STdoProcessSymbolTable, 
           ALWAYS,
           ca)
+
+SUBPHASE( ci, 
+          "Turning Variable Initialisations into Regular Assignments",
+          CIdoChangeVariableInitToRegular, 
+          ALWAYS,
+          ca)
       
 ENDPHASE( pet) 
 

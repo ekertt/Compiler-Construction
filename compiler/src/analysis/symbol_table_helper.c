@@ -21,17 +21,6 @@
 #include "ctinfo.h"
 #include "string.h"
 
-/*
- * INFO structure
- */
-
-struct INFO
-{
-    node *table;
-    int params;
-    int arguments;
-};
-
 node *STadd(node *table, node *entry)
 {
     DBUG_ENTER("STadd");

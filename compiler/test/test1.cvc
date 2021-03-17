@@ -1,5 +1,6 @@
 extern int d;
 int a = 10;
+int b = 324;
 
 export int main ( int a ) 
 {
