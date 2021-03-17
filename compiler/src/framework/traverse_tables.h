@@ -19,13 +19,13 @@
 
 typedef travfun_p travfunarray_t[33];
 
-typedef travfunarray_t travtables_t[7];
+typedef travfunarray_t travtables_t[8];
 
-typedef travfun_p preposttable_t[7];
+typedef travfun_p preposttable_t[8];
 
 extern travtables_t travtables;
 extern preposttable_t pretable;
 extern preposttable_t posttable;
-extern const char *travnames[7];
+extern const char *travnames[8];
 
 #endif				/* _SAC_TRAVERSE_TABLES_H_ */

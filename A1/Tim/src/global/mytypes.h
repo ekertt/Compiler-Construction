@@ -14,5 +14,6 @@ typedef enum { BO_add, BO_sub, BO_mul, BO_div, BO_mod,
                BO_lt, BO_le, BO_gt, BO_ge, BO_eq, BO_ne, 
                BO_and, BO_or, BO_unknown } binop;
 
+typedef enum {T_int, T_bool,T_void, T_float, T_unknown} type;
 
 #endif  /* _CIVCC_MYTYPES_H_ */

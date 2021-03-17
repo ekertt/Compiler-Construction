@@ -34,14 +34,20 @@ PHASE( ca,
         ALWAYS)
 
 SUBPHASE( st, 
-          "Symbol Table",
+          "Symbol Table (Milestone 5)",
           STdoProcessSymbolTable, 
           ALWAYS,
           ca)
 
 SUBPHASE( ci, 
-          "Turning Variable Initialisations into Regular Assignments",
+          "Turning Variable Initialisations into Regular Assignments (Milestone 6)",
           CIdoChangeVariableInitToRegular, 
+          ALWAYS,
+          ca)
+
+SUBPHASE( tc, 
+          "Type checking (Milestone 7)",
+          TCdoTypeCheck, 
           ALWAYS,
           ca)
       
