@@ -153,6 +153,16 @@ node *TCreturn(node *arg_node, info *arg_info)
     DBUG_RETURN(arg_node);
 }
 
+node *TCexprstmt(node *arg_node, info *arg_info)
+{
+    DBUG_ENTER("TCexprstmt");
+    DBUG_PRINT("TC", ("TCexprstmt"));
+
+    EXPRSTMT_EXPR(arg_node) = TRAVopt(EXPRSTMT_EXPR(arg_node), arg_info);
+
+    DBUG_RETURN(arg_node);
+}
+
 node *TCdoTypeCheck(node *syntaxtree)
 {
     DBUG_ENTER("TCdoTypeCheck");
