@@ -17,6 +17,7 @@
 #include "memory.h"
 #include "free.h"
 #include "str.h"
+#include "string.h"
 #include "ctinfo.h"
 /*
  * INFO structure
@@ -270,13 +271,104 @@ node *STparam(node *arg_node, info *arg_info)
     DBUG_RETURN(arg_node);
 }
 
-// node *STfuncall(node *arg_node, info *arg_info)
-// {
-//     DBUG_ENTER("STfuncall");
-//     DBUG_PRINT("ST", ("STfuncall"));
+size_t STparams(node *table)
+{
+    size_t count = 0;
 
-//     DBUG_RETURN(arg_node);
-// }
+    node *entry = SYMBOLTABLE_ENTRY(table);
+
+    for (; entry != NULL; entry = SYMBOLTABLEENTRY_NEXT(entry))
+    {
+        if (!SYMBOLTABLEENTRY_PARAM(entry))
+            continue;
+
+        count++;
+    }
+
+    return count;
+}
+
+node *STsearchFundef(node *table, const char *name)
+{
+    node *entry = SYMBOLTABLE_ENTRY(table);
+
+    return STsearchFundefEntry(entry, name);
+}
+
+node *STsearchFundefEntry(node *list, const char *name)
+{
+    if (list == NULL)
+        return NULL;
+
+    if (SYMBOLTABLEENTRY_TABLE(list) == NULL)
+        return STsearchFundefEntry(SYMBOLTABLEENTRY_NEXT(list), name);
+
+    if (strcmp(SYMBOLTABLEENTRY_NAME(list), name) != 0)
+        return STsearchFundefEntry(SYMBOLTABLEENTRY_NEXT(list), name);
+
+    return list;
+}
+
+node *STdeepSearchFundef(node *table, const char *name)
+{
+    node *found = STsearchFundef(table, name);
+
+    if (found != NULL)
+        return found;
+
+    node *parent = SYMBOLTABLE_PARENT(table);
+
+    if (parent == NULL)
+        return NULL;
+
+    return STdeepSearchFundef(parent, name);
+}
+
+node *PSTfuncall(node *arg_node, info *arg_info)
+{
+    DBUG_ENTER("PSTfuncall");
+    DBUG_PRINT("PST", ("PSTfuncall"));
+
+    node *table = INFO_SYMBOL_TABLE(arg_info);
+
+    node *entry = STdeepSearchFundef(table, FUNCALL_NAME(arg_node));
+
+    if (entry == NULL)
+        CTIerrorLine(NODE_LINE(arg_node), "`%s()` was not declared in this scope\n", FUNCALL_NAME(arg_node));
+
+    else
+    {
+        FUNCALL_DECL(arg_node) = SYMBOLTABLEENTRY_LINK(entry);
+
+        if (FUNCALL_ARGS(arg_node) != NULL)
+        {
+            int backarguments = INFO_ARGUMENTS(arg_info);
+            INFO_ARGUMENTS(arg_info) = 0;
+
+            FUNCALL_ARGS(arg_node) = TRAVopt(FUNCALL_ARGS(arg_node), arg_info);
+
+            size_t params = STparams(SYMBOLTABLEENTRY_TABLE(entry));
+
+            if (INFO_ARGUMENTS(arg_info) < params)
+            {
+                CTIerrorLine(NODE_LINE(arg_node), "Too few arguments to function\n");
+            }
+            else if (INFO_ARGUMENTS(arg_info) > params)
+            {
+                CTIerrorLine(NODE_LINE(arg_node), "Too many arguments to function\n");
+            }
+
+            INFO_ARGUMENTS(arg_info) = backarguments;
+        }
+
+        else if (STparams(SYMBOLTABLEENTRY_TABLE(entry)) > 0)
+        {
+            CTIerrorLine(NODE_LINE(arg_node), "Too few arguments to function\n");
+        }
+    }
+
+    DBUG_RETURN(arg_node);
+}
 
 node *STvardecl(node *arg_node, info *arg_info)
 {

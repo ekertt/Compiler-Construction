@@ -8,7 +8,7 @@ extern node *STprogram(node *arg_node, info *arg_info);
 extern node *STglobdef(node *arg_node, info *arg_info);
 extern node *STfundef(node *arg_node, info *arg_info);
 extern node *STparam(node *arg_node, info *arg_info);
-// extern node *STfuncall (node * arg_node, info * arg_info);
+extern node *STfuncall (node * arg_node, info * arg_info);
 extern node *STexprs(node *arg_node, info *arg_info);
 extern node *STvardecl(node *arg_node, info *arg_info);
 extern node *STvarlet(node *arg_node, info *arg_info);
@@ -25,5 +25,10 @@ node *STfindEntry(node *entry, const char *name);
 extern void STdisplay(node *table, size_t tabs);
 extern void STprint(node *list, size_t tabs);
 extern node *STfindInParent(node *symboltable, const char *name);
+
+extern node *STsearchFundef(node *table, const char *name);
+extern node *STsearchFundefEntry(node *list, const char *name);
+extern node *STdeepSearchFundef(node *table, const char *name);
+extern size_t STparams(node *table);
 
 #endif

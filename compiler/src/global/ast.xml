@@ -53,9 +53,12 @@
 
             <traversal id="TC" name="Type Checking (Milestone 7)" default="sons" include="type_check.h">
                 <travuser>
-                    <node name="Int" />
+                    <node name="Num" />
                     <node name="Bool" />
                     <node name="Float" />
+                    <node name="FunDef" />
+                    <node name="Return" />
+                    <node name="Program" />
                 </travuser>
             </traversal>
         </general>
