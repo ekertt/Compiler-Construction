@@ -163,6 +163,63 @@ node *TCexprstmt(node *arg_node, info *arg_info)
     DBUG_RETURN(arg_node);
 }
 
+node *TCbinop(node *arg_node, info *arg_info)
+{
+    DBUG_ENTER("TCbinop");
+    DBUG_PRINT("TC", ("TCbinop"));
+
+    BINOP_LEFT(arg_node) = TRAVopt(BINOP_LEFT(arg_node), arg_info);
+
+    type leftype = INFO_TYPE(arg_info);
+
+    BINOP_RIGHT(arg_node) = TRAVopt(BINOP_RIGHT(arg_node), arg_info);
+
+    type righttype = INFO_TYPE(arg_info);
+
+    switch (BINOP_OP(arg_node))
+    {
+    case BO_add:
+    case BO_sub:
+    case BO_mul:
+    case BO_div:
+
+        if (leftype != righttype)
+            CTIerrorLine(NODE_LINE(arg_node), "invalid conversion from \n");
+
+        break;
+    case BO_lt:
+    case BO_le:
+    case BO_gt:
+    case BO_ge:
+    case BO_eq:
+    case BO_ne:
+
+        if (leftype != righttype)
+            CTIerrorLine(NODE_LINE(arg_node), "invalid conversion from \n");
+
+        INFO_TYPE(arg_info) = T_bool;
+
+        break;
+    case BO_and:
+    case BO_or:
+
+        if (righttype != T_bool)
+            CTIerrorLine(NODE_LINE(arg_node), "invalid conversion from\n");
+
+        break;
+    case BO_mod:
+        if (righttype != T_int)
+            CTIerrorLine(NODE_LINE(arg_node), "Modulo operator only supports interger types\n");
+
+        break;
+
+    case BO_unknown:
+        break;
+    }
+
+    DBUG_RETURN(arg_node);
+}
+
 node *TCdoTypeCheck(node *syntaxtree)
 {
     DBUG_ENTER("TCdoTypeCheck");

@@ -58,6 +58,7 @@
                     <node name="Float" />
                     <node name="FunDef" />
                     <node name="Return" />
+                    <node name="BinOp" />
                     <node name="Program" />
                 </travuser>
             </traversal>
