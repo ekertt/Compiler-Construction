@@ -79,7 +79,7 @@ print       = print.o
 
 codegen     = gen_byte_code.o
 
-analysis    = symbol_table.o symbol_table_helper.o change_var_init_to_regular.o
+analysis    = symbol_table.o change_var_init_to_regular.o
 
 ###############################################################################
 #

@@ -135,11 +135,6 @@ node *CIvardecl(node *arg_node, info *arg_info)
 
         VARDECL_NEXT(arg_node) = TRAVopt(VARDECL_NEXT(arg_node), arg_info);
     }
-    else
-    {
-        VARDECL_NEXT(arg_node) = TRAVopt(VARDECL_NEXT(arg_node), arg_info);
-        DBUG_RETURN(arg_node);
-    }
 
     DBUG_RETURN(arg_node);
 }
