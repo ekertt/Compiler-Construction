@@ -8,6 +8,7 @@ extern node *TCfloat(node *arg_node, info *arg_info);
 extern node *TCbool(node *arg_node, info *arg_info);
 extern node *TCfundef(node *arg_node, info *arg_info);
 extern node *TCreturn(node *arg_node, info *arg_info);
+extern node *TCexprstmt(node *arg_node, info *arg_info);
 
 extern node *TCdoTypeCheck(node *syntaxtree);
 
