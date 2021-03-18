@@ -35,7 +35,6 @@ struct INFO
  */
 
 #define INFO_SYMBOL_TABLE(n) ((n)->table)
-#define INFO_PARAMS(n) ((n)->params)
 #define INFO_ARGUMENTS(n) ((n)->arguments)
 
 /*
@@ -53,7 +52,6 @@ static info *MakeInfo(node *parent)
     SYMBOLTABLE_RETURNTYPE ( table) = T_unknown;
     SYMBOLTABLE_PARENT ( table) = parent;
     INFO_SYMBOL_TABLE(result) = table;
-    INFO_PARAMS ( result) = 0;
     INFO_ARGUMENTS ( result) = 0;
 
     DBUG_RETURN(result);
@@ -183,10 +181,14 @@ void STdisplay(node *table, size_t tabs)
 void STprint(node *list, size_t tabs)
 {
     if (list == NULL)
+    {
         return;
+    }
 
     for (size_t i = 0; i < tabs; i++)
+    {
         printf("\t");
+    }
 
     printf("Type: ");
 
@@ -211,7 +213,9 @@ void STprint(node *list, size_t tabs)
     printf(", Name: %s\n", SYMBOLTABLEENTRY_NAME(list));
 
     if (SYMBOLTABLEENTRY_TABLE(list) != NULL)
+    {
         STdisplay(SYMBOLTABLEENTRY_TABLE(list), tabs + 1);
+    }
 
     STprint(SYMBOLTABLEENTRY_NEXT(list), tabs);
 }
@@ -245,10 +249,14 @@ size_t STcountGlobDecls(node *table)
         node *link = SYMBOLTABLEENTRY_LINK(entry);
 
         if (NODE_TYPE(link) != N_globdef)
+        {
             continue;
+        }
 
         if (!GLOBDEF_ISEXTERN(link))
+        {
             continue;
+        }
 
         count++;
     }
@@ -267,10 +275,14 @@ size_t STcountFunDecls(node *table)
         node *link = SYMBOLTABLEENTRY_LINK(entry);
 
         if (NODE_TYPE(link) != N_fundef)
+        {
             continue;
+        }
 
         if (!FUNDEF_ISEXTERN(link))
+        {
             continue;
+        }
 
         count++;
     }
@@ -289,10 +301,14 @@ size_t STcount(node *table)
         node *link = SYMBOLTABLEENTRY_LINK(entry);
 
         if (NODE_TYPE(link) == N_fundef && (FUNDEF_ISEXTERN(link) || FUNDEF_ISEXPORT(link)))
+        {
             continue;
+        }
 
         if (NODE_TYPE(link) == N_globdef && GLOBDEF_ISEXTERN(link))
+        {
             continue;
+        }
 
         count++;
     }
@@ -332,12 +348,16 @@ node *STdeepFindFundef(node *table, const char *name)
     node *found = STfindFundef(table, name);
 
     if (found != NULL)
+    {
         return found;
+    }
 
     node *parent = SYMBOLTABLE_PARENT(table);
 
     if (parent == NULL)
+    {
         return NULL;
+    }
 
     return STdeepFindFundef(parent, name);
 }
@@ -416,7 +436,9 @@ node *STfuncall(node *arg_node, info *arg_info)
     node *entry = STdeepFindFundef(table, FUNCALL_NAME(arg_node));
 
     if (entry == NULL)
+    {
         CTIerrorLine(NODE_LINE(arg_node), "`%s()` was not declared in this scope.\n", FUNCALL_NAME(arg_node));
+    }
     else
     {
         FUNCALL_DECL(arg_node) = SYMBOLTABLEENTRY_LINK(entry);
