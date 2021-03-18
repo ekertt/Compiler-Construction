@@ -47,7 +47,7 @@ travtables_t	travtables = {
 	,{&TRAVerror, &CIprogram, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &CIfunbody, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &CIglobdef, &TRAVsons, &CIvardecl, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons}
 
 	/* TR_tc */
-	,{&TRAVerror, &TCprogram, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TCreturn, &TCfuncall, &TRAVsons, &TRAVsons, &TCfundef, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TCbinop, &TRAVsons, &TRAVsons, &TRAVsons, &TCnum, &TCfloat, &TCbool, &TRAVsons}
+	,{&TRAVerror, &TCprogram, &TRAVsons, &TRAVsons, &TRAVsons, &TCexprs, &TRAVsons, &TRAVsons, &TRAVsons, &TCreturn, &TCfuncall, &TCcast, &TRAVsons, &TCfundef, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TCbinop, &TRAVsons, &TRAVsons, &TCvar, &TCnum, &TCfloat, &TCbool, &TRAVsons}
 };
 
 preposttable_t	pretable = {

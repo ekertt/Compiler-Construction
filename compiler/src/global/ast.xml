@@ -60,6 +60,9 @@
                     <node name="Return" />
                     <node name="BinOp" />
                     <node name="FunCall" />
+                    <node name="Exprs" />
+                    <node name="Var" />
+                    <node name="Cast" />
                     <node name="Program" />
                 </travuser>
             </traversal>
