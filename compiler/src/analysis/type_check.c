@@ -186,12 +186,12 @@ node *TCbinop(node *arg_node, info *arg_info)
 
     if ((op == BO_sub || op == BO_div || op == BO_lt || op == BO_le || op == BO_gt || op == BO_ge) && righttype == T_bool)
     {
-        CTIerror("TypeError");
+        CTIerror("TypeError\n");
     }
 
     if (op == BO_mod && righttype != T_int)
     {
-        CTIerror("TypeError");
+        CTIerror("TypeError\n");
     }
 
     DBUG_RETURN(arg_node);
