@@ -113,24 +113,29 @@ node *STfind(node *symboltable, const char *name)
 {
     node *symboltableentry = SYMBOLTABLE_ENTRY(symboltable);
 
-    return STfindEntry(symboltableentry, name);
+    return STfindEntry(symboltableentry, name, T_unknown);
 }
 
-node *STfindEntry(node *symboltableentry, const char *name)
+node *STfindEntry(node *symboltableentry, const char *name, type type)
 {
     if (symboltableentry == NULL) 
     {
         return NULL;
     }
 
-    if (SYMBOLTABLEENTRY_NEXT(symboltableentry) != NULL)
+    if (SYMBOLTABLEENTRY_TABLE(symboltableentry) != NULL)
     {
-        return STfindEntry(SYMBOLTABLEENTRY_NEXT(symboltableentry), name);
+        return STfindEntry(SYMBOLTABLEENTRY_NEXT(symboltableentry), name, type);
     }
     
-    if (STReq(SYMBOLTABLEENTRY_NAME(symboltableentry), name))
+    if (strcmp(SYMBOLTABLEENTRY_NAME ( symboltableentry), name) != 0)
     {
-        return symboltableentry;
+        return STfindEntry(SYMBOLTABLEENTRY_NEXT(symboltableentry), name, type);
+    }
+
+    if (SYMBOLTABLEENTRY_TYPE( symboltableentry) != type && T_unknown != type)
+    {
+        return STfindEntry(SYMBOLTABLEENTRY_NEXT(symboltableentry), name, type);
     }
 
     return symboltableentry;
@@ -214,13 +219,14 @@ void STprint(node *list, size_t tabs)
 size_t STcountParams(node *table)
 {
     size_t count = 0;
-
     node *entry = SYMBOLTABLE_ENTRY(table);
 
     for (; entry != NULL; entry = SYMBOLTABLEENTRY_NEXT(entry))
     {
         if (!SYMBOLTABLEENTRY_PARAM(entry))
+        {
             continue;
+        }
 
         count++;
     }
@@ -301,24 +307,24 @@ node *STfindFundef(node *table, const char *name)
     return STfindFundefEntry(entry, name);
 }
 
-node *STfindFundefEntry(node *list, const char *name)
+node *STfindFundefEntry(node *symboltableentry, const char *name)
 {
-    if (list == NULL)
+    if (symboltableentry == NULL)
     {
         return NULL;
     }
 
-    if (SYMBOLTABLEENTRY_TABLE(list) == NULL)
-   {
-        return STfindFundefEntry(SYMBOLTABLEENTRY_NEXT(list), name);
-   } 
-
-    if (strcmp(SYMBOLTABLEENTRY_NAME(list), name) != 0)
+    if (SYMBOLTABLEENTRY_TABLE(symboltableentry) == NULL)
     {
-        return STfindFundefEntry(SYMBOLTABLEENTRY_NEXT(list), name);
+        return STfindFundefEntry(SYMBOLTABLEENTRY_NEXT(symboltableentry), name);
+    } 
+
+    if (strcmp(SYMBOLTABLEENTRY_NAME(symboltableentry), name) != 0)
+    {
+        return STfindFundefEntry(SYMBOLTABLEENTRY_NEXT(symboltableentry), name);
     }
 
-    return list;
+    return symboltableentry;
 }
 
 node *STdeepFindFundef(node *table, const char *name)
@@ -392,6 +398,7 @@ node *STparam(node *arg_node, info *arg_info)
     node *symboltable = INFO_SYMBOL_TABLE(arg_info);
     node *symboltableentry = TBmakeSymboltableentry(STRcpy(PARAM_NAME(arg_node)), PARAM_TYPE(arg_node), 0, 1, arg_node, NULL, NULL);
 
+    SYMBOLTABLEENTRY_PARAM ( symboltableentry) = TRUE;
     STadd(symboltable, symboltableentry);
 
     PARAM_NEXT(arg_node) = TRAVopt(PARAM_NEXT(arg_node), arg_info);
@@ -410,7 +417,6 @@ node *STfuncall(node *arg_node, info *arg_info)
 
     if (entry == NULL)
         CTIerrorLine(NODE_LINE(arg_node), "`%s()` was not declared in this scope.\n", FUNCALL_NAME(arg_node));
-
     else
     {
         FUNCALL_DECL(arg_node) = SYMBOLTABLEENTRY_LINK(entry);
@@ -435,7 +441,6 @@ node *STfuncall(node *arg_node, info *arg_info)
 
             INFO_ARGUMENTS(arg_info) = backarguments;
         }
-
         else if (STcountParams(SYMBOLTABLEENTRY_TABLE(entry)) > 0)
         {
             CTIerrorLine(NODE_LINE(arg_node), "Not enough arguments for function.\n");

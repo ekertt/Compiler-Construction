@@ -20,7 +20,7 @@ extern node *STadd(node *table, node *entry);
 extern node *STlatestEntry(node *linkedlist);
 
 extern node *STfind(node *symbol_table, const char *name);
-extern node *STfindEntry(node *entry, const char *name);
+extern node *STfindEntry(node *entry, const char *name, type type);
 
 extern void STdisplay(node *table, size_t tabs);
 extern void STprint(node *list, size_t tabs);

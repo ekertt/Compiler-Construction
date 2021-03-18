@@ -2,6 +2,11 @@ extern int d;
 int a = 10;
 int b = 324;
 
+int foo ( int a, float b, int c ) 
+{
+        return ( ( a + b) + c);
+}
+
 export int main ( int a ) 
 {
         int y = 10;
@@ -9,7 +14,3 @@ export int main ( int a )
         return 0;
 }
 
-int foo ( int a, float b, int c ) 
-{
-        return ( ( a + b) + c);
-}
