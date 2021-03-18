@@ -2,7 +2,7 @@ extern int d;
 int a = 10;
 int b = 324;
 
-int foo ( int a, float b, int c ) 
+int foo ( int a, int b, int c ) 
 {
         return ( ( a + b) + c);
 }
