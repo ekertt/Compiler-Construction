@@ -27,7 +27,6 @@ struct INFO
 {
     node *symboltable;
     type type;
-    node *fundef;
     size_t returntype;
     size_t offset;
 };
@@ -38,9 +37,7 @@ struct INFO
 
 #define INFO_SYMBOL_TABLE(n) ((n)->symboltable)
 #define INFO_TYPE(n) ((n)->type)
-#define INFO_FUN_DEF(n) ((n)->fundef)
 #define INFO_RETURN(n) ((n)->returntype)
-#define INFO_OFFSET(n) ((n)->offset)
 
 /*
  * INFO functions
@@ -55,9 +52,7 @@ static info *MakeInfo()
     result = (info *)MEMmalloc(sizeof(info));
     INFO_SYMBOL_TABLE(result) = NULL;
     INFO_TYPE(result) = T_unknown;
-    INFO_FUN_DEF(result) = NULL;
     INFO_RETURN(result) = 0;
-    INFO_OFFSET(result) = 0;
 
     DBUG_RETURN(result);
 }
@@ -125,6 +120,11 @@ node *TCfundef(node *arg_node, info *arg_info)
     INFO_SYMBOL_TABLE(arg_info) = SYMBOLTABLEENTRY_TABLE(symboltableentry);
     FUNDEF_FUNBODY(arg_node) = TRAVopt(FUNDEF_FUNBODY(arg_node), arg_info);
 
+    if (INFO_RETURN(arg_info) == 0 && FUNDEF_ISEXTERN(arg_node) < 1 && FUNDEF_TYPE(arg_node) != T_void)
+    {
+        CTIerrorLine(NODE_LINE(arg_node), "No return type expected");
+    }
+
     INFO_RETURN(arg_info) = 0;
     INFO_SYMBOL_TABLE(arg_info) = symboltable;
 
@@ -172,12 +172,15 @@ node *TCbinop(node *arg_node, info *arg_info)
     DBUG_PRINT("TC", ("TCbinop"));
 
     BINOP_LEFT(arg_node) = TRAVopt(BINOP_LEFT(arg_node), arg_info);
-
     type leftype = INFO_TYPE(arg_info);
 
     BINOP_RIGHT(arg_node) = TRAVopt(BINOP_RIGHT(arg_node), arg_info);
-
     type righttype = INFO_TYPE(arg_info);
+
+    if (leftype != righttype)
+    {
+        CTIerrorLine(NODE_LINE(arg_node), "Unequal type error\n");
+    }
 
     switch (BINOP_OP(arg_node))
     {
@@ -220,7 +223,6 @@ node *TCfuncall(node *arg_node, info *arg_info)
     DBUG_PRINT("TC", ("TCfuncall"));
 
     node *symboltableentry = STdeepFindFundef(INFO_SYMBOL_TABLE(arg_info), FUNCALL_NAME(arg_node));
-    INFO_FUN_DEF(arg_info) = symboltableentry;
 
     FUNCALL_ARGS(arg_node) = TRAVopt(FUNCALL_ARGS(arg_node), arg_info);
     INFO_TYPE(arg_info) = SYMBOLTABLEENTRY_TYPE(symboltableentry);
@@ -234,9 +236,7 @@ node *TCexprs(node *arg_node, info *arg_info)
     DBUG_PRINT("TC", ("TCexprs"));
 
     EXPRS_EXPR(arg_node) = TRAVdo(EXPRS_EXPR(arg_node), arg_info);
-    INFO_OFFSET(arg_info) += 1;
     EXPRS_NEXT(arg_node) = TRAVopt(EXPRS_NEXT(arg_node), arg_info);
-    INFO_OFFSET(arg_info) -= 1;
 
     DBUG_RETURN(arg_node);
 }
@@ -257,7 +257,14 @@ node *TCcast(node *arg_node, info *arg_info)
     DBUG_ENTER("TCcast");
     DBUG_PRINT("TC", ("TCcast"));
 
+    CAST_EXPR(arg_node) = TRAVdo(CAST_EXPR(arg_node), arg_info);
+
     INFO_TYPE(arg_info) = CAST_TYPE(arg_node);
+
+    if (INFO_TYPE(arg_info) == T_void)
+    {
+        CTIerrorLine(NODE_LINE(arg_node), "Cast type error\n");
+    }
 
     DBUG_RETURN(arg_node);
 }
