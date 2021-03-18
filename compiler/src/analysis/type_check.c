@@ -265,17 +265,33 @@ node *TCcast(node *arg_node, info *arg_info)
 node *TCassign(node *arg_node, info *arg_info)
 {
     DBUG_ENTER("TCassign");
-    DBUG_PRINT ("TC", ("TCassign"));
+    DBUG_PRINT("TC", ("TCassign"));
 
-    type type = INFO_TYPE ( arg_info);
-    node *varlet = ASSIGN_LET ( arg_node);
-    node *node = STfindInParent( INFO_SYMBOL_TABLE ( arg_info), VARLET_NAME( varlet));
+    type type = INFO_TYPE(arg_info);
+    node *varlet = ASSIGN_LET(arg_node);
+    node *node = STfindInParent(INFO_SYMBOL_TABLE(arg_info), VARLET_NAME(varlet));
 
-    INFO_TYPE ( arg_info) = SYMBOLTABLEENTRY_TYPE ( node);
-    ASSIGN_EXPR ( arg_node) = TRAVdo ( ASSIGN_EXPR ( arg_node), arg_info);
-    INFO_TYPE ( arg_info) = type;
+    INFO_TYPE(arg_info) = SYMBOLTABLEENTRY_TYPE(node);
+    ASSIGN_EXPR(arg_node) = TRAVdo(ASSIGN_EXPR(arg_node), arg_info);
+    INFO_TYPE(arg_info) = type;
 
-    DBUG_RETURN( arg_node);
+    DBUG_RETURN(arg_node);
+}
+
+node *TCmonop(node *arg_node, info *arg_info)
+{
+    DBUG_ENTER("TCmonop");
+
+    monop op = MONOP_OP(arg_node);
+    MONOP_OPERAND(arg_node) = TRAVdo(MONOP_OPERAND(arg_node), arg_info);
+    type type = INFO_TYPE(arg_info);
+
+    if ((op == MO_minus && type != T_bool) || (op == MO_neg && type == T_bool))
+    {
+        CTIerror("TypeError: Tried to apply %s to type %s", op, type);
+    }
+
+    DBUG_RETURN(arg_node);
 }
 
 node *TCdoTypeCheck(node *syntaxtree)

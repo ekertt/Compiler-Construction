@@ -15,6 +15,7 @@ extern node *TCfuncall(node *arg_node, info *arg_info);
 extern node *TCexprs(node *arg_node, info *arg_info);
 extern node *TCvar(node * arg_node, info * arg_info);
 extern node *TCcast(node * arg_node, info * arg_info);
+node *TCmonop(node *arg_node, info *arg_info);
 
 extern node *TCdoTypeCheck(node *syntaxtree);
 
