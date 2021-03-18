@@ -182,36 +182,16 @@ node *TCbinop(node *arg_node, info *arg_info)
         CTIerrorLine(NODE_LINE(arg_node), "Unequal type error\n");
     }
 
-    switch (BINOP_OP(arg_node))
+    binop op = BINOP_OP(arg_node);
+
+    if ((op == BO_sub || op == BO_div || op == BO_lt || op == BO_le || op == BO_gt || op == BO_ge) && righttype == T_bool)
     {
-    case BO_add:
-    case BO_sub:
-    case BO_mul:
-    case BO_div:
-        if (leftype != righttype)
-            CTIerrorLine(NODE_LINE(arg_node), "invalid conversion from \n");
-        break;
-    case BO_lt:
-    case BO_le:
-    case BO_gt:
-    case BO_ge:
-    case BO_eq:
-    case BO_ne:
-        if (leftype != righttype)
-            CTIerrorLine(NODE_LINE(arg_node), "invalid conversion from \n");
-        INFO_TYPE(arg_info) = T_bool;
-        break;
-    case BO_and:
-    case BO_or:
-        if (righttype != T_bool)
-            CTIerrorLine(NODE_LINE(arg_node), "invalid conversion from\n");
-        break;
-    case BO_mod:
-        if (righttype != T_int)
-            CTIerrorLine(NODE_LINE(arg_node), "Modulo operator only supports interger types\n");
-        break;
-    case BO_unknown:
-        break;
+        CTIerror("TypeError");
+    }
+
+    if (op == BO_mod && righttype != T_int)
+    {
+        CTIerror("TypeError");
     }
 
     DBUG_RETURN(arg_node);
