@@ -269,14 +269,14 @@ node *TCmonop(node *arg_node, info *arg_info)
 {
     DBUG_ENTER("TCmonop");
 
-    // monop op = MONOP_OP(arg_node);
-    // MONOP_OPERAND(arg_node) = TRAVdo(MONOP_OPERAND(arg_node), arg_info);
-    // type type = INFO_TYPE(arg_info);
+    monop op = MONOP_OP(arg_node);
+    MONOP_OPERAND(arg_node) = TRAVdo(MONOP_OPERAND(arg_node), arg_info);
+    type type = INFO_TYPE(arg_info);
 
-    // if ((op == MO_minus && type != T_bool) || (op == MO_neg && type == T_bool))
-    // {
-    //     CTIerror("TypeError: Tried to apply %s to type %s", op, type);
-    // }
+    if ((op == MO_neg && type != T_bool) || (op == MO_minus && type == T_bool))
+    {
+        CTIerror("TypeError: Tried to apply %u to type %u line: %d", op, type, NODE_LINE(arg_node));
+    }
 
     DBUG_RETURN(arg_node);
 }
