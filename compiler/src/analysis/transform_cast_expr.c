@@ -146,7 +146,8 @@ node *TCEcast(node *arg_node, info *arg_info)
     {
         FREEdoFreeTree(expression);
     }
-    else if (INFO_TYPE(arg_info) == T_bool)
+
+    if (INFO_TYPE(arg_info) == T_bool)
     {
         FREEdoFreeTree(arg_node);
 
@@ -160,7 +161,8 @@ node *TCEcast(node *arg_node, info *arg_info)
             arg_node = TBmakeTernary(expression, TBmakeFloat(1.3), TBmakeFloat(0.0));
         }
     }
-    else
+
+    if (CAST_TYPE(arg_node) == T_bool)
     {
         FREEdoFreeTree(arg_node);
 
