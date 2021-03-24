@@ -74,6 +74,12 @@
                     <node name="BinOp" />
                 </travuser>
             </traversal>
+
+            <traversal id="TCE" name="Transformation of cast expressions (Milestone 10)" default="sons" include="transform_cast_expr.h">
+                <travuser>
+                    <node name="Program" />
+                </travuser>
+            </traversal>
         </general>
     </phases>
     <nodesets>

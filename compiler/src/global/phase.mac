@@ -56,6 +56,12 @@ SUBPHASE( cb,
           CBdoCompileBoolean, 
           ALWAYS,
           ca)
+
+SUBPHASE( tce,
+          "Transformation of cast expressions (Milestone 10)",
+          TCEdoTransform, 
+          ALWAYS,
+          ca)
       
 ENDPHASE( pet) 
 
