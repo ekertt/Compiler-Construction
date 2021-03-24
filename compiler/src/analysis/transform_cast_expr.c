@@ -1,13 +1,16 @@
 /*****************************************************************************
  *
- * Module: Boolean conjunction
+ * Module: Transform cast expression
  *
- * Prefix: BC
+ * Prefix: TCE
  *
  * Description:
  *
  *****************************************************************************/
 #include "transform_cast_expr.h"
+
+#include "type_check.h"
+#include "symbol_table.h"
 
 #include "types.h"
 #include "tree_basic.h"
@@ -20,22 +23,176 @@
 #include "ctinfo.h"
 #include "copy.h"
 
+struct INFO
+{
+    type type;
+    node *symboltable;
+};
+
+#define INFO_TYPE(n) ((n)->type)
+#define INFO_SYMBOLTABLE(n) ((n)->symboltable)
+
+static info *MakeInfo(void)
+{
+    DBUG_ENTER("MakeInfo");
+    info *result;
+    result = (info *)MEMmalloc(sizeof(info));
+    INFO_TYPE(result) = T_unknown;
+    INFO_SYMBOLTABLE(result) = NULL;
+    DBUG_RETURN(result);
+}
+
+static info *FreeInfo(info *info)
+{
+    DBUG_ENTER("FreeInfo");
+    info = MEMfree(info);
+    DBUG_RETURN(info);
+}
+
+node *TCEnum(node *arg_node, info *arg_info)
+{
+    DBUG_ENTER("TCEnum");
+    DBUG_PRINT("TCE", ("TCEnum"));
+
+    INFO_TYPE(arg_info) = T_int;
+
+    DBUG_RETURN(arg_node);
+}
+
+node *TCEfloat(node *arg_node, info *arg_info)
+{
+    DBUG_ENTER("TCEfloat");
+    DBUG_PRINT("TCE", ("TCEfloat"));
+
+    INFO_TYPE(arg_info) = T_float;
+
+    DBUG_RETURN(arg_node);
+}
+
+node *TCEbool(node *arg_node, info *arg_info)
+{
+    DBUG_ENTER("TCEbool");
+    DBUG_PRINT("TCE", ("TCEbool"));
+
+    INFO_TYPE(arg_info) = T_bool;
+
+    DBUG_RETURN(arg_node);
+}
+
+node *TCEvar(node *arg_node, info *arg_info)
+{
+    DBUG_ENTER("TCEbool");
+    DBUG_PRINT("TCE", ("TCEbool"));
+
+    INFO_TYPE(arg_info) = SYMBOLTABLEENTRY_TYPE(STfindInParent(INFO_SYMBOLTABLE(arg_info), VAR_NAME(arg_node)));
+
+    DBUG_RETURN(arg_node);
+}
+
 node *TCEprogram(node *arg_node, info *arg_info)
 {
-    DBUG_ENTER("CBbinop");
-    DBUG_PRINT("CB", ("CBbinop"));
+    DBUG_ENTER("TCEprogram");
+    DBUG_PRINT("TCE", ("TCEprogram"));
+
+    INFO_SYMBOLTABLE(arg_info) = PROGRAM_SYMBOLTABLE(arg_node);
+    PROGRAM_DECLS(arg_node) = TRAVdo(PROGRAM_DECLS(arg_node), arg_info);
+
+    DBUG_RETURN(arg_node);
+}
+
+node *TCEfundef(node *arg_node, info *arg_info)
+{
+    DBUG_ENTER("TCEfundef");
+    DBUG_PRINT("TCE", ("TCEfundef"));
+
+    node *symboltable = INFO_SYMBOLTABLE(arg_info);
+    node *entry = STfindFundef(symboltable, FUNDEF_NAME(arg_node));
+
+    INFO_SYMBOLTABLE(arg_info) = SYMBOLTABLEENTRY_TABLE(entry);
+
+    FUNDEF_FUNBODY(arg_node) = TRAVopt(FUNDEF_FUNBODY(arg_node), arg_info);
+
+    INFO_SYMBOLTABLE(arg_info) = symboltable;
+
+    DBUG_RETURN(arg_node);
+}
+
+node *TCEbinop(node *arg_node, info *arg_info)
+{
+    DBUG_ENTER("TCEbinop");
+    DBUG_PRINT("TCE", ("TCEbinop"));
+
+    BINOP_LEFT(arg_node) = TRAVopt(BINOP_LEFT(arg_node), arg_info);
+    BINOP_RIGHT(arg_node) = TRAVopt(BINOP_RIGHT(arg_node), arg_info);
+
+    if (BINOP_OP(arg_node) == BO_ne)
+    {
+        INFO_TYPE(arg_info) = T_bool;
+    }
+
+    DBUG_RETURN(arg_node);
+}
+
+node *TCEcast(node *arg_node, info *arg_info)
+{
+    DBUG_ENTER("TCEcast");
+    DBUG_PRINT("TCE", ("TCEcast"));
+
+    CAST_EXPR(arg_node) = TRAVdo(CAST_EXPR(arg_node), arg_info);
+
+    node *expr = COPYdoCopy(CAST_EXPR(arg_node));
+
+    if (CAST_TYPE(arg_node) != T_bool)
+    {
+        FREEdoFreeTree(expr);
+    }
+    else if (INFO_TYPE(arg_info) == T_bool)
+    {
+        FREEdoFreeTree(arg_node);
+
+        if (CAST_TYPE(arg_node) == T_int)
+        {
+            arg_node = TBmakeTernary(expr, TBmakeNum(1), TBmakeNum(0));
+        }
+
+        if (CAST_TYPE(arg_node) == T_float)
+        {
+            arg_node = TBmakeTernary(expr, TBmakeFloat(1.3), TBmakeFloat(0.0));
+        }
+    }
+    else
+    {
+        FREEdoFreeTree(arg_node);
+
+        node *num;
+
+        if (INFO_TYPE(arg_info) == T_int)
+        {
+            num = TBmakeNum(0);
+        }
+        else
+        {
+            num = TBmakeFloat(0.0);
+        }
+
+        arg_node = TBmakeBinop(BO_ne, expr, num);
+    }
 
     DBUG_RETURN(arg_node);
 }
 
 node *TCEdoTransform(node *syntaxtree)
 {
-    DBUG_ENTER("CBdoCompileBoolean");
-    DBUG_PRINT("CB", ("CBdoCompileBoolean"));
+    DBUG_ENTER("TCEdoTransform");
+    DBUG_PRINT("TCE", ("TCEdoTransform"));
+
+    info *info = MakeInfo();
 
     TRAVpush(TR_tce);
-    syntaxtree = TRAVdo(syntaxtree, NULL);
+    syntaxtree = TRAVdo(syntaxtree, info);
     TRAVpop();
+
+    FreeInfo(info);
 
     DBUG_RETURN(syntaxtree);
 }

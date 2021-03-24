@@ -77,7 +77,14 @@
 
             <traversal id="TCE" name="Transformation of cast expressions (Milestone 10)" default="sons" include="transform_cast_expr.h">
                 <travuser>
+                    <node name="Num" />
+                    <node name="Float" />
+                    <node name="Bool" />
+                    <node name="Var" />
                     <node name="Program" />
+                    <node name="FunDef" />
+                    <node name="BinOp" />
+                    <node name="Cast" />
                 </travuser>
             </traversal>
         </general>
