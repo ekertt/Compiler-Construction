@@ -45,6 +45,7 @@ extern node    *FREEreturn(node * arg_node, info * arg_info);
 extern node    *FREEstmts(node * arg_node, info * arg_info);
 extern node    *FREEsymboltable(node * arg_node, info * arg_info);
 extern node    *FREEsymboltableentry(node * arg_node, info * arg_info);
+extern node    *FREEternary(node * arg_node, info * arg_info);
 extern node    *FREEvar(node * arg_node, info * arg_info);
 extern node    *FREEvardecl(node * arg_node, info * arg_info);
 extern node    *FREEvarlet(node * arg_node, info * arg_info);

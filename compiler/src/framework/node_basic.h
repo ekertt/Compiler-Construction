@@ -145,6 +145,15 @@ extern node    *TBmakeFundef(type Type, char *Name, node * FunBody, node * Param
 extern node    *TBmakeFunbody(node * Vardecls, node * LocalFundefs, node * Stmts);
 
 /*****************************************************************************
+ * macros and functions for N_ternary
+ *****************************************************************************/
+
+#define TERNARY_EXPR( n) ((n)->sons.N_ternary->Expr)
+#define TERNARY_THEN( n) ((n)->sons.N_ternary->Then)
+#define TERNARY_ELSE( n) ((n)->sons.N_ternary->Else)
+extern node    *TBmakeTernary(node * Expr, node * Then, node * Else);
+
+/*****************************************************************************
  * macros and functions for N_ifelse
  *****************************************************************************/
 

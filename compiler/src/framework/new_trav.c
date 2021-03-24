@@ -504,6 +504,23 @@ node           *EVALsymboltableentry(node * arg_node, info * arg_info) {
 }
 /** <!--******************************************************************-->
  *
+ * @fn EVALternary
+ *
+ * @brief Frees the node and its sons/attributes
+ *
+ * @param arg_node Ternary node to process
+ * @param arg_info pointer to info structure
+ *
+ * @return processed node
+ *
+ ***************************************************************************/
+node           *EVALternary(node * arg_node, info * arg_info) {
+	DBUG_ENTER("EVALternary");
+	arg_node = TRAVcont(arg_node, arg_info);
+	DBUG_RETURN(arg_node);
+}
+/** <!--******************************************************************-->
+ *
  * @fn EVALvar
  *
  * @brief Frees the node and its sons/attributes

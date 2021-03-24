@@ -50,6 +50,12 @@ SUBPHASE( tc,
           TCdoTypeCheck, 
           ALWAYS,
           ca)
+
+SUBPHASE( cb,
+          "Compiling boolean dusjunction and conjunction (Milestone 9)",
+          CBdoCompileBoolean, 
+          ALWAYS,
+          ca)
       
 ENDPHASE( pet) 
 

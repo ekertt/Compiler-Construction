@@ -72,6 +72,7 @@ isExpr(node * arg_node)
 		     (NODE_TYPE(arg_node) == N_funcall) ||
 		     (NODE_TYPE(arg_node) == N_monop) ||
 		     (NODE_TYPE(arg_node) == N_num) ||
+		     (NODE_TYPE(arg_node) == N_ternary) ||
 		     (NODE_TYPE(arg_node) == N_var));
 	return (res);
 }
@@ -1497,6 +1498,82 @@ node           *CHKsymboltableentry(node * arg_node, info * arg_info) {
 	 */
 	if (SYMBOLTABLEENTRY_TABLE(arg_node) != NULL) {
 		SYMBOLTABLEENTRY_TABLE(arg_node) = TRAVdo(SYMBOLTABLEENTRY_TABLE(arg_node), arg_info);
+	} DBUG_RETURN(arg_node);
+}
+/** <!--******************************************************************-->
+ *
+ * @fn CHKternary
+ *
+ * @brief Check the node and its sons/attributes
+ *
+ * @param arg_node Ternary node to process
+ * @param arg_info pointer to info structure
+ *
+ * @return processed node
+ *
+ ***************************************************************************/
+node           *CHKternary(node * arg_node, info * arg_info) {
+	DBUG_ENTER("CHKternary");
+
+	/*
+	 * Son check: TERNARY_ELSE
+	 */
+	if ((FALSE) || (TRUE)) {
+		CHKexistSon(TERNARY_ELSE(arg_node), arg_node, "mandatory son TERNARY_ELSE is NULL");
+		if (TERNARY_ELSE(arg_node) != NULL) {
+			if (!((FALSE) || (isExpr(TERNARY_ELSE(arg_node))))) {
+				CHKcorrectTypeInsertError(arg_node, "TERNARY_ELSE hasnt the right type." " It should be: " "Nodeset: Expr");
+			}
+		}
+	} else {
+		CHKnotExist(TERNARY_ELSE(arg_node), arg_node, "attribute TERNARY_ELSE must be NULL");
+	}
+
+	/*
+	 * Son check: TERNARY_EXPR
+	 */
+	if ((FALSE) || (TRUE)) {
+		CHKexistSon(TERNARY_EXPR(arg_node), arg_node, "mandatory son TERNARY_EXPR is NULL");
+		if (TERNARY_EXPR(arg_node) != NULL) {
+			if (!((FALSE) || (isExpr(TERNARY_EXPR(arg_node))))) {
+				CHKcorrectTypeInsertError(arg_node, "TERNARY_EXPR hasnt the right type." " It should be: " "Nodeset: Expr");
+			}
+		}
+	} else {
+		CHKnotExist(TERNARY_EXPR(arg_node), arg_node, "attribute TERNARY_EXPR must be NULL");
+	}
+
+	/*
+	 * Son check: TERNARY_THEN
+	 */
+	if ((FALSE) || (TRUE)) {
+		CHKexistSon(TERNARY_THEN(arg_node), arg_node, "mandatory son TERNARY_THEN is NULL");
+		if (TERNARY_THEN(arg_node) != NULL) {
+			if (!((FALSE) || (isExpr(TERNARY_THEN(arg_node))))) {
+				CHKcorrectTypeInsertError(arg_node, "TERNARY_THEN hasnt the right type." " It should be: " "Nodeset: Expr");
+			}
+		}
+	} else {
+		CHKnotExist(TERNARY_THEN(arg_node), arg_node, "attribute TERNARY_THEN must be NULL");
+	}
+
+	/*
+	 * trav functions: to get all sons
+	 */
+	if (TERNARY_ELSE(arg_node) != NULL) {
+		TERNARY_ELSE(arg_node) = TRAVdo(TERNARY_ELSE(arg_node), arg_info);
+	}
+	/*
+	 * trav functions: to get all sons
+	 */
+	if (TERNARY_EXPR(arg_node) != NULL) {
+		TERNARY_EXPR(arg_node) = TRAVdo(TERNARY_EXPR(arg_node), arg_info);
+	}
+	/*
+	 * trav functions: to get all sons
+	 */
+	if (TERNARY_THEN(arg_node) != NULL) {
+		TERNARY_THEN(arg_node) = TRAVdo(TERNARY_THEN(arg_node), arg_info);
 	} DBUG_RETURN(arg_node);
 }
 /** <!--******************************************************************-->

@@ -686,6 +686,29 @@ node           *COPYsymboltableentry(node * arg_node, info * arg_info) {
 }
 /** <!--******************************************************************-->
  *
+ * @fn COPYternary
+ *
+ * @brief Copies the node and its sons/attributes
+ *
+ * @param arg_node Ternary node to process
+ * @param arg_info pointer to info structure
+ *
+ * @return processed node
+ *
+ ***************************************************************************/
+node           *COPYternary(node * arg_node, info * arg_info) {
+	node           *result = TBmakeTernary(NULL, NULL, NULL);
+	DBUG_ENTER("COPYternary");
+	LUTinsertIntoLutP(INFO_LUT(arg_info), arg_node, result);
+	/* Copy sons */
+	TERNARY_EXPR(result) = COPYTRAV(TERNARY_EXPR(arg_node), arg_info);
+	TERNARY_THEN(result) = COPYTRAV(TERNARY_THEN(arg_node), arg_info);
+	TERNARY_ELSE(result) = COPYTRAV(TERNARY_ELSE(arg_node), arg_info);
+	/* Return value */
+	DBUG_RETURN(result);
+}
+/** <!--******************************************************************-->
+ *
  * @fn COPYvar
  *
  * @brief Copies the node and its sons/attributes

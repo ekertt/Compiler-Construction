@@ -583,6 +583,26 @@ node           *CHKMsymboltableentry(node * arg_node, info * arg_info) {
 }
 /** <!--******************************************************************-->
  *
+ * @fn CHKMternary
+ *
+ * @brief Touched the node and its sons/attributes
+ *
+ * @param arg_node Ternary node to process
+ * @param arg_info pointer to info structure
+ *
+ * @return processed node
+ *
+ ***************************************************************************/
+node           *CHKMternary(node * arg_node, info * arg_info) {
+	DBUG_ENTER("CHKMternary");
+	NODE_ERROR(arg_node) = CHKMTRAV(NODE_ERROR(arg_node), arg_info);
+	TERNARY_EXPR(arg_node) = CHKMTRAV(TERNARY_EXPR(arg_node), arg_info);
+	TERNARY_THEN(arg_node) = CHKMTRAV(TERNARY_THEN(arg_node), arg_info);
+	TERNARY_ELSE(arg_node) = CHKMTRAV(TERNARY_ELSE(arg_node), arg_info);
+	DBUG_RETURN(arg_node);
+}
+/** <!--******************************************************************-->
+ *
  * @fn CHKMvar
  *
  * @brief Touched the node and its sons/attributes

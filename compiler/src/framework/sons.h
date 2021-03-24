@@ -122,6 +122,11 @@ struct SONS_N_SYMBOLTABLEENTRY {
 	node           *Next;
 	node           *Table;
 };
+struct SONS_N_TERNARY {
+	node           *Expr;
+	node           *Then;
+	node           *Else;
+};
 struct SONS_N_VAR {
 	node           *Indices;
 };
@@ -170,6 +175,7 @@ struct SONUNION {
 	struct SONS_N_STMTS *N_stmts;
 	struct SONS_N_SYMBOLTABLE *N_symboltable;
 	struct SONS_N_SYMBOLTABLEENTRY *N_symboltableentry;
+	struct SONS_N_TERNARY *N_ternary;
 	struct SONS_N_VAR *N_var;
 	struct SONS_N_VARDECL *N_vardecl;
 	struct SONS_N_VARLET *N_varlet;

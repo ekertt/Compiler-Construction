@@ -740,6 +740,32 @@ node           *FREEsymboltableentry(node * arg_node, info * arg_info) {
 }
 /** <!--******************************************************************-->
  *
+ * @fn FREEternary
+ *
+ * @brief Frees the node and its sons/attributes
+ *
+ * @param arg_node Ternary node to process
+ * @param arg_info pointer to info structure
+ *
+ * @return processed node
+ *
+ ***************************************************************************/
+node           *FREEternary(node * arg_node, info * arg_info) {
+	node           *result = NULL;
+	DBUG_ENTER("FREEternary");
+	DBUG_PRINT("FREE", ("Processing node N_ternary at " F_PTR, arg_node));
+	TERNARY_EXPR(arg_node) = FREETRAV(TERNARY_EXPR(arg_node), arg_info);
+	TERNARY_THEN(arg_node) = FREETRAV(TERNARY_THEN(arg_node), arg_info);
+	TERNARY_ELSE(arg_node) = FREETRAV(TERNARY_ELSE(arg_node), arg_info);
+	result = NULL;
+	arg_node->sons.N_ternary = MEMfree(arg_node->sons.N_ternary);
+	arg_node->attribs.N_ternary = MEMfree(arg_node->attribs.N_ternary);
+	DBUG_PRINT("FREE", ("Processing node N_ternary at " F_PTR, arg_node));
+	result = MEMfree(arg_node);
+	DBUG_RETURN(result);
+}
+/** <!--******************************************************************-->
+ *
  * @fn FREEvar
  *
  * @brief Frees the node and its sons/attributes

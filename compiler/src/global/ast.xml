@@ -68,6 +68,12 @@
                     <node name="Program" />
                 </travuser>
             </traversal>
+
+            <traversal id="CB" name="Compiling Boolean Disjunction and Conjunction (Milestone 9)" default="sons" include="compiling_boolean_dis_and_conjunction.h">
+                <travuser>
+                    <node name="BinOp" />
+                </travuser>
+            </traversal>
         </general>
     </phases>
     <nodesets>
@@ -82,6 +88,7 @@
                 <node name="Float"/>
                 <node name="Bool"/>
                 <node name="ArrExpr"/>
+                <node name="Ternary" />
             </target>
         </nodeset>
         <nodeset name="Stmt">
@@ -573,6 +580,40 @@
             </attributes>
             <flags>
             </flags>
+        </node>
+        <node name="Ternary">
+            <sons>
+                <son name="Expr">
+                    <targets>
+                        <target mandatory="yes">
+                            <set name="Expr"/>
+                            <phases>
+                                <all/>
+                            </phases>
+                        </target>
+                    </targets>
+                </son>
+                <son name="Then">
+                    <targets>
+                        <target mandatory="yes">
+                            <set name="Expr"/>
+                            <phases>
+                                <all/>
+                            </phases>
+                        </target>
+                    </targets>
+                </son>
+                <son name="Else">
+                    <targets>
+                        <target mandatory="yes">
+                            <set name="Expr"/>
+                            <phases>
+                                <all/>
+                            </phases>
+                        </target>
+                    </targets>
+                </son>
+            </sons>
         </node>
         <node name="IfElse">
             <sons>

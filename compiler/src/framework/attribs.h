@@ -114,6 +114,8 @@ struct ATTRIBS_N_SYMBOLTABLEENTRY {
 	bool		Param;
 	node           *Link;
 };
+struct ATTRIBS_N_TERNARY {
+};
 struct ATTRIBS_N_VAR {
 	char           *Name;
 	node           *Decl;
@@ -161,6 +163,7 @@ struct ATTRIBUNION {
 	struct ATTRIBS_N_STMTS *N_stmts;
 	struct ATTRIBS_N_SYMBOLTABLE *N_symboltable;
 	struct ATTRIBS_N_SYMBOLTABLEENTRY *N_symboltableentry;
+	struct ATTRIBS_N_TERNARY *N_ternary;
 	struct ATTRIBS_N_VAR *N_var;
 	struct ATTRIBS_N_VARDECL *N_vardecl;
 	struct ATTRIBS_N_VARLET *N_varlet;

@@ -88,6 +88,11 @@ TRAVsons(node * arg_node, info * arg_info)
 		TRAV(FUNBODY_LOCALFUNDEFS(arg_node), arg_info);
 		TRAV(FUNBODY_STMTS(arg_node), arg_info);
 		break;
+	case N_ternary:
+		TRAV(TERNARY_EXPR(arg_node), arg_info);
+		TRAV(TERNARY_THEN(arg_node), arg_info);
+		TRAV(TERNARY_ELSE(arg_node), arg_info);
+		break;
 	case N_ifelse:
 		TRAV(IFELSE_COND(arg_node), arg_info);
 		TRAV(IFELSE_THEN(arg_node), arg_info);
@@ -210,6 +215,9 @@ TRAVnumSons(node * node)
 		result = 2;
 		break;
 	case N_funbody:
+		result = 3;
+		break;
+	case N_ternary:
 		result = 3;
 		break;
 	case N_ifelse:
@@ -428,6 +436,21 @@ TRAVgetSon(int no, node * parent)
 			break;
 		case 2:
 			result = FUNBODY_STMTS(parent);
+			break;
+		default:
+			DBUG_ASSERT((FALSE), "index out of range!");
+			break;
+		} break;
+	case N_ternary:
+		switch (no) {
+		case 0:
+			result = TERNARY_EXPR(parent);
+			break;
+		case 1:
+			result = TERNARY_THEN(parent);
+			break;
+		case 2:
+			result = TERNARY_ELSE(parent);
 			break;
 		default:
 			DBUG_ASSERT((FALSE), "index out of range!");
