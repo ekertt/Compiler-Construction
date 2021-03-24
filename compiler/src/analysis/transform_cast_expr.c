@@ -140,11 +140,11 @@ node *TCEcast(node *arg_node, info *arg_info)
 
     CAST_EXPR(arg_node) = TRAVdo(CAST_EXPR(arg_node), arg_info);
 
-    node *expr = COPYdoCopy(CAST_EXPR(arg_node));
+    node *expression = COPYdoCopy(CAST_EXPR(arg_node));
 
     if (CAST_TYPE(arg_node) != T_bool)
     {
-        FREEdoFreeTree(expr);
+        FREEdoFreeTree(expression);
     }
     else if (INFO_TYPE(arg_info) == T_bool)
     {
@@ -152,30 +152,30 @@ node *TCEcast(node *arg_node, info *arg_info)
 
         if (CAST_TYPE(arg_node) == T_int)
         {
-            arg_node = TBmakeTernary(expr, TBmakeNum(1), TBmakeNum(0));
+            arg_node = TBmakeTernary(expression, TBmakeNum(1), TBmakeNum(0));
         }
 
         if (CAST_TYPE(arg_node) == T_float)
         {
-            arg_node = TBmakeTernary(expr, TBmakeFloat(1.3), TBmakeFloat(0.0));
+            arg_node = TBmakeTernary(expression, TBmakeFloat(1.3), TBmakeFloat(0.0));
         }
     }
     else
     {
         FREEdoFreeTree(arg_node);
 
-        node *num;
+        node *numFloat;
 
         if (INFO_TYPE(arg_info) == T_int)
         {
-            num = TBmakeNum(0);
+            numFloat = TBmakeNum(0);
         }
         else
         {
-            num = TBmakeFloat(0.0);
+            numFloat = TBmakeFloat(0.0);
         }
 
-        arg_node = TBmakeBinop(BO_ne, expr, num);
+        arg_node = TBmakeBinop(BO_ne, expression, numFloat);
     }
 
     DBUG_RETURN(arg_node);
