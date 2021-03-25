@@ -41,7 +41,7 @@ keyvalueListNode *KeyValueCreateList(const char *key, const char *value, keyvalu
     return new_list_node;
 }
 
-keyvalueListNode *KeyValueDeleteFirst(const char *key, const char *value, keyvalueListNode *head)
+keyvalueListNode *KeyValueDeleteFirst(keyvalueListNode *head, const char *key, const char *value)
 {
     keyvalueListNode *new_keyvalueListNode = KeyValueCreateList(key, value, head);
     head = new_keyvalueListNode;
@@ -211,17 +211,19 @@ node *FTWfor(node *arg_node, info *arg_info)
     DBUG_ENTER("FTWfor");
     DBUG_PRINT("FTW", ("FTWfor"));
 
-    char *name = STRcatn(3, FOR_LOOPVAR(arg_node), "_", STRitoa(INFO_COUNTER(arg_info)));
+    const char *varname = FOR_LOOPVAR(arg_node);
+
+    char *name = STRcatn(3, varname, "_", STRitoa(INFO_COUNTER(arg_info)));
     INFO_COUNTER(arg_info)
     ++;
 
     if (INFO_NAMES(arg_info) == NULL)
     {
-        INFO_NAMES(arg_info) = KeyValueCreateList(FOR_LOOPVAR(arg_node), name, NULL);
+        INFO_NAMES(arg_info) = KeyValueCreateList(varname, name, NULL);
     }
     else
     {
-        INFO_NAMES(arg_info) = KeyValueDeleteFirst(FOR_LOOPVAR(arg_node), name, INFO_NAMES(arg_info));
+        INFO_NAMES(arg_info) = KeyValueDeleteFirst(INFO_NAMES(arg_info), varname, name);
     }
 
     FOR_BLOCK(arg_node) = TRAVopt(FOR_BLOCK(arg_node), arg_info);
@@ -273,7 +275,11 @@ node *FTWfor(node *arg_node, info *arg_info)
 
     FREEdoFreeTree(arg_node);
 
-    arg_node = TBmakeWhile(TBmakeBinop(BO_lt, TBmakeVar(STRcpy(VARDECL_NAME(for_start)), for_start, NULL), TBmakeVar(STRcpy(VARDECL_NAME(for_stop)), for_stop, NULL)), new_block);
+    arg_node = TBmakeWhile(TBmakeTernary(
+                               TBmakeBinop(BO_gt, TBmakeVar(STRcpy(VARDECL_NAME(for_step)), for_step, NULL), TBmakeNum(0)),
+                               TBmakeBinop(BO_lt, TBmakeVar(STRcpy(VARDECL_NAME(for_start)), for_start, NULL), TBmakeVar(STRcpy(VARDECL_NAME(for_stop)), for_stop, NULL)),
+                               TBmakeBinop(BO_gt, TBmakeVar(STRcpy(VARDECL_NAME(for_start)), for_start, NULL), TBmakeVar(STRcpy(VARDECL_NAME(for_stop)), for_stop, NULL))),
+                           new_block);
 
     DBUG_RETURN(arg_node);
 }
