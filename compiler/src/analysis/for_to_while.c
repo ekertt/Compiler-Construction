@@ -1,10 +1,5 @@
-#include <time.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-
 #include "for_to_while.h"
-#include "key_value_linked_list.h"
+#include "linked_list_KV.h"
 
 #include "types.h"
 #include "tree_basic.h"
@@ -17,12 +12,6 @@
 #include "copy.h"
 #include "ctinfo.h"
 
-#include "print.h"
-
-/*
- * INFO structure
- */
-
 struct INFO
 {
     node *var_declarations;
@@ -31,17 +20,10 @@ struct INFO
     keyvalueListNode *names;
 };
 
-/*
- * INFO macros
- */
 #define INFO_VARDECLS(n) ((n)->var_declarations)
 #define INFO_COUNTER(n) ((n)->counter)
 #define INFO_STMTS(n) ((n)->statements)
 #define INFO_NAMES(n) ((n)->names)
-
-/*
- * INFO functions
- */
 
 static info *MakeInfo()
 {
