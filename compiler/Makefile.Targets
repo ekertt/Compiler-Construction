@@ -87,7 +87,7 @@ TEST_DIRS := basic # nested_funs arrays preprocess
 
 TEST_CFLAGS := ""
 
-TEST_RUN_FUNCTIONAL := 0
+TEST_RUN_FUNCTIONAL := 1
 
 TEST_CIVAS := bin/civas
 TEST_CIVVM := bin/civvm

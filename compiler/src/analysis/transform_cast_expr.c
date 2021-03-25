@@ -141,28 +141,27 @@ node *TCEcast(node *arg_node, info *arg_info)
     CAST_EXPR(arg_node) = TRAVdo(CAST_EXPR(arg_node), arg_info);
 
     node *expression = COPYdoCopy(CAST_EXPR(arg_node));
+    type cast_type = CAST_TYPE(arg_node);
 
-    if (CAST_TYPE(arg_node) != T_bool)
+    if (cast_type != T_bool)
     {
         FREEdoFreeTree(expression);
     }
-
-    if (INFO_TYPE(arg_info) == T_bool)
+    else if (INFO_TYPE(arg_info) == T_bool)
     {
         FREEdoFreeTree(arg_node);
 
-        if (CAST_TYPE(arg_node) == T_int)
+        if (cast_type == T_int)
         {
             arg_node = TBmakeTernary(expression, TBmakeNum(1), TBmakeNum(0));
         }
 
-        if (CAST_TYPE(arg_node) == T_float)
+        if (cast_type == T_float)
         {
             arg_node = TBmakeTernary(expression, TBmakeFloat(1.3), TBmakeFloat(0.0));
         }
     }
-
-    if (CAST_TYPE(arg_node) == T_bool)
+    else if (cast_type == T_bool)
     {
         FREEdoFreeTree(arg_node);
 
