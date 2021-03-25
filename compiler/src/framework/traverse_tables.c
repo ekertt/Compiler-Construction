@@ -18,6 +18,7 @@
 #include "copy_node.h"
 #include "free_node.h"
 #include "check.h"
+#include "for_to_while.h"
 #include "symbol_table.h"
 #include "change_var_init_to_regular.h"
 #include "type_check.h"
@@ -42,6 +43,9 @@ travtables_t	travtables = {
 	/* TR_chk */
 	,{&TRAVerror, &CHKprogram, &CHKsymboltable, &CHKsymboltableentry, &CHKdecls, &CHKexprs, &CHKarrexpr, &CHKids, &CHKexprstmt, &CHKreturn, &CHKfuncall, &CHKcast, &CHKfundefs, &CHKfundef, &CHKfunbody, &CHKternary, &CHKifelse, &CHKwhile, &CHKdowhile, &CHKfor, &CHKglobdecl, &CHKglobdef, &CHKparam, &CHKvardecl, &CHKstmts, &CHKassign, &CHKbinop, &CHKmonop, &CHKvarlet, &CHKvar, &CHKnum, &CHKfloat, &CHKbool, &CHKerror}
 
+	/* TR_ftw */
+	,{&TRAVerror, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &FTWfunbody, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &FTWfor, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &FTWstmts, &TRAVsons, &TRAVsons, &TRAVsons, &FTWvarlet, &FTWvar, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons}
+
 	/* TR_st */
 	,{&TRAVerror, &STprogram, &TRAVsons, &TRAVsons, &TRAVsons, &STexprs, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &STfuncall, &TRAVsons, &TRAVsons, &STfundef, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &STglobdef, &STparam, &STvardecl, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &STvarlet, &STvar, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons}
 
@@ -60,15 +64,15 @@ travtables_t	travtables = {
 
 preposttable_t	pretable = {
 	NULL
-	,NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
+	,NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
 };
 
 preposttable_t	posttable = {
 	NULL
-	,NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
+	,NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
 };
 
-const char     *travnames[10] = {
+const char     *travnames[11] = {
 	"unknown"
-	,"prt", "copy", "free", "chk", "st", "ci", "tc", "cb", "tce"
+	,"prt", "copy", "free", "chk", "ftw", "st", "ci", "tc", "cb", "tce"
 };

@@ -33,6 +33,12 @@ PHASE( ca,
         "Context analysis",
         ALWAYS)
 
+SUBPHASE( ftw,
+          "For to while",
+          FTWdoForToWhile,
+          ALWAYS,
+          ca)
+
 SUBPHASE( st, 
           "Symbol Table (Milestone 5)",
           STdoProcessSymbolTable, 

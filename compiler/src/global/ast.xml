@@ -28,6 +28,16 @@
             <traversal id="FREE" name="Free Syntax Tree" default="user" include="free_node.h" />
             <traversal id="CHK" name="Check Syntax Tree" default="user" include="check.h" />
 
+            <traversal id="FTW" name="For to while" default="sons" include="for_to_while.h">
+                <travuser>
+                    <node name="FunBody" />
+                    <node name="Stmts" />
+                    <node name="For" />
+                    <node name="VarLet" />
+                    <node name="Var" />
+                </travuser>
+            </traversal>
+
             <traversal id="ST" name="Context Analysis (Symbol table)" default="sons" include="symbol_table.h">
                 <travuser>
                     <node name="Program" />
