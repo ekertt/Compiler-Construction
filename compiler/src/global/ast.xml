@@ -79,6 +79,8 @@
                 </travuser>
             </traversal>
 
+            <traversal id="GBC" name="Generate byte code" default="user" include="gen_byte_code.h"/>
+
             <traversal id="CB" name="Compiling Boolean Disjunction and Conjunction (Milestone 9)" default="sons" include="compiling_boolean_dis_and_conjunction.h">
                 <travuser>
                     <node name="BinOp" />

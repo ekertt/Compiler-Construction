@@ -22,6 +22,7 @@
 #include "symbol_table.h"
 #include "change_var_init_to_regular.h"
 #include "type_check.h"
+#include "gen_byte_code.h"
 #include "compiling_boolean_dis_and_conjunction.h"
 #include "transform_cast_expr.h"
 
@@ -55,6 +56,9 @@ travtables_t	travtables = {
 	/* TR_tc */
 	,{&TRAVerror, &TCprogram, &TRAVsons, &TRAVsons, &TRAVsons, &TCexprs, &TRAVsons, &TRAVsons, &TRAVsons, &TCreturn, &TCfuncall, &TCcast, &TRAVsons, &TCfundef, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TCassign, &TCbinop, &TCmonop, &TRAVsons, &TCvar, &TCnum, &TCfloat, &TCbool, &TRAVsons}
 
+	/* TR_gbc */
+	,{&TRAVerror, &GBCprogram, &GBCsymboltable, &GBCsymboltableentry, &GBCdecls, &GBCexprs, &GBCarrexpr, &GBCids, &GBCexprstmt, &GBCreturn, &GBCfuncall, &GBCcast, &GBCfundefs, &GBCfundef, &GBCfunbody, &GBCternary, &GBCifelse, &GBCwhile, &GBCdowhile, &GBCfor, &GBCglobdecl, &GBCglobdef, &GBCparam, &GBCvardecl, &GBCstmts, &GBCassign, &GBCbinop, &GBCmonop, &GBCvarlet, &GBCvar, &GBCnum, &GBCfloat, &GBCbool, &GBCerror}
+
 	/* TR_cb */
 	,{&TRAVerror, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &CBbinop, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons}
 
@@ -64,15 +68,15 @@ travtables_t	travtables = {
 
 preposttable_t	pretable = {
 	NULL
-	,NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
+	,NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
 };
 
 preposttable_t	posttable = {
 	NULL
-	,NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
+	,NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
 };
 
-const char     *travnames[11] = {
+const char     *travnames[12] = {
 	"unknown"
-	,"prt", "copy", "free", "chk", "ftw", "st", "ci", "tc", "cb", "tce"
+	,"prt", "copy", "free", "chk", "ftw", "st", "ci", "tc", "gbc", "cb", "tce"
 };

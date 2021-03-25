@@ -16,5 +16,5 @@
 #define _SAC_TYPES_TRAV_H_
 
 typedef enum {
-TR_undefined = 0, TR_prt = 1, TR_copy = 2, TR_free = 3, TR_chk = 4, TR_ftw = 5, TR_st = 6, TR_ci = 7, TR_tc = 8, TR_cb = 9, TR_tce = 10} trav_t;
+TR_undefined = 0, TR_prt = 1, TR_copy = 2, TR_free = 3, TR_chk = 4, TR_ftw = 5, TR_st = 6, TR_ci = 7, TR_tc = 8, TR_gbc = 9, TR_cb = 10, TR_tce = 11} trav_t;
 #endif				/* _SAC_TYPES_TRAV_H_ */

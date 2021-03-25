@@ -148,7 +148,7 @@ PRTvardecl(node *arg_node, info *arg_info)
 
   tabs(arg_info);
 
-  printf("%s %s", typeInString(VARDECL_TYPE(arg_node)), VARDECL_NAME(arg_node));
+  printf("%s %s", typeToString(VARDECL_TYPE(arg_node)), VARDECL_NAME(arg_node));
 
   if (VARDECL_INIT(arg_node) != NULL)
   {
@@ -389,7 +389,7 @@ PRTcast(node *arg_node, info *arg_info)
   DBUG_ENTER("PRTcast");
   DBUG_PRINT("PRT", ("PRTcast"));
 
-  printf("( %s )", typeInString(CAST_TYPE(arg_node)));
+  printf("( %s )", typeToString(CAST_TYPE(arg_node)));
 
   CAST_EXPR(arg_node) = TRAVdo(CAST_EXPR(arg_node), arg_info);
 
@@ -449,7 +449,7 @@ PRTfundef(node *arg_node, info *arg_info)
     printf("%s", "export ");
   }
 
-  printf("%s %s", typeInString(FUNDEF_TYPE(arg_node)), FUNDEF_NAME(arg_node));
+  printf("%s %s", typeToString(FUNDEF_TYPE(arg_node)), FUNDEF_NAME(arg_node));
   printf(" ( ");
 
   FUNDEF_PARAMS(arg_node) = TRAVopt(FUNDEF_PARAMS(arg_node), arg_info);
@@ -759,7 +759,7 @@ PRTglobdef(node *arg_node, info *arg_info)
     printf("%s", "export ");
   }
 
-  printf("%s %s", typeInString(GLOBDEF_TYPE(arg_node)), GLOBDEF_NAME(arg_node));
+  printf("%s %s", typeToString(GLOBDEF_TYPE(arg_node)), GLOBDEF_NAME(arg_node));
 
   GLOBDEF_DIMS(arg_node) = TRAVopt(GLOBDEF_DIMS(arg_node), arg_info);
 
@@ -794,7 +794,7 @@ PRTparam(node *arg_node, info *arg_info)
   DBUG_ENTER("PRTparam");
   DBUG_PRINT("PRT", ("PRTparam"));
 
-  printf("%s %s", typeInString(PARAM_TYPE(arg_node)), PARAM_NAME(arg_node));
+  printf("%s %s", typeToString(PARAM_TYPE(arg_node)), PARAM_NAME(arg_node));
 
   if (PARAM_NEXT(arg_node))
   {
@@ -825,7 +825,7 @@ PRTglobdecl(node *arg_node, info *arg_info)
   DBUG_ENTER("PRTglobdecl");
   DBUG_PRINT("PRT", ("PRTglobdecl"));
 
-  printf("%s %s", typeInString(GLOBDECL_TYPE(arg_node)), GLOBDECL_NAME(arg_node));
+  printf("%s %s", typeToString(GLOBDECL_TYPE(arg_node)), GLOBDECL_NAME(arg_node));
 
   GLOBDECL_DIMS(arg_node) = TRAVopt(GLOBDECL_DIMS(arg_node), arg_info);
 
@@ -834,7 +834,7 @@ PRTglobdecl(node *arg_node, info *arg_info)
 
 /** <!--******************************************************************-->
  *
- * @fn typeInString
+ * @fn typeToString
  *
  * @brief returns the correct string value for the given type.
  *
@@ -843,7 +843,7 @@ PRTglobdecl(node *arg_node, info *arg_info)
  * @return void
  *
  ***************************************************************************/
-const char *typeInString(type type)
+const char *typeToString(type type)
 {
   switch (type)
   {
