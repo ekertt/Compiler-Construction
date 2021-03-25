@@ -21,6 +21,8 @@ extern node *STlatestEntry(node *linkedlist);
 
 extern node *STfind(node *symbol_table, const char *name);
 extern node *STfindEntry(node *entry, const char *name, type type);
+extern node *STfindByNode(node *table, node *link);
+extern size_t STcountVarDecls(node *table);
 
 extern void STdisplay(node *table, size_t tabs);
 extern void STprint(node *list, size_t tabs);

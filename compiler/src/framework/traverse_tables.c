@@ -22,9 +22,9 @@
 #include "symbol_table.h"
 #include "change_var_init_to_regular.h"
 #include "type_check.h"
-#include "gen_byte_code.h"
 #include "compiling_boolean_dis_and_conjunction.h"
 #include "transform_cast_expr.h"
+#include "gen_byte_code.h"
 
 
 travtables_t	travtables = {
@@ -56,14 +56,14 @@ travtables_t	travtables = {
 	/* TR_tc */
 	,{&TRAVerror, &TCprogram, &TRAVsons, &TRAVsons, &TRAVsons, &TCexprs, &TRAVsons, &TRAVsons, &TRAVsons, &TCreturn, &TCfuncall, &TCcast, &TRAVsons, &TCfundef, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TCassign, &TCbinop, &TCmonop, &TRAVsons, &TCvar, &TCnum, &TCfloat, &TCbool, &TRAVsons}
 
-	/* TR_gbc */
-	,{&TRAVerror, &GBCprogram, &GBCsymboltable, &GBCsymboltableentry, &GBCdecls, &GBCexprs, &GBCarrexpr, &GBCids, &GBCexprstmt, &GBCreturn, &GBCfuncall, &GBCcast, &GBCfundefs, &GBCfundef, &GBCfunbody, &GBCternary, &GBCifelse, &GBCwhile, &GBCdowhile, &GBCfor, &GBCglobdecl, &GBCglobdef, &GBCparam, &GBCvardecl, &GBCstmts, &GBCassign, &GBCbinop, &GBCmonop, &GBCvarlet, &GBCvar, &GBCnum, &GBCfloat, &GBCbool, &GBCerror}
-
 	/* TR_cb */
 	,{&TRAVerror, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &CBbinop, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons}
 
 	/* TR_tce */
 	,{&TRAVerror, &TCEprogram, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TCEcast, &TRAVsons, &TCEfundef, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TCEbinop, &TRAVsons, &TRAVsons, &TCEvar, &TCEnum, &TCEfloat, &TCEbool, &TRAVsons}
+
+	/* TR_gbc */
+	,{&TRAVerror, &GBCprogram, &GBCsymboltable, &GBCsymboltableentry, &GBCdecls, &GBCexprs, &GBCarrexpr, &GBCids, &GBCexprstmt, &GBCreturn, &GBCfuncall, &GBCcast, &GBCfundefs, &GBCfundef, &GBCfunbody, &GBCternary, &GBCifelse, &GBCwhile, &GBCdowhile, &GBCfor, &GBCglobdecl, &GBCglobdef, &GBCparam, &GBCvardecl, &GBCstmts, &GBCassign, &GBCbinop, &GBCmonop, &GBCvarlet, &GBCvar, &GBCnum, &GBCfloat, &GBCbool, &GBCerror}
 };
 
 preposttable_t	pretable = {
@@ -78,5 +78,5 @@ preposttable_t	posttable = {
 
 const char     *travnames[12] = {
 	"unknown"
-	,"prt", "copy", "free", "chk", "ftw", "st", "ci", "tc", "gbc", "cb", "tce"
+	,"prt", "copy", "free", "chk", "ftw", "st", "ci", "tc", "cb", "tce", "gbc"
 };

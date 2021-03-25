@@ -82,9 +82,13 @@
                              FILTER( ID);
                            }
 
-[0-9]+                     { yylval.cint=atoi(yytext);
-                             FILTER( NUM);
-                           }
+[0-9]+                      {
+                            if (strtol(yytext, 0, 10) > 2147483649) {
+                              CTIerror("Integer %s out of range", yytext);
+                            }
+                            yylval.cint=atoi(yytext);
+                            FILTER( NUM);
+                          }
 
 [0-9]*[.][0-9]+            { yylval.cflt = atof(yytext);  
                              FILTER( FLOATVAL);

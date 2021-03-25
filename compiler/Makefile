@@ -98,7 +98,7 @@ DEPS = $(foreach file,$(DEPENDENCY_FILES),$(dir $(file)).$(notdir $(file)))
 # Dummy rules
 #
 
-.PHONY: clean all devel make_devel %.track
+.PHONY: clean all devel make_devel %.track check
 .PHONY: check_os makefiles 
 .PHONY: %.go makesubdir 
 
@@ -274,9 +274,9 @@ endif
 #
 
 check: all
-    @cd test; \
-        CIVAS=../$(TEST_CIVAS) \
-        CIVVM=../$(TEST_CIVVM) \
-        CIVCC=../$(TEST_CIVCC) \
-        RUN_FUNCTIONAL=$(TEST_RUN_FUNCTIONAL) \
-        bash run.bash $(TEST_DIRS)
+	@cd test; \
+		CIVAS=../$(TEST_CIVAS) \
+		CIVVM=../$(TEST_CIVVM) \
+		CIVCC=../$(TEST_CIVCC) \
+		RUN_FUNCTIONAL=$(TEST_RUN_FUNCTIONAL) \
+		bash run.bash $(TEST_DIRS)

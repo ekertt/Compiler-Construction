@@ -30,9 +30,9 @@ struct INFO
     listnode *import_pool;
     listnode *global_pool;
 
-    int load_counter;   // counts amound of loads {0..n}
-    int branch_count;   // counts amound of stores - function bound {0..n}
-    int current_type;   // Current type of var {int, float, bool}
+    int load_counter; // counts amound of loads {0..n}
+    int branch_count; // counts amound of stores - function bound {0..n}
+    int current_type; // Current type of var {int, float, bool}
 };
 
 #define INFO_FILE(n) ((n)->fptr)
@@ -46,7 +46,6 @@ struct INFO
 #define INFO_LOAD_COUNTER(n) ((n)->load_counter)
 #define INFO_BRANCH_COUNT(n) ((n)->branch_count)
 #define INFO_CURRENT_TYPE(n) ((n)->current_type)
-
 
 /*
  * INFO functions
@@ -87,7 +86,7 @@ static info *FreeInfo(info *info)
     DBUG_RETURN(info);
 }
 
-char * createBranch(const char *name, info *info)
+char *createBranch(const char *name, info *info)
 {
     INFO_BRANCH_COUNT(info) += 1;
     char *index = STRitoa(INFO_BRANCH_COUNT(info));
@@ -101,10 +100,12 @@ char * createBranch(const char *name, info *info)
 void addToConstPool(info *arg_info, char *value)
 {
     // is the linked list set?
-    if (INFO_CONST_POOL(arg_info) == NULL) INFO_CONST_POOL(arg_info) = LLcreate(value, INFO_LOAD_COUNTER(arg_info), NULL);
+    if (INFO_CONST_POOL(arg_info) == NULL)
+        INFO_CONST_POOL(arg_info) = LLcreate(value, INFO_LOAD_COUNTER(arg_info), NULL);
 
     // append the value
-    else LLappend(INFO_CONST_POOL(arg_info), value, INFO_LOAD_COUNTER(arg_info));
+    else
+        LLappend(INFO_CONST_POOL(arg_info), value, INFO_LOAD_COUNTER(arg_info));
 
     // increment the counter
     INFO_LOAD_COUNTER(arg_info) += 1;
@@ -113,28 +114,34 @@ void addToConstPool(info *arg_info, char *value)
 void addToExportPool(info *arg_info, char *value)
 {
     // is the linked list set?
-    if (INFO_EXPORT_POOL(arg_info) == NULL) INFO_EXPORT_POOL(arg_info) = LLcreate(value, 0, NULL);
+    if (INFO_EXPORT_POOL(arg_info) == NULL)
+        INFO_EXPORT_POOL(arg_info) = LLcreate(value, 0, NULL);
 
     // append the value
-    else LLappend(INFO_EXPORT_POOL(arg_info), value, 0);
+    else
+        LLappend(INFO_EXPORT_POOL(arg_info), value, 0);
 }
 
 void addToExternPool(info *arg_info, char *value)
 {
     // is the linked list set?
-    if (INFO_IMPORT_POOL(arg_info) == NULL) INFO_IMPORT_POOL(arg_info) = LLcreate(value, 0, NULL);
+    if (INFO_IMPORT_POOL(arg_info) == NULL)
+        INFO_IMPORT_POOL(arg_info) = LLcreate(value, 0, NULL);
 
     // append the value
-    else LLappend(INFO_IMPORT_POOL(arg_info), value, 0);
+    else
+        LLappend(INFO_IMPORT_POOL(arg_info), value, 0);
 }
 
 void addToGlobalPool(info *arg_info, char *value)
 {
     // is the linked list set?
-    if (INFO_GLOBAL_POOL(arg_info) == NULL) INFO_GLOBAL_POOL(arg_info) = LLcreate(value, 0, NULL);
+    if (INFO_GLOBAL_POOL(arg_info) == NULL)
+        INFO_GLOBAL_POOL(arg_info) = LLcreate(value, 0, NULL);
 
     // append the value
-    else LLappend(INFO_GLOBAL_POOL(arg_info), value, 0);
+    else
+        LLappend(INFO_GLOBAL_POOL(arg_info), value, 0);
 }
 
 /**
@@ -256,12 +263,13 @@ node *GBCexprstmt(node *arg_node, info *arg_info)
     DBUG_ENTER("GBCexprstmt");
     DBUG_PRINT("GBC", ("GBCexprstmt"));
 
-    node * expr = EXPRSTMT_EXPR(arg_node);
+    node *expr = EXPRSTMT_EXPR(arg_node);
     TRAVdo(expr, arg_info);
 
     DBUG_PRINT("GBC", ("GBCexprstmt 2"));
 
-    if (NODE_TYPE (expr) != N_funcall) DBUG_RETURN(arg_node);
+    if (NODE_TYPE(expr) != N_funcall)
+        DBUG_RETURN(arg_node);
 
     DBUG_PRINT("GBC", ("GBCexprstmt 3"));
 
@@ -269,13 +277,17 @@ node *GBCexprstmt(node *arg_node, info *arg_info)
 
     node *link = SYMBOLTABLEENTRY_LINK(entry);
 
-    if (FUNDEF_ISEXTERN (link)) DBUG_RETURN(arg_node);
+    if (FUNDEF_ISEXTERN(link))
+        DBUG_RETURN(arg_node);
 
     DBUG_PRINT("GBC", ("GBCexprstmt 4"));
 
-    if (SYMBOLTABLEENTRY_TYPE(entry) == T_int) fprintf(INFO_FILE(arg_info), "\tipop\n");
-    else if (SYMBOLTABLEENTRY_TYPE(entry) == T_float) fprintf(INFO_FILE(arg_info), "\tfpop\n");
-    else if (SYMBOLTABLEENTRY_TYPE(entry) == T_bool) fprintf(INFO_FILE(arg_info), "\tbpop\n");
+    if (SYMBOLTABLEENTRY_TYPE(entry) == T_int)
+        fprintf(INFO_FILE(arg_info), "\tipop\n");
+    else if (SYMBOLTABLEENTRY_TYPE(entry) == T_float)
+        fprintf(INFO_FILE(arg_info), "\tfpop\n");
+    else if (SYMBOLTABLEENTRY_TYPE(entry) == T_bool)
+        fprintf(INFO_FILE(arg_info), "\tbpop\n");
 
     DBUG_RETURN(arg_node);
 }
@@ -322,7 +334,7 @@ node *GBCfuncall(node *arg_node, info *arg_info)
 
     TRAVopt(FUNCALL_ARGS(arg_node), arg_info);
 
-    INFO_CURRENT_TYPE(arg_info) = SYMBOLTABLEENTRY_TYPE (entry);
+    INFO_CURRENT_TYPE(arg_info) = SYMBOLTABLEENTRY_TYPE(entry);
 
     // print
     // node *table = SYMBOLTABLEENTRY_TABLE(entry);
@@ -330,10 +342,10 @@ node *GBCfuncall(node *arg_node, info *arg_info)
 
     if (FUNDEF_ISEXTERN(link) == 1)
     {
-        fprintf(INFO_FILE(arg_info), "\tjsre %d\n", SYMBOLTABLEENTRY_OFFSET ( entry));
+        fprintf(INFO_FILE(arg_info), "\tjsre %d\n", SYMBOLTABLEENTRY_OFFSET(entry));
     }
     else
-        fprintf(INFO_FILE(arg_info), "\tjsr %s\n", FUNCALL_NAME(arg_node)); //%ld STparams(table), 
+        fprintf(INFO_FILE(arg_info), "\tjsr %s\n", FUNCALL_NAME(arg_node)); //%ld STparams(table),
 
     DBUG_RETURN(arg_node);
 }
@@ -384,7 +396,7 @@ node *GBCfundef(node *arg_node, info *arg_info)
         int length = snprintf(
             NULL,
             0,
-            "fun \"%s\" %s",
+            "fun \"%s\" %s %s",
             FUNDEF_NAME(arg_node),
             typeToString(FUNDEF_TYPE(arg_node)),
             params == NULL ? "" : params);
@@ -394,7 +406,7 @@ node *GBCfundef(node *arg_node, info *arg_info)
         snprintf(
             str,
             length + 1,
-            "fun \"%s\" %s",
+            "fun \"%s\" %s %s",
             FUNDEF_NAME(arg_node),
             typeToString(FUNDEF_TYPE(arg_node)),
             params == NULL ? "" : params);
@@ -419,7 +431,8 @@ node *GBCfundef(node *arg_node, info *arg_info)
             for (; fentry != NULL; fentry = SYMBOLTABLEENTRY_NEXT(fentry))
             {
                 // do we have a param entry
-                if (!SYMBOLTABLEENTRY_PARAM(fentry)) continue;
+                if (!SYMBOLTABLEENTRY_PARAM(fentry))
+                    continue;
 
                 char *temp = STRcatn(3, params, " ", typeToString(SYMBOLTABLEENTRY_TYPE(fentry)));
                 free(params);
@@ -431,7 +444,7 @@ node *GBCfundef(node *arg_node, info *arg_info)
             int length = snprintf(
                 NULL,
                 0,
-                "fun \"%s\" %s %s",
+                "fun \"%s\" %s %s %s",
                 FUNDEF_NAME(arg_node),
                 typeToString(FUNDEF_TYPE(arg_node)),
                 params == NULL ? "" : params,
@@ -442,7 +455,7 @@ node *GBCfundef(node *arg_node, info *arg_info)
             snprintf(
                 str,
                 length + 1,
-                "fun \"%s\" %s %s",
+                "fun \"%s\" %s %s %s",
                 FUNDEF_NAME(arg_node),
                 typeToString(FUNDEF_TYPE(arg_node)),
                 params == NULL ? "" : params,
@@ -455,7 +468,7 @@ node *GBCfundef(node *arg_node, info *arg_info)
         INFO_SYMBOL_TABLE(arg_info) = SYMBOLTABLEENTRY_TABLE(entry); // nested symbol table
 
         // number of registers to use
-        size_t registers = 0;// STVardecls(INFO_SYMBOL_TABLE(arg_info)); // TODO
+        size_t registers = STcountVarDecls(INFO_SYMBOL_TABLE(arg_info));
 
         if (registers > 0)
         {
@@ -523,7 +536,8 @@ node *GBCifelse(node *arg_node, info *arg_info)
 
     // free the string
     free(branch);
-    if (IFELSE_ELSE(arg_node) != NULL) free(end);
+    if (IFELSE_ELSE(arg_node) != NULL)
+        free(end);
 
     DBUG_RETURN(arg_node);
 }
@@ -534,7 +548,7 @@ node *GBCwhile(node *arg_node, info *arg_info)
     DBUG_PRINT("GBC", ("GBCwhile"));
 
     // creat the branch name
-    char *branch = createBranch( "while", arg_info);
+    char *branch = createBranch("while", arg_info);
 
     // creat the end branch
     fprintf(INFO_FILE(arg_info), "\n%s:\n", branch);
@@ -543,7 +557,7 @@ node *GBCwhile(node *arg_node, info *arg_info)
     TRAVdo(WHILE_COND(arg_node), arg_info);
 
     // creat brach name
-    char *end = createBranch( "end", arg_info);
+    char *end = createBranch("end", arg_info);
 
     // print to the file
     fprintf(INFO_FILE(arg_info), "\tbranch_f %s\n", end);
@@ -571,7 +585,7 @@ node *GBCdowhile(node *arg_node, info *arg_info)
     DBUG_PRINT("GBC", ("GBCdowhile"));
 
     // creat the branch name
-    char *branch = createBranch( "dowhile", arg_info);
+    char *branch = createBranch("dowhile", arg_info);
 
     // creat the end branch
     fprintf(INFO_FILE(arg_info), "\n%s:\n", branch);
@@ -624,9 +638,9 @@ node *GBCglobdef(node *arg_node, info *arg_info)
         addToExportPool(arg_info, str);
     }
 
-    if (!GLOBDEF_ISEXTERN(arg_node)) 
+    if (!GLOBDEF_ISEXTERN(arg_node))
     {
-      addToGlobalPool(arg_info, typeToString(GLOBDEF_TYPE(arg_node)));
+        addToGlobalPool(arg_info, STRcpy(typeToString(GLOBDEF_TYPE(arg_node))));
     }
 
     TRAVopt(GLOBDEF_DIMS(arg_node), arg_info);
@@ -656,7 +670,9 @@ node *GBCglobdecl(node *arg_node, info *arg_info)
         addToExportPool(arg_info, str);
     }
 
-    if (!GLOBDEF_ISEXTERN(arg_node)) addToGlobalPool(arg_info, STRcpy(GLOBDEF_TYPE(arg_node)));
+    if (!GLOBDEF_ISEXTERN(arg_node)) {
+        addToGlobalPool(arg_info, STRcpy(typeToString(GLOBDEF_TYPE(arg_node))));
+    }
 
     TRAVopt(GLOBDEF_DIMS(arg_node), arg_info);
 
@@ -711,11 +727,18 @@ node *GBCassign(node *arg_node, info *arg_info)
     char type;
     switch (SYMBOLTABLEENTRY_TYPE(entry))
     {
-    case T_int:     type = 'i'; break;
-    case T_float:   type = 'f'; break;
-    case T_bool:    type = 'b'; break;
+    case T_int:
+        type = 'i';
+        break;
+    case T_float:
+        type = 'f';
+        break;
+    case T_bool:
+        type = 'b';
+        break;
     case T_void:
-    case T_unknown: break;
+    case T_unknown:
+        break;
     }
 
     if (SYMBOLTABLEENTRY_DEPTH(entry) == 0)
@@ -736,7 +759,7 @@ node *GBCvarlet(node *arg_node, info *arg_info)
 
     // set the current
     node *table = INFO_SYMBOL_TABLE(arg_info);
-    INFO_SYMBOL_TABLE_ENTRY(arg_info) = STdeepSearchVariableByName(table, VARLET_NAME(arg_node));
+    INFO_SYMBOL_TABLE_ENTRY(arg_info) = STfindInParent(table, VARLET_NAME(arg_node));
 
     DBUG_RETURN(arg_node);
 }
@@ -886,17 +909,17 @@ node *GBCvar(node *arg_node, info *arg_info)
     DBUG_ENTER("GBCvar");
     DBUG_PRINT("GBC", ("GBCvar"));
 
-    node *decl = VAR_DECL ( arg_node);
-    node *entry = STdeepSearchByNode(INFO_SYMBOL_TABLE(arg_info), decl); //TODO
+    node *decl = VAR_DECL(arg_node);
+    node *entry = STfindByNode(INFO_SYMBOL_TABLE(arg_info), decl); //TODO
 
     // Set current type to int
     INFO_CURRENT_TYPE(arg_info) = SYMBOLTABLEENTRY_TYPE(entry);
 
     // is this the global scope?
-    if (NODE_TYPE ( decl) == N_globdef)
+    if (NODE_TYPE(decl) == N_globdef)
     {
         // change scope to extern if flag is set.
-        char scope = GLOBDEF_ISEXTERN ( decl) ? 'e' : 'g';
+        char scope = GLOBDEF_ISEXTERN(decl) ? 'e' : 'g';
 
         if (GLOBDEF_TYPE(decl) == T_int)
             fprintf(INFO_FILE(arg_info), "\tiload%c %d\n", scope, SYMBOLTABLEENTRY_OFFSET(entry));
@@ -909,20 +932,17 @@ node *GBCvar(node *arg_node, info *arg_info)
             fprintf(
                 INFO_FILE(arg_info),
                 SYMBOLTABLEENTRY_OFFSET(entry) < 4 ? "\tiload_%d\n" : "\tiload %d\n",
-                SYMBOLTABLEENTRY_OFFSET(entry)
-            );
+                SYMBOLTABLEENTRY_OFFSET(entry));
         else if (SYMBOLTABLEENTRY_TYPE(entry) == T_float)
             fprintf(
                 INFO_FILE(arg_info),
                 SYMBOLTABLEENTRY_OFFSET(entry) < 4 ? "\tfload_%d\n" : "\tfload %d\n",
-                SYMBOLTABLEENTRY_OFFSET(entry)
-            );
+                SYMBOLTABLEENTRY_OFFSET(entry));
         else if (SYMBOLTABLEENTRY_TYPE(entry) == T_bool)
             fprintf(
                 INFO_FILE(arg_info),
                 SYMBOLTABLEENTRY_OFFSET(entry) < 4 ? "\tbload_%d\n" : "\tbload %d\n",
-                SYMBOLTABLEENTRY_OFFSET(entry)
-            );
+                SYMBOLTABLEENTRY_OFFSET(entry));
     }
 
     DBUG_RETURN(arg_node);
@@ -1036,7 +1056,7 @@ node *GBCternary(node *arg_node, info *arg_info)
     DBUG_PRINT("GBC", ("GBCternary"));
 
     // creat the branch name
-    char *branch = createBranch( "false_expr", arg_info);
+    char *branch = createBranch("false_expr", arg_info);
 
     // traverse over the expresion
     TRAVopt(TERNARY_EXPR(arg_node), arg_info);
@@ -1045,10 +1065,10 @@ node *GBCternary(node *arg_node, info *arg_info)
     fprintf(INFO_FILE(arg_info), "\tbranch_f %s\n", branch);
 
     // traverse over true branch
-    TRAVopt(TERNARY_TRUE(arg_node), arg_info); //TODO
+    TRAVopt(TERNARY_THEN(arg_node), arg_info); //TODO
 
     // creat the branch name
-    char *end = createBranch( "end", arg_info);
+    char *end = createBranch("end", arg_info);
 
     // write the jump
     fprintf(INFO_FILE(arg_info), "\tjump %s\n", end);
@@ -1057,7 +1077,7 @@ node *GBCternary(node *arg_node, info *arg_info)
     fprintf(INFO_FILE(arg_info), "%s:\n", branch);
 
     // traverse over false branch
-    TRAVopt(TERNARY_FALSE(arg_node), arg_info); //TODO
+    TRAVopt(TERNARY_ELSE(arg_node), arg_info); //TODO
 
     // write the end branch
     fprintf(INFO_FILE(arg_info), "%s:\n", end);
@@ -1092,7 +1112,7 @@ node *GBCdoGenByteCode(node *syntaxtree)
     writeGlobals(info);
 
     // close the file
-    fclose (INFO_FILE(info));
+    fclose(INFO_FILE(info));
 
     // free the pointer
     FreeInfo(info);
