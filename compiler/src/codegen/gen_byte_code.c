@@ -100,10 +100,13 @@ char *createBranch(const char *name, info *info)
 void addToConstPool(info *arg_info, char *value)
 {
     if (INFO_CONST_POOL(arg_info) == NULL)
+    {
         INFO_CONST_POOL(arg_info) = LLcreate(value, INFO_LOAD_COUNTER(arg_info), NULL);
-
+    }
     else
+    {
         LLappend(INFO_CONST_POOL(arg_info), value, INFO_LOAD_COUNTER(arg_info));
+    }
 
     INFO_LOAD_COUNTER(arg_info) += 1;
 }
@@ -111,28 +114,37 @@ void addToConstPool(info *arg_info, char *value)
 void addToExportPool(info *arg_info, char *value)
 {
     if (INFO_EXPORT_POOL(arg_info) == NULL)
+    {
         INFO_EXPORT_POOL(arg_info) = LLcreate(value, 0, NULL);
-
+    }
     else
+    {
         LLappend(INFO_EXPORT_POOL(arg_info), value, 0);
+    }
 }
 
 void addToExternPool(info *arg_info, char *value)
 {
     if (INFO_IMPORT_POOL(arg_info) == NULL)
+    {
         INFO_IMPORT_POOL(arg_info) = LLcreate(value, 0, NULL);
-
+    }
     else
+    {
         LLappend(INFO_IMPORT_POOL(arg_info), value, 0);
+    }
 }
 
 void addToGlobalPool(info *arg_info, char *value)
 {
     if (INFO_GLOBAL_POOL(arg_info) == NULL)
+    {
         INFO_GLOBAL_POOL(arg_info) = LLcreate(value, 0, NULL);
-
+    }
     else
+    {
         LLappend(INFO_GLOBAL_POOL(arg_info), value, 0);
+    }
 }
 
 /**
@@ -254,7 +266,9 @@ node *GBCexprstmt(node *arg_node, info *arg_info)
     DBUG_PRINT("GBC", ("GBCexprstmt 2"));
 
     if (NODE_TYPE(expr) != N_funcall)
+    {
         DBUG_RETURN(arg_node);
+    }
 
     DBUG_PRINT("GBC", ("GBCexprstmt 3"));
 
@@ -263,16 +277,24 @@ node *GBCexprstmt(node *arg_node, info *arg_info)
     node *link = SYMBOLTABLEENTRY_LINK(entry);
 
     if (FUNDEF_ISEXTERN(link))
+    {
         DBUG_RETURN(arg_node);
+    }
 
     DBUG_PRINT("GBC", ("GBCexprstmt 4"));
 
     if (SYMBOLTABLEENTRY_TYPE(entry) == T_int)
+    {
         fprintf(INFO_FILE(arg_info), "\tipop\n");
-    else if (SYMBOLTABLEENTRY_TYPE(entry) == T_float)
+    }
+    else if (SYMBOLTABLEENTRY_TYPE(entry) == T_float) 
+    {
         fprintf(INFO_FILE(arg_info), "\tfpop\n");
+    }
     else if (SYMBOLTABLEENTRY_TYPE(entry) == T_bool)
+    {
         fprintf(INFO_FILE(arg_info), "\tbpop\n");
+    }
 
     DBUG_RETURN(arg_node);
 }
@@ -329,7 +351,9 @@ node *GBCfuncall(node *arg_node, info *arg_info)
         fprintf(INFO_FILE(arg_info), "\tjsre %d\n", SYMBOLTABLEENTRY_OFFSET(entry));
     }
     else
+    {
         fprintf(INFO_FILE(arg_info), "\tjsr %ld %s\n", STcountParams(table), FUNCALL_NAME(arg_node));
+    }
 
     DBUG_RETURN(arg_node);
 }
@@ -362,7 +386,9 @@ node *GBCfundef(node *arg_node, info *arg_info)
         for (; fentry != NULL; fentry = SYMBOLTABLEENTRY_NEXT(fentry))
         {
             if (!SYMBOLTABLEENTRY_PARAM(fentry))
+            {
                 continue;
+            }
 
             char *temp = STRcatn(3, params, " ", typeToString(SYMBOLTABLEENTRY_TYPE(fentry)));
 
@@ -449,7 +475,9 @@ node *GBCfundef(node *arg_node, info *arg_info)
         TRAVopt(FUNDEF_FUNBODY(arg_node), arg_info);
 
         if (FUNDEF_TYPE(arg_node) == T_void)
+        {
             fprintf(INFO_FILE(arg_info), "\t%s\n", "return");
+        }
 
         INFO_SYMBOL_TABLE(arg_info) = table;
 
@@ -496,7 +524,9 @@ node *GBCifelse(node *arg_node, info *arg_info)
 
     free(branch);
     if (IFELSE_ELSE(arg_node) != NULL)
+    {
         free(end);
+    }
 
     DBUG_RETURN(arg_node);
 }
@@ -601,7 +631,6 @@ node *GBCglobdecl(node *arg_node, info *arg_info)
         char *str = STRcatn(4, "var \"", GLOBDEF_NAME(arg_node), "\" ", typeToString(GLOBDEF_TYPE(arg_node)));
         addToExternPool(arg_info, str);
     }
-
     else if (GLOBDEF_ISEXPORT(arg_node))
     {
         node *entry = STfindInParent(INFO_SYMBOL_TABLE(arg_info), GLOBDEF_NAME(arg_node));
@@ -858,27 +887,37 @@ node *GBCvar(node *arg_node, info *arg_info)
         char scope = GLOBDEF_ISEXTERN(decl) ? 'e' : 'g';
 
         if (GLOBDEF_TYPE(decl) == T_int)
+        {
             fprintf(INFO_FILE(arg_info), "\tiload%c %d\n", scope, SYMBOLTABLEENTRY_OFFSET(entry));
+        }
         else if (GLOBDEF_TYPE(decl) == T_float)
+        {
             fprintf(INFO_FILE(arg_info), "\tfload%c %d\n", scope, SYMBOLTABLEENTRY_OFFSET(entry));
+        }
     }
     else
     {
         if (SYMBOLTABLEENTRY_TYPE(entry) == T_int)
+        {
             fprintf(
                 INFO_FILE(arg_info),
                 SYMBOLTABLEENTRY_OFFSET(entry) < 4 ? "\tiload_%d\n" : "\tiload %d\n",
                 SYMBOLTABLEENTRY_OFFSET(entry));
+        }
         else if (SYMBOLTABLEENTRY_TYPE(entry) == T_float)
+        {
             fprintf(
                 INFO_FILE(arg_info),
                 SYMBOLTABLEENTRY_OFFSET(entry) < 4 ? "\tfload_%d\n" : "\tfload %d\n",
                 SYMBOLTABLEENTRY_OFFSET(entry));
+        }
         else if (SYMBOLTABLEENTRY_TYPE(entry) == T_bool)
+        {
             fprintf(
                 INFO_FILE(arg_info),
                 SYMBOLTABLEENTRY_OFFSET(entry) < 4 ? "\tbload_%d\n" : "\tbload %d\n",
                 SYMBOLTABLEENTRY_OFFSET(entry));
+        }
     }
 
     DBUG_RETURN(arg_node);
@@ -1012,7 +1051,9 @@ node *GBCdoGenByteCode(node *syntaxtree)
     INFO_FILE(info) = fopen(global.outfile, "w");
 
     if (INFO_FILE(info) == NULL)
+    {
         CTIabort("Could not open file: %s", global.outfile);
+    }
 
     TRAVpush(TR_gbc);
     syntaxtree = TRAVdo(syntaxtree, info);
