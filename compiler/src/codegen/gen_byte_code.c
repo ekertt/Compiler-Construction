@@ -76,10 +76,10 @@ static info *FreeInfo(info *info)
 {
     DBUG_ENTER("FreeInfo");
 
-    LLdispose(INFO_CONST_POOL(info));
-    LLdispose(INFO_EXPORT_POOL(info));
-    LLdispose(INFO_IMPORT_POOL(info));
-    LLdispose(INFO_GLOBAL_POOL(info));
+    dipsose(INFO_CONST_POOL(info));
+    dipsose(INFO_EXPORT_POOL(info));
+    dipsose(INFO_IMPORT_POOL(info));
+    dipsose(INFO_GLOBAL_POOL(info));
 
     info = MEMfree(info);
 
@@ -101,11 +101,11 @@ void addToConstPool(info *arg_info, char *value)
 {
     if (INFO_CONST_POOL(arg_info) == NULL)
     {
-        INFO_CONST_POOL(arg_info) = LLcreate(value, INFO_LOAD_COUNTER(arg_info), NULL);
+        INFO_CONST_POOL(arg_info) = push(value, INFO_LOAD_COUNTER(arg_info), NULL);
     }
     else
     {
-        LLappend(INFO_CONST_POOL(arg_info), value, INFO_LOAD_COUNTER(arg_info));
+        add(INFO_CONST_POOL(arg_info), value, INFO_LOAD_COUNTER(arg_info));
     }
 
     INFO_LOAD_COUNTER(arg_info) += 1;
@@ -115,11 +115,11 @@ void addToExportPool(info *arg_info, char *value)
 {
     if (INFO_EXPORT_POOL(arg_info) == NULL)
     {
-        INFO_EXPORT_POOL(arg_info) = LLcreate(value, 0, NULL);
+        INFO_EXPORT_POOL(arg_info) = push(value, 0, NULL);
     }
     else
     {
-        LLappend(INFO_EXPORT_POOL(arg_info), value, 0);
+        add(INFO_EXPORT_POOL(arg_info), value, 0);
     }
 }
 
@@ -127,11 +127,11 @@ void addToExternPool(info *arg_info, char *value)
 {
     if (INFO_IMPORT_POOL(arg_info) == NULL)
     {
-        INFO_IMPORT_POOL(arg_info) = LLcreate(value, 0, NULL);
+        INFO_IMPORT_POOL(arg_info) = push(value, 0, NULL);
     }
     else
     {
-        LLappend(INFO_IMPORT_POOL(arg_info), value, 0);
+        add(INFO_IMPORT_POOL(arg_info), value, 0);
     }
 }
 
@@ -139,11 +139,11 @@ void addToGlobalPool(info *arg_info, char *value)
 {
     if (INFO_GLOBAL_POOL(arg_info) == NULL)
     {
-        INFO_GLOBAL_POOL(arg_info) = LLcreate(value, 0, NULL);
+        INFO_GLOBAL_POOL(arg_info) = push(value, 0, NULL);
     }
     else
     {
-        LLappend(INFO_GLOBAL_POOL(arg_info), value, 0);
+        add(INFO_GLOBAL_POOL(arg_info), value, 0);
     }
 }
 
@@ -926,7 +926,7 @@ node *GBCnum(node *arg_node, info *arg_info)
     DBUG_PRINT("GBC", ("GBCnum"));
 
     char *str = STRcat("int ", STRitoa(NUM_VALUE(arg_node)));
-    linkedlist *const_pool = LLsearch(INFO_CONST_POOL(arg_info), str);
+    linkedlist *const_pool = search(INFO_CONST_POOL(arg_info), str);
 
     if (const_pool == NULL)
     {
@@ -953,7 +953,7 @@ node *GBCfloat(node *arg_node, info *arg_info)
     char *str = malloc(length + 1);
     snprintf(str, length + 1, "float %f", FLOAT_VALUE(arg_node));
 
-    linkedlist *const_pool = LLsearch(INFO_CONST_POOL(arg_info), str);
+    linkedlist *const_pool = search(INFO_CONST_POOL(arg_info), str);
 
     if (const_pool == NULL)
     {
@@ -978,7 +978,7 @@ node *GBCbool(node *arg_node, info *arg_info)
 
     char *str = STRcat("bool ", BOOL_VALUE(arg_node) ? "true" : "false");
 
-    linkedlist *const_pool = LLsearch(INFO_CONST_POOL(arg_info), str);
+    linkedlist *const_pool = search(INFO_CONST_POOL(arg_info), str);
 
     if (const_pool == NULL)
     {

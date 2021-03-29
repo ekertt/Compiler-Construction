@@ -18,7 +18,7 @@ typedef struct linkedlist
 
 typedef void (*callback)(linkedlist *data);
 
-linkedlist *LLcreate(char *val, int count, linkedlist *next)
+linkedlist *push(char *val, int count, linkedlist *next)
 {
     linkedlist *newList = (linkedlist *)malloc(sizeof(linkedlist));
     newList->val = val;
@@ -28,50 +28,58 @@ linkedlist *LLcreate(char *val, int count, linkedlist *next)
     return newList;
 }
 
-linkedlist *LLappend(linkedlist *head, char *val, int count)
+linkedlist *add(linkedlist *head, char *val, int count)
 {
     if (head == NULL)
+    {
         return NULL;
+    }
 
-    linkedlist *cursor = head;
+    linkedlist *current = head;
 
-    while (cursor->next != NULL)
-        cursor = cursor->next;
+    while (current->next != NULL)
+    {
+        current = current->next;
+    }
 
-    linkedlist *new_linkedlist = LLcreate(val, count, NULL);
+    linkedlist *newList = push(val, count, NULL);
 
-    cursor->next = new_linkedlist;
+    current->next = newList;
 
     return head;
 }
 
-void LLdispose(linkedlist *cursor)
+void dipsose(linkedlist *current)
 {
-    if (cursor == NULL)
+    if (current == NULL)
+    {
         return;
+    }
 
     linkedlist *tmp;
 
-    while (cursor != NULL)
+    while (current != NULL)
     {
-        tmp = cursor->next;
-        free(cursor->val);
-        free(cursor);
+        tmp = current->next;
+        free(current->val);
+        free(current);
 
-        cursor = tmp;
+        current = tmp;
     }
 }
 
-linkedlist *LLsearch(linkedlist *head, const char *val)
+linkedlist *search(linkedlist *head, const char *val)
 {
 
-    linkedlist *cursor = head;
-    while (cursor != NULL)
+    linkedlist *current = head;
+    while (current != NULL)
     {
-        if (strcmp(cursor->val, val) == 0)
-            return cursor;
+        if (strcmp(current->val, val) == 0)
+        {
+            return current;
+        }
 
-        cursor = cursor->next;
+        current = current->next;
     }
     return NULL;
 }
