@@ -25,10 +25,10 @@ struct INFO
     node *symbol_table;
     node *symbol_table_entry;
 
-    listnode *const_pool;
-    listnode *export_pool;
-    listnode *import_pool;
-    listnode *global_pool;
+    linkedlist *const_pool;
+    linkedlist *export_pool;
+    linkedlist *import_pool;
+    linkedlist *global_pool;
 
     int load_counter;
     int branch_count;
@@ -156,33 +156,33 @@ void addToGlobalPool(info *arg_info, char *value)
  */
 void writeGlobals(info *arg_info)
 {
-    listnode *const_pool = INFO_CONST_POOL(arg_info);
-    listnode *export_pool = INFO_EXPORT_POOL(arg_info);
-    listnode *import_pool = INFO_IMPORT_POOL(arg_info);
-    listnode *global_pool = INFO_GLOBAL_POOL(arg_info);
+    linkedlist *const_pool = INFO_CONST_POOL(arg_info);
+    linkedlist *export_pool = INFO_EXPORT_POOL(arg_info);
+    linkedlist *import_pool = INFO_IMPORT_POOL(arg_info);
+    linkedlist *global_pool = INFO_GLOBAL_POOL(arg_info);
     FILE *fileptr = INFO_FILE(arg_info);
 
     while (const_pool != NULL)
     {
-        fprintf(fileptr, ".const %s\n", const_pool->value);
+        fprintf(fileptr, ".const %s\n", const_pool->val);
         const_pool = const_pool->next;
     }
 
     while (export_pool != NULL)
     {
-        fprintf(fileptr, ".export%s\n", export_pool->value);
+        fprintf(fileptr, ".export%s\n", export_pool->val);
         export_pool = export_pool->next;
     }
 
     while (global_pool != NULL)
     {
-        fprintf(fileptr, ".global %s\n", global_pool->value);
+        fprintf(fileptr, ".global %s\n", global_pool->val);
         global_pool = global_pool->next;
     }
 
     while (import_pool != NULL)
     {
-        fprintf(fileptr, ".import%s\n", import_pool->value);
+        fprintf(fileptr, ".import%s\n", import_pool->val);
         import_pool = import_pool->next;
     }
 }
@@ -926,7 +926,7 @@ node *GBCnum(node *arg_node, info *arg_info)
     DBUG_PRINT("GBC", ("GBCnum"));
 
     char *str = STRcat("int ", STRitoa(NUM_VALUE(arg_node)));
-    listnode *const_pool = LLsearch(INFO_CONST_POOL(arg_info), str);
+    linkedlist *const_pool = LLsearch(INFO_CONST_POOL(arg_info), str);
 
     if (const_pool == NULL)
     {
@@ -935,7 +935,7 @@ node *GBCnum(node *arg_node, info *arg_info)
     }
     else
     {
-        fprintf(INFO_FILE(arg_info), "\t%s %d\n", "iloadc", const_pool->counter);
+        fprintf(INFO_FILE(arg_info), "\t%s %d\n", "iloadc", const_pool->count);
         free(str);
     }
 
@@ -953,7 +953,7 @@ node *GBCfloat(node *arg_node, info *arg_info)
     char *str = malloc(length + 1);
     snprintf(str, length + 1, "float %f", FLOAT_VALUE(arg_node));
 
-    listnode *const_pool = LLsearch(INFO_CONST_POOL(arg_info), str);
+    linkedlist *const_pool = LLsearch(INFO_CONST_POOL(arg_info), str);
 
     if (const_pool == NULL)
     {
@@ -962,7 +962,7 @@ node *GBCfloat(node *arg_node, info *arg_info)
     }
     else
     {
-        fprintf(INFO_FILE(arg_info), "\t%s %d\n", "floadc", const_pool->counter);
+        fprintf(INFO_FILE(arg_info), "\t%s %d\n", "floadc", const_pool->count);
         free(str);
     }
 
@@ -978,7 +978,7 @@ node *GBCbool(node *arg_node, info *arg_info)
 
     char *str = STRcat("bool ", BOOL_VALUE(arg_node) ? "true" : "false");
 
-    listnode *const_pool = LLsearch(INFO_CONST_POOL(arg_info), str);
+    linkedlist *const_pool = LLsearch(INFO_CONST_POOL(arg_info), str);
 
     if (const_pool == NULL)
     {
@@ -987,7 +987,7 @@ node *GBCbool(node *arg_node, info *arg_info)
     }
     else
     {
-        fprintf(INFO_FILE(arg_info), "\t%s %d\n", "bloadc", const_pool->counter);
+        fprintf(INFO_FILE(arg_info), "\t%s %d\n", "bloadc", const_pool->count);
         free(str);
     }
 
