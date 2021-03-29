@@ -193,7 +193,6 @@ node *GBCprogram(node *arg_node, info *arg_info)
     DBUG_PRINT("GBC", ("GBCprogram"));
 
     INFO_SYMBOL_TABLE(arg_info) = PROGRAM_SYMBOLTABLE(arg_node);
-
     TRAVdo(PROGRAM_DECLS(arg_node), arg_info);
 
     DBUG_RETURN(arg_node);
@@ -287,7 +286,7 @@ node *GBCexprstmt(node *arg_node, info *arg_info)
     {
         fprintf(INFO_FILE(arg_info), "\tipop\n");
     }
-    else if (SYMBOLTABLEENTRY_TYPE(entry) == T_float) 
+    else if (SYMBOLTABLEENTRY_TYPE(entry) == T_float)
     {
         fprintf(INFO_FILE(arg_info), "\tfpop\n");
     }
@@ -308,23 +307,21 @@ node *GBCreturn(node *arg_node, info *arg_info)
 
     TRAVopt(RETURN_EXPR(arg_node), arg_info);
 
-    switch (SYMBOLTABLE_RETURNTYPE(table))
+    if (SYMBOLTABLE_RETURNTYPE(table) == T_int)
     {
-    case T_int:
         fprintf(INFO_FILE(arg_info), "\t%s\n", "ireturn");
-        break;
-    case T_float:
+    } else if (SYMBOLTABLE_RETURNTYPE(table) == T_float)
+    {
         fprintf(INFO_FILE(arg_info), "\t%s\n", "freturn");
-        break;
-    case T_bool:
+    } else if (SYMBOLTABLE_RETURNTYPE(table) == T_bool)
+    {
         fprintf(INFO_FILE(arg_info), "\t%s\n", "breturn");
-        break;
-    case T_void:
+    } else if (SYMBOLTABLE_RETURNTYPE(table) == T_void)
+    {
         fprintf(INFO_FILE(arg_info), "\t%s\n", "return");
-        break;
-    case T_unknown:
+    } else
+    {
         CTIabort("Unknown type found in file: %s, line: %s", __FILE__, __LINE__);
-        break;
     }
 
     DBUG_RETURN(arg_node);
