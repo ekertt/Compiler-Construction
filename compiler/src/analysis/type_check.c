@@ -239,12 +239,12 @@ node *TCcast(node *arg_node, info *arg_info)
 
     CAST_EXPR(arg_node) = TRAVdo(CAST_EXPR(arg_node), arg_info);
 
-    INFO_TYPE(arg_info) = CAST_TYPE(arg_node);
-
     if (INFO_TYPE(arg_info) == T_void)
     {
         CTIerrorLine(NODE_LINE(arg_node), "Cast type error\n");
     }
+
+    INFO_TYPE(arg_info) = CAST_TYPE(arg_node);
 
     DBUG_RETURN(arg_node);
 }
