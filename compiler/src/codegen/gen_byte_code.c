@@ -425,7 +425,9 @@ node *GBCfundef(node *arg_node, info *arg_info)
             for (; fentry != NULL; fentry = SYMBOLTABLEENTRY_NEXT(fentry))
             {
                 if (!SYMBOLTABLEENTRY_PARAM(fentry))
+                {
                     continue;
+                }
 
                 char *temp = STRcatn(3, params, " ", typeToString(SYMBOLTABLEENTRY_TYPE(fentry)));
                 free(params);
@@ -597,7 +599,6 @@ node *GBCglobdef(node *arg_node, info *arg_info)
         char *str = STRcatn(4, "var \"", GLOBDEF_NAME(arg_node), "\" ", typeToString(GLOBDEF_TYPE(arg_node)));
         addToExternPool(arg_info, str);
     }
-
     else if (GLOBDEF_ISEXPORT(arg_node))
     {
         node *entry = STfindInParent(INFO_SYMBOL_TABLE(arg_info), GLOBDEF_NAME(arg_node));
