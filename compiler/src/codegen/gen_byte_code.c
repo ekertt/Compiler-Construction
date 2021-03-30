@@ -711,9 +711,13 @@ node *GBCassign(node *arg_node, info *arg_info)
     }
 
     if (SYMBOLTABLEENTRY_DEPTH(entry) == 0)
+    {
         fprintf(INFO_FILE(arg_info), "\t%cstoreg %d\n", type, SYMBOLTABLEENTRY_OFFSET(entry));
+    }
     else
+    {
         fprintf(INFO_FILE(arg_info), "\t%cstore %d\n", type, SYMBOLTABLEENTRY_OFFSET(entry));
+    }
 
     INFO_SYMBOL_TABLE_ENTRY(arg_info) = NULL;
 
