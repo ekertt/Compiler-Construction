@@ -272,7 +272,6 @@ node *GBCexprstmt(node *arg_node, info *arg_info)
     DBUG_PRINT("GBC", ("GBCexprstmt 3"));
 
     node *entry = STdeepFindFundef(INFO_SYMBOL_TABLE(arg_info), FUNCALL_NAME(expr));
-
     node *link = SYMBOLTABLEENTRY_LINK(entry);
 
     if (FUNDEF_ISEXTERN(link))
@@ -304,7 +303,6 @@ node *GBCreturn(node *arg_node, info *arg_info)
     DBUG_PRINT("GBC", ("GBCreturn"));
 
     node *table = INFO_SYMBOL_TABLE(arg_info);
-
     TRAVopt(RETURN_EXPR(arg_node), arg_info);
 
     if (SYMBOLTABLE_RETURNTYPE(table) == T_int)
@@ -333,15 +331,12 @@ node *GBCfuncall(node *arg_node, info *arg_info)
     DBUG_PRINT("GBC", ("GBCfuncall"));
 
     node *entry = STdeepFindFundef(INFO_SYMBOL_TABLE(arg_info), FUNCALL_NAME(arg_node));
+    node *table = SYMBOLTABLEENTRY_TABLE(entry);
+    node *link = SYMBOLTABLEENTRY_LINK(entry);  
 
     fprintf(INFO_FILE(arg_info), "\tisrg\n");
-
     TRAVopt(FUNCALL_ARGS(arg_node), arg_info);
-
     INFO_CURRENT_TYPE(arg_info) = SYMBOLTABLEENTRY_TYPE(entry);
-
-    node *table = SYMBOLTABLEENTRY_TABLE(entry);
-    node *link = SYMBOLTABLEENTRY_LINK(entry);
 
     if (FUNDEF_ISEXTERN(link) == 1)
     {
@@ -377,7 +372,6 @@ node *GBCfundef(node *arg_node, info *arg_info)
     if (FUNDEF_ISEXTERN(arg_node))
     {
         node *fentry = SYMBOLTABLE_ENTRY(SYMBOLTABLEENTRY_TABLE(entry));
-
         char *params = NULL;
 
         for (; fentry != NULL; fentry = SYMBOLTABLEENTRY_NEXT(fentry))
@@ -459,7 +453,6 @@ node *GBCfundef(node *arg_node, info *arg_info)
         }
 
         INFO_SYMBOL_TABLE(arg_info) = SYMBOLTABLEENTRY_TABLE(entry);
-
         size_t registers = STcountVarDecls(INFO_SYMBOL_TABLE(arg_info));
 
         if (registers > 0)
@@ -520,8 +513,8 @@ node *GBCifelse(node *arg_node, info *arg_info)
     }
 
     fprintf(INFO_FILE(arg_info), "%s:\n", end);
-
     free(branch);
+
     if (IFELSE_ELSE(arg_node) != NULL)
     {
         free(end);
@@ -536,19 +529,17 @@ node *GBCwhile(node *arg_node, info *arg_info)
     DBUG_PRINT("GBC", ("GBCwhile"));
 
     char *branch = createBranch("while", arg_info);
+    char *end = createBranch("end", arg_info);
 
     fprintf(INFO_FILE(arg_info), "\n%s:\n", branch);
-
+    
     TRAVdo(WHILE_COND(arg_node), arg_info);
-
-    char *end = createBranch("end", arg_info);
 
     fprintf(INFO_FILE(arg_info), "\tbranch_f %s\n", end);
 
     TRAVopt(WHILE_BLOCK(arg_node), arg_info);
 
     fprintf(INFO_FILE(arg_info), "\tjump %s\n", branch);
-
     fprintf(INFO_FILE(arg_info), "%s:\n\n", end);
 
     free(branch);
@@ -744,6 +735,7 @@ node *GBCbinop(node *arg_node, info *arg_info)
     TRAVdo(BINOP_RIGHT(arg_node), arg_info);
 
     const char *operation;
+
     switch (BINOP_OP(arg_node))
     {
     case BO_add:
@@ -779,7 +771,6 @@ node *GBCbinop(node *arg_node, info *arg_info)
     case BO_ne:
         operation = "ne";
         break;
-
     case BO_and:
     case BO_or:
     case BO_unknown:
@@ -814,6 +805,7 @@ node *GBCmonop(node *arg_node, info *arg_info)
     TRAVdo(MONOP_OPERAND(arg_node), arg_info);
 
     const char *operation;
+
     switch (MONOP_OP(arg_node))
     {
     case MO_minus:
@@ -982,7 +974,6 @@ node *GBCbool(node *arg_node, info *arg_info)
     DBUG_PRINT("GBC", ("GBCbool"));
 
     char *str = STRcat("bool ", BOOL_VALUE(arg_node) ? "true" : "false");
-
     linkedlist *const_pool = search(INFO_CONST_POOL(arg_info), str);
 
     if (const_pool == NULL)
@@ -1017,6 +1008,7 @@ node *GBCternary(node *arg_node, info *arg_info)
     DBUG_PRINT("GBC", ("GBCternary"));
 
     char *branch = createBranch("false_expr", arg_info);
+    char *end = createBranch("end", arg_info);
 
     TRAVopt(TERNARY_EXPR(arg_node), arg_info);
 
@@ -1024,10 +1016,7 @@ node *GBCternary(node *arg_node, info *arg_info)
 
     TRAVopt(TERNARY_THEN(arg_node), arg_info);
 
-    char *end = createBranch("end", arg_info);
-
     fprintf(INFO_FILE(arg_info), "\tjump %s\n", end);
-
     fprintf(INFO_FILE(arg_info), "%s:\n", branch);
 
     TRAVopt(TERNARY_ELSE(arg_node), arg_info);
@@ -1047,9 +1036,7 @@ node *GBCdoGenByteCode(node *syntaxtree)
     DBUG_PRINT("GBC", ("GBCdoGenByteCode"));
 
     global.outfile = global.outfile ? global.outfile : STRcpy("a.out");
-
     info *info = MakeInfo();
-
     INFO_FILE(info) = fopen(global.outfile, "w");
 
     if (INFO_FILE(info) == NULL)
@@ -1062,9 +1049,7 @@ node *GBCdoGenByteCode(node *syntaxtree)
     TRAVpop();
 
     writeGlobals(info);
-
     fclose(INFO_FILE(info));
-
     FreeInfo(info);
 
     DBUG_RETURN(syntaxtree);
