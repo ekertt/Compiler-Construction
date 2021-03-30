@@ -25,10 +25,10 @@ struct INFO
     node *symbol_table;
     node *symbol_table_entry;
 
-    linkedlist *const_pool;
-    linkedlist *export_pool;
-    linkedlist *import_pool;
-    linkedlist *global_pool;
+    linkedlist *pool_const;
+    linkedlist *pool_export;
+    linkedlist *pool_import;
+    linkedlist *pool_global;
 
     int load_counter;
     int branch_count;
@@ -39,10 +39,10 @@ struct INFO
 #define INFO_SYMBOL_TABLE(n) ((n)->symbol_table)
 #define INFO_SYMBOL_TABLE_ENTRY(n) ((n)->symbol_table_entry)
 
-#define INFO_CONST_POOL(n) ((n)->const_pool)
-#define INFO_EXPORT_POOL(n) ((n)->export_pool)
-#define INFO_IMPORT_POOL(n) ((n)->import_pool)
-#define INFO_GLOBAL_POOL(n) ((n)->global_pool)
+#define INFO_POOL_CONST(n) ((n)->pool_const)
+#define INFO_POOL_EXPORT(n) ((n)->pool_export)
+#define INFO_POOL_IMPORT(n) ((n)->pool_import)
+#define INFO_POOL_GLOBAL(n) ((n)->pool_global)
 #define INFO_LOAD_COUNTER(n) ((n)->load_counter)
 #define INFO_BRANCH_COUNT(n) ((n)->branch_count)
 #define INFO_CURRENT_TYPE(n) ((n)->current_type)
@@ -61,10 +61,10 @@ static info *MakeInfo()
     INFO_FILE(result) = NULL;
     INFO_SYMBOL_TABLE(result) = NULL;
     INFO_SYMBOL_TABLE_ENTRY(result) = NULL;
-    INFO_CONST_POOL(result) = NULL;
-    INFO_EXPORT_POOL(result) = NULL;
-    INFO_IMPORT_POOL(result) = NULL;
-    INFO_GLOBAL_POOL(result) = NULL;
+    INFO_POOL_CONST(result) = NULL;
+    INFO_POOL_EXPORT(result) = NULL;
+    INFO_POOL_IMPORT(result) = NULL;
+    INFO_POOL_GLOBAL(result) = NULL;
     INFO_LOAD_COUNTER(result) = 0;
     INFO_BRANCH_COUNT(result) = 0;
     INFO_CURRENT_TYPE(result) = T_unknown;
@@ -76,10 +76,10 @@ static info *FreeInfo(info *info)
 {
     DBUG_ENTER("FreeInfo");
 
-    dipsose(INFO_CONST_POOL(info));
-    dipsose(INFO_EXPORT_POOL(info));
-    dipsose(INFO_IMPORT_POOL(info));
-    dipsose(INFO_GLOBAL_POOL(info));
+    dipsose(INFO_POOL_CONST(info));
+    dipsose(INFO_POOL_EXPORT(info));
+    dipsose(INFO_POOL_IMPORT(info));
+    dipsose(INFO_POOL_GLOBAL(info));
 
     info = MEMfree(info);
 
@@ -97,93 +97,86 @@ char *createBranch(const char *name, info *info)
     return branch;
 }
 
-void addToConstPool(info *arg_info, char *value)
+void putInPoolGlobal(info *arg_info, char *value)
 {
-    if (INFO_CONST_POOL(arg_info) == NULL)
+    if (INFO_POOL_GLOBAL(arg_info) == NULL)
     {
-        INFO_CONST_POOL(arg_info) = push(value, INFO_LOAD_COUNTER(arg_info), NULL);
+        INFO_POOL_GLOBAL(arg_info) = push(value, 0, NULL);
     }
     else
     {
-        add(INFO_CONST_POOL(arg_info), value, INFO_LOAD_COUNTER(arg_info));
+        add(INFO_POOL_GLOBAL(arg_info), value, 0);
+    }
+}
+
+void putInPoolConst(info *arg_info, char *value)
+{
+    if (INFO_POOL_CONST(arg_info) == NULL)
+    {
+        INFO_POOL_CONST(arg_info) = push(value, INFO_LOAD_COUNTER(arg_info), NULL);
+    }
+    else
+    {
+        add(INFO_POOL_CONST(arg_info), value, INFO_LOAD_COUNTER(arg_info));
     }
 
     INFO_LOAD_COUNTER(arg_info) += 1;
 }
 
-void addToExportPool(info *arg_info, char *value)
+void putInPoolExport(info *arg_info, char *value)
 {
-    if (INFO_EXPORT_POOL(arg_info) == NULL)
+    if (INFO_POOL_EXPORT(arg_info) == NULL)
     {
-        INFO_EXPORT_POOL(arg_info) = push(value, 0, NULL);
+        INFO_POOL_EXPORT(arg_info) = push(value, 0, NULL);
     }
     else
     {
-        add(INFO_EXPORT_POOL(arg_info), value, 0);
+        add(INFO_POOL_EXPORT(arg_info), value, 0);
     }
 }
 
-void addToExternPool(info *arg_info, char *value)
+void putInPoolImport(info *arg_info, char *value)
 {
-    if (INFO_IMPORT_POOL(arg_info) == NULL)
+    if (INFO_POOL_IMPORT(arg_info) == NULL)
     {
-        INFO_IMPORT_POOL(arg_info) = push(value, 0, NULL);
+        INFO_POOL_IMPORT(arg_info) = push(value, 0, NULL);
     }
     else
     {
-        add(INFO_IMPORT_POOL(arg_info), value, 0);
+        add(INFO_POOL_IMPORT(arg_info), value, 0);
     }
 }
 
-void addToGlobalPool(info *arg_info, char *value)
-{
-    if (INFO_GLOBAL_POOL(arg_info) == NULL)
-    {
-        INFO_GLOBAL_POOL(arg_info) = push(value, 0, NULL);
-    }
-    else
-    {
-        add(INFO_GLOBAL_POOL(arg_info), value, 0);
-    }
-}
-
-/**
- * Print const_pool, export_pool and global_pool values to
- * global.outfile
- * 
- * @param info arg_info
- * @return void
- */
 void writeGlobals(info *arg_info)
 {
-    linkedlist *const_pool = INFO_CONST_POOL(arg_info);
-    linkedlist *export_pool = INFO_EXPORT_POOL(arg_info);
-    linkedlist *import_pool = INFO_IMPORT_POOL(arg_info);
-    linkedlist *global_pool = INFO_GLOBAL_POOL(arg_info);
+    linkedlist *pool_global = INFO_POOL_GLOBAL(arg_info);
+    linkedlist *pool_const = INFO_POOL_CONST(arg_info);
+    linkedlist *pool_export = INFO_POOL_EXPORT(arg_info);
+    linkedlist *pool_import = INFO_POOL_IMPORT(arg_info);
     FILE *fileptr = INFO_FILE(arg_info);
 
-    while (const_pool != NULL)
+    while (pool_global != NULL)
     {
-        fprintf(fileptr, ".const %s\n", const_pool->val);
-        const_pool = const_pool->next;
+        fprintf(fileptr, ".global %s\n", pool_global->val);
+        pool_global = pool_global->next;
     }
 
-    while (export_pool != NULL)
+    while (pool_const != NULL)
     {
-        fprintf(fileptr, ".export%s\n", export_pool->val);
-        export_pool = export_pool->next;
+        fprintf(fileptr, ".const %s\n", pool_const->val);
+        pool_const = pool_const->next;
     }
 
-    while (global_pool != NULL)
+    while (pool_export != NULL)
     {
-        fprintf(fileptr, ".global %s\n", global_pool->val);
-        global_pool = global_pool->next;
+        fprintf(fileptr, ".export%s\n", pool_export->val);
+        pool_export = pool_export->next;
     }
 
-    while (import_pool != NULL)
+    while (pool_import != NULL)
     {
-        fprintf(fileptr, ".import%s\n", import_pool->val);
-        import_pool = import_pool->next;
+        fprintf(fileptr, ".import%s\n", pool_import->val);
+        pool_import = pool_import->next;
     }
 }
 
@@ -281,17 +274,21 @@ node *GBCexprstmt(node *arg_node, info *arg_info)
 
     DBUG_PRINT("GBC", ("GBCexprstmt 4"));
 
-    if (SYMBOLTABLEENTRY_TYPE(entry) == T_int)
+    switch (SYMBOLTABLEENTRY_TYPE(entry))
     {
+    case T_int:
         fprintf(INFO_FILE(arg_info), "\tipop\n");
-    }
-    else if (SYMBOLTABLEENTRY_TYPE(entry) == T_float)
-    {
+        break;
+    case T_float:
         fprintf(INFO_FILE(arg_info), "\tfpop\n");
-    }
-    else if (SYMBOLTABLEENTRY_TYPE(entry) == T_bool)
-    {
+        break;
+    case T_bool:
         fprintf(INFO_FILE(arg_info), "\tbpop\n");
+        break;
+    case T_void:
+        break;
+    case T_unknown:
+        break;
     }
 
     DBUG_RETURN(arg_node);
@@ -305,21 +302,23 @@ node *GBCreturn(node *arg_node, info *arg_info)
     node *table = INFO_SYMBOL_TABLE(arg_info);
     TRAVopt(RETURN_EXPR(arg_node), arg_info);
 
-    if (SYMBOLTABLE_RETURNTYPE(table) == T_int)
+    switch (SYMBOLTABLE_RETURNTYPE(table))
     {
+    case T_int:
         fprintf(INFO_FILE(arg_info), "\t%s\n", "ireturn");
-    } else if (SYMBOLTABLE_RETURNTYPE(table) == T_float)
-    {
+        break;
+    case T_float:
         fprintf(INFO_FILE(arg_info), "\t%s\n", "freturn");
-    } else if (SYMBOLTABLE_RETURNTYPE(table) == T_bool)
-    {
+        break;
+    case T_bool:
         fprintf(INFO_FILE(arg_info), "\t%s\n", "breturn");
-    } else if (SYMBOLTABLE_RETURNTYPE(table) == T_void)
-    {
+        break;
+    case T_void:
         fprintf(INFO_FILE(arg_info), "\t%s\n", "return");
-    } else
-    {
+        break;
+    case T_unknown:
         CTIabort("Unknown type found in file: %s, line: %s", __FILE__, __LINE__);
+        break;
     }
 
     DBUG_RETURN(arg_node);
@@ -404,7 +403,7 @@ node *GBCfundef(node *arg_node, info *arg_info)
             typeToString(FUNDEF_TYPE(arg_node)),
             params == NULL ? "" : params);
 
-        addToExternPool(arg_info, str);
+        putInPoolImport(arg_info, str);
         free(params);
     }
     else
@@ -449,7 +448,7 @@ node *GBCfundef(node *arg_node, info *arg_info)
                 params == NULL ? "" : params,
                 FUNDEF_NAME(arg_node));
 
-            addToExportPool(arg_info, str);
+            putInPoolExport(arg_info, str);
         }
 
         INFO_SYMBOL_TABLE(arg_info) = SYMBOLTABLEENTRY_TABLE(entry);
@@ -588,7 +587,7 @@ node *GBCglobdef(node *arg_node, info *arg_info)
     if (GLOBDEF_ISEXTERN(arg_node))
     {
         char *str = STRcatn(4, "var \"", GLOBDEF_NAME(arg_node), "\" ", typeToString(GLOBDEF_TYPE(arg_node)));
-        addToExternPool(arg_info, str);
+        putInPoolImport(arg_info, str);
     }
     else if (GLOBDEF_ISEXPORT(arg_node))
     {
@@ -597,12 +596,12 @@ node *GBCglobdef(node *arg_node, info *arg_info)
         char *offset = STRitoa(SYMBOLTABLEENTRY_OFFSET(entry));
         char *str = STRcatn(4, "var \"", GLOBDEF_NAME(arg_node), "\" ", offset);
         free(offset);
-        addToExportPool(arg_info, str);
+        putInPoolExport(arg_info, str);
     }
 
     if (!GLOBDEF_ISEXTERN(arg_node))
     {
-        addToGlobalPool(arg_info, STRcpy(typeToString(GLOBDEF_TYPE(arg_node))));
+        putInPoolGlobal(arg_info, STRcpy(typeToString(GLOBDEF_TYPE(arg_node))));
     }
 
     TRAVopt(GLOBDEF_DIMS(arg_node), arg_info);
@@ -618,7 +617,7 @@ node *GBCglobdecl(node *arg_node, info *arg_info)
     if (GLOBDEF_ISEXTERN(arg_node))
     {
         char *str = STRcatn(4, "var \"", GLOBDEF_NAME(arg_node), "\" ", typeToString(GLOBDEF_TYPE(arg_node)));
-        addToExternPool(arg_info, str);
+        putInPoolImport(arg_info, str);
     }
     else if (GLOBDEF_ISEXPORT(arg_node))
     {
@@ -627,12 +626,12 @@ node *GBCglobdecl(node *arg_node, info *arg_info)
         char *offset = STRitoa(SYMBOLTABLEENTRY_OFFSET(entry));
         char *str = STRcatn(4, "var \"", GLOBDEF_NAME(arg_node), "\" ", offset);
         free(offset);
-        addToExportPool(arg_info, str);
+        putInPoolExport(arg_info, str);
     }
 
     if (!GLOBDEF_ISEXTERN(arg_node))
     {
-        addToGlobalPool(arg_info, STRcpy(typeToString(GLOBDEF_TYPE(arg_node))));
+        putInPoolGlobal(arg_info, STRcpy(typeToString(GLOBDEF_TYPE(arg_node))));
     }
 
     TRAVopt(GLOBDEF_DIMS(arg_node), arg_info);
@@ -923,16 +922,16 @@ node *GBCnum(node *arg_node, info *arg_info)
     DBUG_PRINT("GBC", ("GBCnum"));
 
     char *str = STRcat("int ", STRitoa(NUM_VALUE(arg_node)));
-    linkedlist *const_pool = search(INFO_CONST_POOL(arg_info), str);
+    linkedlist *pool_const = search(INFO_POOL_CONST(arg_info), str);
 
-    if (const_pool == NULL)
+    if (pool_const == NULL)
     {
         fprintf(INFO_FILE(arg_info), "\t%s %d\n", "iloadc", INFO_LOAD_COUNTER(arg_info));
-        addToConstPool(arg_info, str);
+        putInPoolConst(arg_info, str);
     }
     else
     {
-        fprintf(INFO_FILE(arg_info), "\t%s %d\n", "iloadc", const_pool->count);
+        fprintf(INFO_FILE(arg_info), "\t%s %d\n", "iloadc", pool_const->count);
         free(str);
     }
 
@@ -950,16 +949,16 @@ node *GBCfloat(node *arg_node, info *arg_info)
     char *str = malloc(length + 1);
     snprintf(str, length + 1, "float %f", FLOAT_VALUE(arg_node));
 
-    linkedlist *const_pool = search(INFO_CONST_POOL(arg_info), str);
+    linkedlist *pool_const = search(INFO_POOL_CONST(arg_info), str);
 
-    if (const_pool == NULL)
+    if (pool_const == NULL)
     {
         fprintf(INFO_FILE(arg_info), "\t%s %d\n", "floadc", INFO_LOAD_COUNTER(arg_info));
-        addToConstPool(arg_info, str);
+        putInPoolConst(arg_info, str);
     }
     else
     {
-        fprintf(INFO_FILE(arg_info), "\t%s %d\n", "floadc", const_pool->count);
+        fprintf(INFO_FILE(arg_info), "\t%s %d\n", "floadc", pool_const->count);
         free(str);
     }
 
@@ -974,16 +973,16 @@ node *GBCbool(node *arg_node, info *arg_info)
     DBUG_PRINT("GBC", ("GBCbool"));
 
     char *str = STRcat("bool ", BOOL_VALUE(arg_node) ? "true" : "false");
-    linkedlist *const_pool = search(INFO_CONST_POOL(arg_info), str);
+    linkedlist *pool_const = search(INFO_POOL_CONST(arg_info), str);
 
-    if (const_pool == NULL)
+    if (pool_const == NULL)
     {
         fprintf(INFO_FILE(arg_info), "\t%s %d\n", "bloadc", INFO_LOAD_COUNTER(arg_info));
-        addToConstPool(arg_info, str);
+        putInPoolConst(arg_info, str);
     }
     else
     {
-        fprintf(INFO_FILE(arg_info), "\t%s %d\n", "bloadc", const_pool->count);
+        fprintf(INFO_FILE(arg_info), "\t%s %d\n", "bloadc", pool_const->count);
         free(str);
     }
 
