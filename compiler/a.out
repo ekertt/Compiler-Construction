@@ -11,17 +11,17 @@ main:
 	iload_2
 	iloadc 0
 	igt
-	branch_f 2_false_expr
+	branch_f 3_false_expr
 	iload_0
 	iload_1
 	ilt
-	jump 3_end
-2_false_expr:
+	jump 4_end
+3_false_expr:
 	iload_0
 	iload_1
 	igt
-3_end:
-	branch_f 4_end
+4_end:
+	branch_f 2_end
 	isrg
 	iload_0
 	jsre 0
@@ -33,7 +33,7 @@ main:
 	iadd
 	istore 0
 	jump 1_while
-4_end:
+2_end:
 
 	isrg
 	iloadc 2
@@ -44,23 +44,24 @@ main:
 	istore 4
 	iloadc 2
 	ineg
+	ineg
 	istore 5
 
 5_while:
 	iload 5
 	iloadc 0
 	igt
-	branch_f 6_false_expr
+	branch_f 7_false_expr
 	iload_3
 	iload 4
 	ilt
-	jump 7_end
-6_false_expr:
+	jump 8_end
+7_false_expr:
 	iload_3
 	iload 4
 	igt
-7_end:
-	branch_f 8_end
+8_end:
+	branch_f 6_end
 	isrg
 	iload_3
 	jsre 0
@@ -72,7 +73,7 @@ main:
 	iadd
 	istore 3
 	jump 5_while
-8_end:
+6_end:
 
 	isrg
 	iloadc 2
@@ -88,17 +89,17 @@ main:
 	iload 8
 	iloadc 0
 	igt
-	branch_f 10_false_expr
+	branch_f 11_false_expr
 	iload 6
 	iload 7
 	ilt
-	jump 11_end
-10_false_expr:
+	jump 12_end
+11_false_expr:
 	iload 6
 	iload 7
 	igt
-11_end:
-	branch_f 12_end
+12_end:
+	branch_f 10_end
 	isrg
 	iload 6
 	jsre 0
@@ -110,7 +111,7 @@ main:
 	iadd
 	istore 6
 	jump 9_while
-12_end:
+10_end:
 
 	isrg
 	iloadc 2
@@ -121,23 +122,24 @@ main:
 	istore 10
 	iloadc 5
 	ineg
+	ineg
 	istore 11
 
 13_while:
 	iload 11
 	iloadc 0
 	igt
-	branch_f 14_false_expr
+	branch_f 15_false_expr
 	iload 9
 	iload 10
 	ilt
-	jump 15_end
-14_false_expr:
+	jump 16_end
+15_false_expr:
 	iload 9
 	iload 10
 	igt
-15_end:
-	branch_f 16_end
+16_end:
+	branch_f 14_end
 	isrg
 	iload 9
 	jsre 0
@@ -149,7 +151,7 @@ main:
 	iadd
 	istore 9
 	jump 13_while
-16_end:
+14_end:
 
 	iloadc 0
 	istore 15
@@ -162,17 +164,17 @@ main:
 	iload 17
 	iloadc 0
 	igt
-	branch_f 18_false_expr
+	branch_f 19_false_expr
 	iload 15
 	iload 16
 	ilt
-	jump 19_end
-18_false_expr:
+	jump 20_end
+19_false_expr:
 	iload 15
 	iload 16
 	igt
-19_end:
-	branch_f 20_end
+20_end:
+	branch_f 18_end
 	iloadc 0
 	istore 12
 	iloadc 7
@@ -184,17 +186,17 @@ main:
 	iload 14
 	iloadc 0
 	igt
-	branch_f 22_false_expr
+	branch_f 23_false_expr
 	iload 12
 	iload 13
 	ilt
-	jump 23_end
-22_false_expr:
+	jump 24_end
+23_false_expr:
 	iload 12
 	iload 13
 	igt
-23_end:
-	branch_f 24_end
+24_end:
+	branch_f 22_end
 	isrg
 	iload 15
 	jsre 0
@@ -212,7 +214,7 @@ main:
 	iadd
 	istore 12
 	jump 21_while
-24_end:
+22_end:
 
 	isrg
 	iloadc 2
@@ -222,7 +224,7 @@ main:
 	iadd
 	istore 15
 	jump 17_while
-20_end:
+18_end:
 
 	iloadc 0
 	ireturn

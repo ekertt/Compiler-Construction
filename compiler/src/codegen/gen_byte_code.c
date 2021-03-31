@@ -207,6 +207,16 @@ node *GBCsymboltableentry(node *arg_node, info *arg_info)
     DBUG_RETURN(arg_node);
 }
 
+node *GBCids(node *arg_node, info *arg_info)
+{
+    DBUG_ENTER("GBCids");
+    DBUG_PRINT("GBC", ("GBCids"));
+
+    TRAVopt(IDS_NEXT(arg_node), arg_info);
+
+    DBUG_RETURN(arg_node);
+}
+
 node *GBCdecls(node *arg_node, info *arg_info)
 {
     DBUG_ENTER("GBCdecls");
@@ -233,16 +243,6 @@ node *GBCarrexpr(node *arg_node, info *arg_info)
 {
     DBUG_ENTER("GBCarrexpr");
     DBUG_PRINT("GBC", ("GBCarrexpr"));
-
-    DBUG_RETURN(arg_node);
-}
-
-node *GBCids(node *arg_node, info *arg_info)
-{
-    DBUG_ENTER("GBCids");
-    DBUG_PRINT("GBC", ("GBCids"));
-
-    TRAVopt(IDS_NEXT(arg_node), arg_info);
 
     DBUG_RETURN(arg_node);
 }
@@ -294,36 +294,6 @@ node *GBCexprstmt(node *arg_node, info *arg_info)
     DBUG_RETURN(arg_node);
 }
 
-node *GBCreturn(node *arg_node, info *arg_info)
-{
-    DBUG_ENTER("GBCreturn");
-    DBUG_PRINT("GBC", ("GBCreturn"));
-
-    node *table = INFO_SYMBOL_TABLE(arg_info);
-    TRAVopt(RETURN_EXPR(arg_node), arg_info);
-
-    switch (SYMBOLTABLE_RETURNTYPE(table))
-    {
-    case T_int:
-        fprintf(INFO_FILE(arg_info), "\t%s\n", "ireturn");
-        break;
-    case T_float:
-        fprintf(INFO_FILE(arg_info), "\t%s\n", "freturn");
-        break;
-    case T_bool:
-        fprintf(INFO_FILE(arg_info), "\t%s\n", "breturn");
-        break;
-    case T_void:
-        fprintf(INFO_FILE(arg_info), "\t%s\n", "return");
-        break;
-    case T_unknown:
-        CTIabort("Unknown type found in file: %s, line: %s", __FILE__, __LINE__);
-        break;
-    }
-
-    DBUG_RETURN(arg_node);
-}
-
 node *GBCfuncall(node *arg_node, info *arg_info)
 {
     DBUG_ENTER("GBCfuncall");
@@ -345,17 +315,6 @@ node *GBCfuncall(node *arg_node, info *arg_info)
     {
         fprintf(INFO_FILE(arg_info), "\tjsr %ld %s\n", STcountParams(table), FUNCALL_NAME(arg_node));
     }
-
-    DBUG_RETURN(arg_node);
-}
-
-node *GBCfundefs(node *arg_node, info *arg_info)
-{
-    DBUG_ENTER("GBCfundefs");
-    DBUG_PRINT("GBC", ("GBCfundefs"));
-
-    TRAVdo(FUNDEFS_FUNDEF(arg_node), arg_info);
-    TRAVopt(FUNDEFS_NEXT(arg_node), arg_info);
 
     DBUG_RETURN(arg_node);
 }
@@ -478,6 +437,17 @@ node *GBCfundef(node *arg_node, info *arg_info)
     DBUG_RETURN(arg_node);
 }
 
+node *GBCfundefs(node *arg_node, info *arg_info)
+{
+    DBUG_ENTER("GBCfundefs");
+    DBUG_PRINT("GBC", ("GBCfundefs"));
+
+    TRAVdo(FUNDEFS_FUNDEF(arg_node), arg_info);
+    TRAVopt(FUNDEFS_NEXT(arg_node), arg_info);
+
+    DBUG_RETURN(arg_node);
+}
+
 node *GBCfunbody(node *arg_node, info *arg_info)
 {
     DBUG_ENTER("GBCfunbody");
@@ -485,6 +455,38 @@ node *GBCfunbody(node *arg_node, info *arg_info)
 
     TRAVopt(FUNBODY_VARDECLS(arg_node), arg_info);
     TRAVopt(FUNBODY_STMTS(arg_node), arg_info);
+
+    DBUG_RETURN(arg_node);
+}
+
+node *GBCreturn(node *arg_node, info *arg_info)
+{
+    DBUG_ENTER("GBCreturn");
+    DBUG_PRINT("GBC", ("GBCreturn"));
+
+    node *table = INFO_SYMBOL_TABLE(arg_info);
+    TRAVopt(RETURN_EXPR(arg_node), arg_info);
+
+    if (SYMBOLTABLE_RETURNTYPE(table) == T_int)
+    {
+        fprintf(INFO_FILE(arg_info), "\t%s\n", "ireturn");
+    }
+    else if (SYMBOLTABLE_RETURNTYPE(table) == T_float)
+    {
+        fprintf(INFO_FILE(arg_info), "\t%s\n", "freturn");
+    }
+    else if (SYMBOLTABLE_RETURNTYPE(table) == T_bool)
+    {
+        fprintf(INFO_FILE(arg_info), "\t%s\n", "breturn");
+    }
+    else if (SYMBOLTABLE_RETURNTYPE(table) == T_void)
+    {
+        fprintf(INFO_FILE(arg_info), "\t%s\n", "return");
+    }
+    else if (SYMBOLTABLE_RETURNTYPE(table) == T_unknown)
+    {
+        CTIabort("Unknown type found in file: %s, line: %s", __FILE__, __LINE__);
+    }
 
     DBUG_RETURN(arg_node);
 }
@@ -518,6 +520,19 @@ node *GBCifelse(node *arg_node, info *arg_info)
     {
         free(end);
     }
+
+    DBUG_RETURN(arg_node);
+}
+
+node *GBCfor(node *arg_node, info *arg_info)
+{
+    DBUG_ENTER("GBCfor");
+    DBUG_PRINT("GBC", ("GBCfor"));
+
+    TRAVdo(FOR_START(arg_node), arg_info);
+    TRAVdo(FOR_STOP(arg_node), arg_info);
+    TRAVopt(FOR_STEP(arg_node), arg_info);
+    TRAVopt(FOR_BLOCK(arg_node), arg_info);
 
     DBUG_RETURN(arg_node);
 }
@@ -562,19 +577,6 @@ node *GBCdowhile(node *arg_node, info *arg_info)
     fprintf(INFO_FILE(arg_info), "\tbranch_t %s\n", branch);
 
     free(branch);
-
-    DBUG_RETURN(arg_node);
-}
-
-node *GBCfor(node *arg_node, info *arg_info)
-{
-    DBUG_ENTER("GBCfor");
-    DBUG_PRINT("GBC", ("GBCfor"));
-
-    TRAVdo(FOR_START(arg_node), arg_info);
-    TRAVdo(FOR_STOP(arg_node), arg_info);
-    TRAVopt(FOR_STEP(arg_node), arg_info);
-    TRAVopt(FOR_BLOCK(arg_node), arg_info);
 
     DBUG_RETURN(arg_node);
 }
@@ -684,20 +686,18 @@ node *GBCassign(node *arg_node, info *arg_info)
     node *entry = INFO_SYMBOL_TABLE_ENTRY(arg_info);
 
     char type;
-    switch (SYMBOLTABLEENTRY_TYPE(entry))
+
+    if (SYMBOLTABLEENTRY_TYPE(entry) == T_int)
     {
-    case T_int:
         type = 'i';
-        break;
-    case T_float:
+    }
+    else if (SYMBOLTABLEENTRY_TYPE(entry) == T_float)
+    {
         type = 'f';
-        break;
-    case T_bool:
+    }
+    else if (SYMBOLTABLEENTRY_TYPE(entry) == T_bool)
+    {
         type = 'b';
-        break;
-    case T_void:
-    case T_unknown:
-        break;
     }
 
     if (SYMBOLTABLEENTRY_DEPTH(entry) == 0)
@@ -714,17 +714,6 @@ node *GBCassign(node *arg_node, info *arg_info)
     DBUG_RETURN(arg_node);
 }
 
-node *GBCvarlet(node *arg_node, info *arg_info)
-{
-    DBUG_ENTER("GBCvarlet");
-    DBUG_PRINT("GBC", ("GBCvarlet"));
-
-    node *table = INFO_SYMBOL_TABLE(arg_info);
-    INFO_SYMBOL_TABLE_ENTRY(arg_info) = STfindInParent(table, VARLET_NAME(arg_node));
-
-    DBUG_RETURN(arg_node);
-}
-
 node *GBCbinop(node *arg_node, info *arg_info)
 {
     DBUG_ENTER("GBCbinop");
@@ -735,62 +724,66 @@ node *GBCbinop(node *arg_node, info *arg_info)
 
     const char *operation;
 
-    switch (BINOP_OP(arg_node))
+    if (BINOP_OP(arg_node) == BO_add)
     {
-    case BO_add:
         operation = "add";
-        break;
-    case BO_sub:
+    }
+    else if (BINOP_OP(arg_node) == BO_sub)
+    {
         operation = "sub";
-        break;
-    case BO_mul:
+    }
+    else if (BINOP_OP(arg_node) == BO_mul)
+    {
         operation = "mul";
-        break;
-    case BO_div:
+    }
+    else if (BINOP_OP(arg_node) == BO_div)
+    {
         operation = "div";
-        break;
-    case BO_mod:
+    }
+    else if (BINOP_OP(arg_node) == BO_mod)
+    {
         operation = "rem";
-        break;
-    case BO_lt:
+    }
+    else if (BINOP_OP(arg_node) == BO_lt)
+    {
         operation = "lt";
-        break;
-    case BO_le:
+    }
+    else if (BINOP_OP(arg_node) == BO_le)
+    {
         operation = "le";
-        break;
-    case BO_gt:
+    }
+    else if (BINOP_OP(arg_node) == BO_gt)
+    {
         operation = "gt";
-        break;
-    case BO_ge:
+    }
+    else if (BINOP_OP(arg_node) == BO_ge)
+    {
         operation = "ge";
-        break;
-    case BO_eq:
+    }
+    else if (BINOP_OP(arg_node) == BO_eq)
+    {
         operation = "eq";
-        break;
-    case BO_ne:
+    }
+    else if (BINOP_OP(arg_node) == BO_ne)
+    {
         operation = "ne";
-        break;
-    case BO_and:
-    case BO_or:
-    case BO_unknown:
+    }
+    else if (BINOP_OP(arg_node) == BO_unknown)
+    {
         CTIabortLine(NODE_LINE(arg_node), "Unknown operator type found");
-        break;
     }
 
-    switch (INFO_CURRENT_TYPE(arg_info))
+    if (INFO_CURRENT_TYPE(arg_info) == T_int)
     {
-    case T_int:
         fprintf(INFO_FILE(arg_info), "\ti%s\n", operation);
-        break;
-    case T_float:
+    }
+    else if (INFO_CURRENT_TYPE(arg_info) == T_float)
+    {
         fprintf(INFO_FILE(arg_info), "\tf%s\n", operation);
-        break;
-    case T_bool:
+    }
+    else if (INFO_CURRENT_TYPE(arg_info) == T_bool)
+    {
         fprintf(INFO_FILE(arg_info), "\tb%s\n", operation);
-        break;
-    case T_void:
-    case T_unknown:
-        break;
     }
 
     DBUG_RETURN(arg_node);
@@ -805,33 +798,30 @@ node *GBCmonop(node *arg_node, info *arg_info)
 
     const char *operation;
 
-    switch (MONOP_OP(arg_node))
+    if (MONOP_OP(arg_node) == MO_minus)
     {
-    case MO_minus:
         operation = "neg";
-        break;
-    case MO_neg:
+    }
+    else if (MONOP_OP(arg_node) == MO_neg)
+    {
         operation = "not";
-        break;
-    case MO_unknown:
+    }
+    else if (MONOP_OP(arg_node) == MO_unknown)
+    {
         CTIabort("Unknown operator type found in file: %s, line: %s", __FILE__, __LINE__);
-        break;
     }
 
-    switch (INFO_CURRENT_TYPE(arg_info))
+    if (INFO_CURRENT_TYPE(arg_info) == T_int)
     {
-    case T_int:
         fprintf(INFO_FILE(arg_info), "\ti%s\n", operation);
-        break;
-    case T_float:
+    }
+    else if (INFO_CURRENT_TYPE(arg_info) == T_float)
+    {
         fprintf(INFO_FILE(arg_info), "\tf%s\n", operation);
-        break;
-    case T_bool:
+    }
+    else if (INFO_CURRENT_TYPE(arg_info) == T_bool)
+    {
         fprintf(INFO_FILE(arg_info), "\tb%s\n", operation);
-        break;
-    case T_void:
-    case T_unknown:
-        break;
     }
 
     DBUG_RETURN(arg_node);
@@ -844,20 +834,17 @@ node *GBCcast(node *arg_node, info *arg_info)
 
     TRAVdo(CAST_EXPR(arg_node), arg_info);
 
-    switch (CAST_TYPE(arg_node))
+    if (CAST_TYPE(arg_node) == T_int)
     {
-    case T_int:
         fprintf(INFO_FILE(arg_info), "\tf2i\n");
-        break;
-    case T_float:
+    }
+    else if (CAST_TYPE(arg_node) == T_float)
+    {
         fprintf(INFO_FILE(arg_info), "\ti2f\n");
-        break;
-    case T_bool:
+    }
+    else if (CAST_TYPE(arg_node) == T_bool)
+    {
         fprintf(INFO_FILE(arg_info), "\tbi2f\n");
-        break;
-    case T_void:
-    case T_unknown:
-        break;
     }
 
     INFO_CURRENT_TYPE(arg_info) = CAST_TYPE(arg_node);
@@ -890,28 +877,43 @@ node *GBCvar(node *arg_node, info *arg_info)
     }
     else
     {
-        if (SYMBOLTABLEENTRY_TYPE(entry) == T_int)
+        switch (SYMBOLTABLEENTRY_TYPE(entry))
         {
-            fprintf(
-                INFO_FILE(arg_info),
-                SYMBOLTABLEENTRY_OFFSET(entry) < 4 ? "\tiload_%d\n" : "\tiload %d\n",
-                SYMBOLTABLEENTRY_OFFSET(entry));
-        }
-        else if (SYMBOLTABLEENTRY_TYPE(entry) == T_float)
-        {
-            fprintf(
-                INFO_FILE(arg_info),
-                SYMBOLTABLEENTRY_OFFSET(entry) < 4 ? "\tfload_%d\n" : "\tfload %d\n",
-                SYMBOLTABLEENTRY_OFFSET(entry));
-        }
-        else if (SYMBOLTABLEENTRY_TYPE(entry) == T_bool)
-        {
-            fprintf(
-                INFO_FILE(arg_info),
-                SYMBOLTABLEENTRY_OFFSET(entry) < 4 ? "\tbload_%d\n" : "\tbload %d\n",
-                SYMBOLTABLEENTRY_OFFSET(entry));
+            case T_int:
+                fprintf(
+                    INFO_FILE(arg_info),
+                    SYMBOLTABLEENTRY_OFFSET(entry) < 4 ? "\tiload_%d\n" : "\tiload %d\n",
+                    SYMBOLTABLEENTRY_OFFSET(entry));
+                break;
+            case T_float:
+                fprintf(
+                    INFO_FILE(arg_info),
+                    SYMBOLTABLEENTRY_OFFSET(entry) < 4 ? "\tfload_%d\n" : "\tfload %d\n",
+                    SYMBOLTABLEENTRY_OFFSET(entry));
+                break;
+            case T_bool:
+                fprintf(
+                    INFO_FILE(arg_info),
+                    SYMBOLTABLEENTRY_OFFSET(entry) < 4 ? "\tbload_%d\n" : "\tbload %d\n",
+                    SYMBOLTABLEENTRY_OFFSET(entry));
+                break;
+            case T_void:
+                break;
+            case T_unknown:
+                break;
         }
     }
+
+    DBUG_RETURN(arg_node);
+}
+
+node *GBCvarlet(node *arg_node, info *arg_info)
+{
+    DBUG_ENTER("GBCvarlet");
+    DBUG_PRINT("GBC", ("GBCvarlet"));
+
+    node *table = INFO_SYMBOL_TABLE(arg_info);
+    INFO_SYMBOL_TABLE_ENTRY(arg_info) = STfindInParent(table, VARLET_NAME(arg_node));
 
     DBUG_RETURN(arg_node);
 }
@@ -991,16 +993,6 @@ node *GBCbool(node *arg_node, info *arg_info)
     DBUG_RETURN(arg_node);
 }
 
-node *GBCerror(node *arg_node, info *arg_info)
-{
-    DBUG_ENTER("GBCerror");
-    DBUG_PRINT("GBC", ("GBCerror"));
-
-    TRAVopt(ERROR_NEXT(arg_node), arg_info);
-
-    DBUG_RETURN(arg_node);
-}
-
 node *GBCternary(node *arg_node, info *arg_info)
 {
     DBUG_ENTER("GBCternary");
@@ -1021,6 +1013,16 @@ node *GBCternary(node *arg_node, info *arg_info)
     TRAVopt(TERNARY_ELSE(arg_node), arg_info);
 
     fprintf(INFO_FILE(arg_info), "%s:\n", end);
+
+    DBUG_RETURN(arg_node);
+}
+
+node *GBCerror(node *arg_node, info *arg_info)
+{
+    DBUG_ENTER("GBCerror");
+    DBUG_PRINT("GBC", ("GBCerror"));
+
+    TRAVopt(ERROR_NEXT(arg_node), arg_info);
 
     DBUG_RETURN(arg_node);
 }
