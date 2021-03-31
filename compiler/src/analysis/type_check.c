@@ -28,7 +28,6 @@ struct INFO
     node *symboltable;
     type type;
     size_t returntype;
-    size_t offset;
 };
 
 /*
@@ -152,7 +151,7 @@ node *TCreturn(node *arg_node, info *arg_info)
         DBUG_RETURN(arg_node);
     }
 
-    CTIerrorLine(NODE_LINE(arg_node), "Invalid from %s to %s", SYMBOLTABLE_RETURNTYPE(symboltable), INFO_TYPE(arg_info));
+    CTIerrorLine(NODE_LINE(arg_node), "Invalid return statement from line %s to line %s", SYMBOLTABLE_RETURNTYPE(symboltable), INFO_TYPE(arg_info));
     DBUG_RETURN(arg_node);
 }
 
@@ -275,7 +274,7 @@ node *TCmonop(node *arg_node, info *arg_info)
 
     if ((op == MO_neg && type != T_bool) || (op == MO_minus && type == T_bool))
     {
-        CTIerror("TypeError: Tried to apply %u to type %u line: %d", op, type, NODE_LINE(arg_node));
+        CTIerror("TypeError: Assigning %u to %u at line: %d", op, type, NODE_LINE(arg_node));
     }
 
     DBUG_RETURN(arg_node);
