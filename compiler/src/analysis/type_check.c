@@ -28,7 +28,6 @@ struct INFO
     node *symboltable;
     type type;
     size_t returntype;
-    size_t offset;
 };
 
 /*
