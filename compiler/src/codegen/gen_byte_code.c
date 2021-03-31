@@ -102,12 +102,14 @@ void addToConstant(info *arg_info, char *value)
 {
     if (INFO_CONSTANT(arg_info))
     {
-        INFO_COUNTER(arg_info) += 1;
+        INFO_COUNTER(arg_info)
+        ++;
         add(INFO_CONSTANT(arg_info), value, INFO_COUNTER(arg_info));
     }
     else
     {
-        INFO_COUNTER(arg_info) += 1;
+        INFO_COUNTER(arg_info)
+        ++;
         INFO_CONSTANT(arg_info) = push(value, INFO_COUNTER(arg_info), NULL);
     }
 }
@@ -218,6 +220,65 @@ node *GBCarrexpr(node *arg_node, info *arg_info)
     DBUG_RETURN(arg_node);
 }
 
+node *GBCvarlet(node *arg_node, info *arg_info)
+{
+    DBUG_ENTER("GBCvarlet");
+    DBUG_PRINT("GBC", ("GBCvarlet"));
+
+    node *symboltable = INFO_SYMBOL_TABLE(arg_info);
+    INFO_SYMBOL_TABLE_ENTRY(arg_info) = STfindInParent(symboltable, VARLET_NAME(arg_node));
+
+    DBUG_RETURN(arg_node);
+}
+
+node *GBCnum(node *arg_node, info *arg_info)
+{
+    DBUG_ENTER("GBCnum");
+    DBUG_PRINT("GBC", ("GBCnum"));
+
+    char *string = STRcat("int ", STRitoa(NUM_VALUE(arg_node)));
+
+    fprintf(INFO_FILE(arg_info), "  iloadc %d\n", INFO_COUNTER(arg_info));
+    addToConstant(arg_info, string);
+
+    INFO_TYPE(arg_info) = T_int;
+
+    DBUG_RETURN(arg_node);
+}
+
+node *GBCfloat(node *arg_node, info *arg_info)
+{
+    DBUG_ENTER("GBCfloat");
+    DBUG_PRINT("GBC", ("GBCfloat"));
+
+    int length = snprintf(NULL, 0, "float %f", FLOAT_VALUE(arg_node));
+    char *string = malloc(length + 1);
+
+    snprintf(string, length + 1, "float %f", FLOAT_VALUE(arg_node));
+
+    fprintf(INFO_FILE(arg_info), "  floadc %d\n", INFO_COUNTER(arg_info));
+    addToConstant(arg_info, string);
+
+    INFO_TYPE(arg_info) = T_float;
+
+    DBUG_RETURN(arg_node);
+}
+
+node *GBCbool(node *arg_node, info *arg_info)
+{
+    DBUG_ENTER("GBCbool");
+    DBUG_PRINT("GBC", ("GBCbool"));
+
+    char *string = STRcat("bool ", BOOL_VALUE(arg_node) ? "true" : "false");
+
+    fprintf(INFO_FILE(arg_info), "  bloadc %d\n", INFO_COUNTER(arg_info));
+    addToConstant(arg_info, string);
+
+    INFO_TYPE(arg_info) = T_bool;
+
+    DBUG_RETURN(arg_node);
+}
+
 node *GBCexprstmt(node *arg_node, info *arg_info)
 {
     DBUG_ENTER("GBCexprstmt");
@@ -305,17 +366,17 @@ node *GBCfundef(node *arg_node, info *arg_info)
 
         int length = snprintf(NULL, 0, "fun \"%s\" %s %s", FUNDEF_NAME(arg_node), typeToString(FUNDEF_TYPE(arg_node)), params == NULL ? "" : params);
         int lengthPlus = length + 1;
-        char *str = (char *)malloc(lengthPlus);
+        char *string = (char *)malloc(lengthPlus);
 
-        snprintf(str, lengthPlus, "fun \"%s\" %s %s", FUNDEF_NAME(arg_node), typeToString(FUNDEF_TYPE(arg_node)), params == NULL ? "" : params);
+        snprintf(string, lengthPlus, "fun \"%s\" %s %s", FUNDEF_NAME(arg_node), typeToString(FUNDEF_TYPE(arg_node)), params == NULL ? "" : params);
 
         if (INFO_IMPORT(arg_info))
         {
-            add(INFO_IMPORT(arg_info), str, 0);
+            add(INFO_IMPORT(arg_info), string, 0);
         }
         else
         {
-            INFO_IMPORT(arg_info) = push(str, 0, NULL);
+            INFO_IMPORT(arg_info) = push(string, 0, NULL);
         }
 
         free(params);
@@ -337,17 +398,17 @@ node *GBCfundef(node *arg_node, info *arg_info)
 
         int length = snprintf(NULL, 0, "fun \"%s\" %s %s %s", FUNDEF_NAME(arg_node), typeToString(FUNDEF_TYPE(arg_node)), params, FUNDEF_NAME(arg_node));
         int lengthPlus = length + 1;
-        char *str = (char *)malloc(lengthPlus);
+        char *string = (char *)malloc(lengthPlus);
 
-        snprintf(str, lengthPlus, "fun \"%s\" %s %s %s", FUNDEF_NAME(arg_node), typeToString(FUNDEF_TYPE(arg_node)), params == NULL ? "" : params, FUNDEF_NAME(arg_node));
+        snprintf(string, lengthPlus, "fun \"%s\" %s %s %s", FUNDEF_NAME(arg_node), typeToString(FUNDEF_TYPE(arg_node)), params == NULL ? "" : params, FUNDEF_NAME(arg_node));
 
         if (INFO_EXPORT(arg_info))
         {
-            add(INFO_EXPORT(arg_info), str, 0);
+            add(INFO_EXPORT(arg_info), string, 0);
         }
         else
         {
-            INFO_EXPORT(arg_info) = push(str, 0, NULL);
+            INFO_EXPORT(arg_info) = push(string, 0, NULL);
         }
 
         INFO_SYMBOL_TABLE(arg_info) = SYMBOLTABLEENTRY_TABLE(symboltableEntry);
@@ -403,25 +464,32 @@ node *GBCreturn(node *arg_node, info *arg_info)
     node *table = INFO_SYMBOL_TABLE(arg_info);
     TRAVopt(RETURN_EXPR(arg_node), arg_info);
 
+    const char *type;
+
     if (SYMBOLTABLE_RETURNTYPE(table) == T_int)
     {
-        fprintf(INFO_FILE(arg_info), "  %s\n", "ireturn");
+        type = "ireturn";
     }
     else if (SYMBOLTABLE_RETURNTYPE(table) == T_float)
     {
-        fprintf(INFO_FILE(arg_info), "  %s\n", "freturn");
+        type = "freturn";
     }
     else if (SYMBOLTABLE_RETURNTYPE(table) == T_bool)
     {
-        fprintf(INFO_FILE(arg_info), "  %s\n", "breturn");
+        type = "breturn";
     }
     else if (SYMBOLTABLE_RETURNTYPE(table) == T_void)
     {
-        fprintf(INFO_FILE(arg_info), "  %s\n", "return");
+        type = "return";
     }
-    else if (SYMBOLTABLE_RETURNTYPE(table) == T_unknown)
+
+    if (SYMBOLTABLE_RETURNTYPE(table) == T_unknown)
     {
         CTIabort("Type unknown found, aborting system");
+    }
+    else
+    {
+        fprintf(INFO_FILE(arg_info), "  %s\n", type);
     }
 
     DBUG_RETURN(arg_node);
@@ -531,30 +599,30 @@ node *GBCglobdef(node *arg_node, info *arg_info)
 
     if (GLOBDEF_ISEXTERN(arg_node))
     {
-        char *str = STRcatn(4, "var \"", GLOBDEF_NAME(arg_node), "\" ", typeToString(GLOBDEF_TYPE(arg_node)));
+        char *string = STRcatn(4, "var \"", GLOBDEF_NAME(arg_node), "\" ", typeToString(GLOBDEF_TYPE(arg_node)));
 
         if (INFO_IMPORT(arg_info))
         {
-            add(INFO_IMPORT(arg_info), str, 0);
+            add(INFO_IMPORT(arg_info), string, 0);
         }
         else
         {
-            INFO_IMPORT(arg_info) = push(str, 0, NULL);
+            INFO_IMPORT(arg_info) = push(string, 0, NULL);
         }
     }
     else if (GLOBDEF_ISEXPORT(arg_node))
     {
         node *symboltableEntry = STfindInParent(INFO_SYMBOL_TABLE(arg_info), GLOBDEF_NAME(arg_node));
 
-        char *str = STRcatn(4, "var \"", GLOBDEF_NAME(arg_node), "\" ", STRitoa(SYMBOLTABLEENTRY_OFFSET(symboltableEntry)));
+        char *string = STRcatn(4, "var \"", GLOBDEF_NAME(arg_node), "\" ", STRitoa(SYMBOLTABLEENTRY_OFFSET(symboltableEntry)));
 
         if (INFO_EXPORT(arg_info))
         {
-            add(INFO_EXPORT(arg_info), str, 0);
+            add(INFO_EXPORT(arg_info), string, 0);
         }
         else
         {
-            INFO_EXPORT(arg_info) = push(str, 0, NULL);
+            INFO_EXPORT(arg_info) = push(string, 0, NULL);
         }
     }
 
@@ -864,65 +932,6 @@ node *GBCvar(node *arg_node, info *arg_info)
             break;
         }
     }
-
-    DBUG_RETURN(arg_node);
-}
-
-node *GBCvarlet(node *arg_node, info *arg_info)
-{
-    DBUG_ENTER("GBCvarlet");
-    DBUG_PRINT("GBC", ("GBCvarlet"));
-
-    node *symboltable = INFO_SYMBOL_TABLE(arg_info);
-    INFO_SYMBOL_TABLE_ENTRY(arg_info) = STfindInParent(symboltable, VARLET_NAME(arg_node));
-
-    DBUG_RETURN(arg_node);
-}
-
-node *GBCnum(node *arg_node, info *arg_info)
-{
-    DBUG_ENTER("GBCnum");
-    DBUG_PRINT("GBC", ("GBCnum"));
-
-    char *str = STRcat("int ", STRitoa(NUM_VALUE(arg_node)));
-
-    fprintf(INFO_FILE(arg_info), "  iloadc %d\n", INFO_COUNTER(arg_info));
-    addToConstant(arg_info, str);
-
-    INFO_TYPE(arg_info) = T_int;
-
-    DBUG_RETURN(arg_node);
-}
-
-node *GBCfloat(node *arg_node, info *arg_info)
-{
-    DBUG_ENTER("GBCfloat");
-    DBUG_PRINT("GBC", ("GBCfloat"));
-
-    int length = snprintf(NULL, 0, "float %f", FLOAT_VALUE(arg_node));
-    char *str = malloc(length + 1);
-
-    snprintf(str, length + 1, "float %f", FLOAT_VALUE(arg_node));
-
-    fprintf(INFO_FILE(arg_info), "  floadc %d\n", INFO_COUNTER(arg_info));
-    addToConstant(arg_info, str);
-
-    INFO_TYPE(arg_info) = T_float;
-
-    DBUG_RETURN(arg_node);
-}
-
-node *GBCbool(node *arg_node, info *arg_info)
-{
-    DBUG_ENTER("GBCbool");
-    DBUG_PRINT("GBC", ("GBCbool"));
-
-    char *str = STRcat("bool ", BOOL_VALUE(arg_node) ? "true" : "false");
-
-    fprintf(INFO_FILE(arg_info), "  bloadc %d\n", INFO_COUNTER(arg_info));
-    addToConstant(arg_info, str);
-
-    INFO_TYPE(arg_info) = T_bool;
 
     DBUG_RETURN(arg_node);
 }
