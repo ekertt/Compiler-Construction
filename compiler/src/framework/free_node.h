@@ -17,7 +17,6 @@
 
 #include "types.h"
 
-extern node    *FREEarrexpr(node * arg_node, info * arg_info);
 extern node    *FREEassign(node * arg_node, info * arg_info);
 extern node    *FREEbinop(node * arg_node, info * arg_info);
 extern node    *FREEbool(node * arg_node, info * arg_info);

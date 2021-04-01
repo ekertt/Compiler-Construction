@@ -30,40 +30,40 @@
 travtables_t	travtables = {
 	/* TR_undefined */
 	{&TRAVerror
-	,&TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror}
+	,&TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror, &TRAVerror}
 
 	/* TR_prt */
-	,{&TRAVerror, &PRTprogram, &PRTsymboltable, &PRTsymboltableentry, &PRTdecls, &PRTexprs, &PRTarrexpr, &PRTids, &PRTexprstmt, &PRTreturn, &PRTfuncall, &PRTcast, &PRTfundefs, &PRTfundef, &PRTfunbody, &PRTternary, &PRTifelse, &PRTwhile, &PRTdowhile, &PRTfor, &PRTglobdecl, &PRTglobdef, &PRTparam, &PRTvardecl, &PRTstmts, &PRTassign, &PRTbinop, &PRTmonop, &PRTvarlet, &PRTvar, &PRTnum, &PRTfloat, &PRTbool, &PRTerror}
+	,{&TRAVerror, &PRTprogram, &PRTsymboltable, &PRTsymboltableentry, &PRTdecls, &PRTexprs, &PRTids, &PRTexprstmt, &PRTreturn, &PRTfuncall, &PRTcast, &PRTfundefs, &PRTfundef, &PRTfunbody, &PRTternary, &PRTifelse, &PRTwhile, &PRTdowhile, &PRTfor, &PRTglobdecl, &PRTglobdef, &PRTparam, &PRTvardecl, &PRTstmts, &PRTassign, &PRTbinop, &PRTmonop, &PRTvarlet, &PRTvar, &PRTnum, &PRTfloat, &PRTbool, &PRTerror}
 
 	/* TR_copy */
-	,{&TRAVerror, &COPYprogram, &COPYsymboltable, &COPYsymboltableentry, &COPYdecls, &COPYexprs, &COPYarrexpr, &COPYids, &COPYexprstmt, &COPYreturn, &COPYfuncall, &COPYcast, &COPYfundefs, &COPYfundef, &COPYfunbody, &COPYternary, &COPYifelse, &COPYwhile, &COPYdowhile, &COPYfor, &COPYglobdecl, &COPYglobdef, &COPYparam, &COPYvardecl, &COPYstmts, &COPYassign, &COPYbinop, &COPYmonop, &COPYvarlet, &COPYvar, &COPYnum, &COPYfloat, &COPYbool, &COPYerror}
+	,{&TRAVerror, &COPYprogram, &COPYsymboltable, &COPYsymboltableentry, &COPYdecls, &COPYexprs, &COPYids, &COPYexprstmt, &COPYreturn, &COPYfuncall, &COPYcast, &COPYfundefs, &COPYfundef, &COPYfunbody, &COPYternary, &COPYifelse, &COPYwhile, &COPYdowhile, &COPYfor, &COPYglobdecl, &COPYglobdef, &COPYparam, &COPYvardecl, &COPYstmts, &COPYassign, &COPYbinop, &COPYmonop, &COPYvarlet, &COPYvar, &COPYnum, &COPYfloat, &COPYbool, &COPYerror}
 
 	/* TR_free */
-	,{&TRAVerror, &FREEprogram, &FREEsymboltable, &FREEsymboltableentry, &FREEdecls, &FREEexprs, &FREEarrexpr, &FREEids, &FREEexprstmt, &FREEreturn, &FREEfuncall, &FREEcast, &FREEfundefs, &FREEfundef, &FREEfunbody, &FREEternary, &FREEifelse, &FREEwhile, &FREEdowhile, &FREEfor, &FREEglobdecl, &FREEglobdef, &FREEparam, &FREEvardecl, &FREEstmts, &FREEassign, &FREEbinop, &FREEmonop, &FREEvarlet, &FREEvar, &FREEnum, &FREEfloat, &FREEbool, &FREEerror}
+	,{&TRAVerror, &FREEprogram, &FREEsymboltable, &FREEsymboltableentry, &FREEdecls, &FREEexprs, &FREEids, &FREEexprstmt, &FREEreturn, &FREEfuncall, &FREEcast, &FREEfundefs, &FREEfundef, &FREEfunbody, &FREEternary, &FREEifelse, &FREEwhile, &FREEdowhile, &FREEfor, &FREEglobdecl, &FREEglobdef, &FREEparam, &FREEvardecl, &FREEstmts, &FREEassign, &FREEbinop, &FREEmonop, &FREEvarlet, &FREEvar, &FREEnum, &FREEfloat, &FREEbool, &FREEerror}
 
 	/* TR_chk */
-	,{&TRAVerror, &CHKprogram, &CHKsymboltable, &CHKsymboltableentry, &CHKdecls, &CHKexprs, &CHKarrexpr, &CHKids, &CHKexprstmt, &CHKreturn, &CHKfuncall, &CHKcast, &CHKfundefs, &CHKfundef, &CHKfunbody, &CHKternary, &CHKifelse, &CHKwhile, &CHKdowhile, &CHKfor, &CHKglobdecl, &CHKglobdef, &CHKparam, &CHKvardecl, &CHKstmts, &CHKassign, &CHKbinop, &CHKmonop, &CHKvarlet, &CHKvar, &CHKnum, &CHKfloat, &CHKbool, &CHKerror}
+	,{&TRAVerror, &CHKprogram, &CHKsymboltable, &CHKsymboltableentry, &CHKdecls, &CHKexprs, &CHKids, &CHKexprstmt, &CHKreturn, &CHKfuncall, &CHKcast, &CHKfundefs, &CHKfundef, &CHKfunbody, &CHKternary, &CHKifelse, &CHKwhile, &CHKdowhile, &CHKfor, &CHKglobdecl, &CHKglobdef, &CHKparam, &CHKvardecl, &CHKstmts, &CHKassign, &CHKbinop, &CHKmonop, &CHKvarlet, &CHKvar, &CHKnum, &CHKfloat, &CHKbool, &CHKerror}
 
 	/* TR_ftw */
-	,{&TRAVerror, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &FTWfunbody, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &FTWfor, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &FTWstmts, &TRAVsons, &TRAVsons, &TRAVsons, &FTWvarlet, &FTWvar, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons}
+	,{&TRAVerror, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &FTWfunbody, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &FTWfor, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &FTWstmts, &TRAVsons, &TRAVsons, &TRAVsons, &FTWvarlet, &FTWvar, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons}
 
 	/* TR_st */
-	,{&TRAVerror, &STprogram, &TRAVsons, &TRAVsons, &TRAVsons, &STexprs, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &STfuncall, &TRAVsons, &TRAVsons, &STfundef, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &STglobdef, &STparam, &STvardecl, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &STvarlet, &STvar, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons}
+	,{&TRAVerror, &STprogram, &TRAVsons, &TRAVsons, &TRAVsons, &STexprs, &TRAVsons, &TRAVsons, &TRAVsons, &STfuncall, &TRAVsons, &TRAVsons, &STfundef, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &STglobdef, &STparam, &STvardecl, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &STvarlet, &STvar, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons}
 
 	/* TR_ci */
-	,{&TRAVerror, &CIprogram, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &CIfunbody, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &CIglobdef, &TRAVsons, &CIvardecl, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons}
+	,{&TRAVerror, &CIprogram, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &CIfunbody, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &CIglobdef, &TRAVsons, &CIvardecl, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons}
 
 	/* TR_tc */
-	,{&TRAVerror, &TCprogram, &TRAVsons, &TRAVsons, &TRAVsons, &TCexprs, &TRAVsons, &TRAVsons, &TRAVsons, &TCreturn, &TCfuncall, &TCcast, &TRAVsons, &TCfundef, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TCassign, &TCbinop, &TCmonop, &TRAVsons, &TCvar, &TCnum, &TCfloat, &TCbool, &TRAVsons}
+	,{&TRAVerror, &TCprogram, &TRAVsons, &TRAVsons, &TRAVsons, &TCexprs, &TRAVsons, &TRAVsons, &TCreturn, &TCfuncall, &TCcast, &TRAVsons, &TCfundef, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TCassign, &TCbinop, &TCmonop, &TRAVsons, &TCvar, &TCnum, &TCfloat, &TCbool, &TRAVsons}
 
 	/* TR_cb */
-	,{&TRAVerror, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &CBbinop, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons}
+	,{&TRAVerror, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &CBbinop, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons}
 
 	/* TR_tce */
-	,{&TRAVerror, &TCEprogram, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TCEcast, &TRAVsons, &TCEfundef, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TCEbinop, &TRAVsons, &TRAVsons, &TCEvar, &TCEnum, &TCEfloat, &TCEbool, &TRAVsons}
+	,{&TRAVerror, &TCEprogram, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TCEcast, &TRAVsons, &TCEfundef, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TRAVsons, &TCEbinop, &TRAVsons, &TRAVsons, &TCEvar, &TCEnum, &TCEfloat, &TCEbool, &TRAVsons}
 
 	/* TR_gbc */
-	,{&TRAVerror, &GBCprogram, &GBCsymboltable, &GBCsymboltableentry, &GBCdecls, &GBCexprs, &GBCarrexpr, &GBCids, &GBCexprstmt, &GBCreturn, &GBCfuncall, &GBCcast, &GBCfundefs, &GBCfundef, &GBCfunbody, &GBCternary, &GBCifelse, &GBCwhile, &GBCdowhile, &GBCfor, &GBCglobdecl, &GBCglobdef, &GBCparam, &GBCvardecl, &GBCstmts, &GBCassign, &GBCbinop, &GBCmonop, &GBCvarlet, &GBCvar, &GBCnum, &GBCfloat, &GBCbool, &GBCerror}
+	,{&TRAVerror, &GBCprogram, &GBCsymboltable, &GBCsymboltableentry, &GBCdecls, &GBCexprs, &GBCids, &GBCexprstmt, &GBCreturn, &GBCfuncall, &GBCcast, &GBCfundefs, &GBCfundef, &GBCfunbody, &GBCternary, &GBCifelse, &GBCwhile, &GBCdowhile, &GBCfor, &GBCglobdecl, &GBCglobdef, &GBCparam, &GBCvardecl, &GBCstmts, &GBCassign, &GBCbinop, &GBCmonop, &GBCvarlet, &GBCvar, &GBCnum, &GBCfloat, &GBCbool, &GBCerror}
 };
 
 preposttable_t	pretable = {

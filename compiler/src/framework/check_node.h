@@ -19,7 +19,6 @@
 
 extern node    *CHKMpostfun(node * arg_node, info * arg_info);
 
-extern node    *CHKMarrexpr(node * arg_node, info * arg_info);
 extern node    *CHKMassign(node * arg_node, info * arg_info);
 extern node    *CHKMbinop(node * arg_node, info * arg_info);
 extern node    *CHKMbool(node * arg_node, info * arg_info);

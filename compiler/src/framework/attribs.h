@@ -22,8 +22,6 @@
  * For each node a structure of its attributes is defined, named
  * ATTRIBS_<nodename>
  *****************************************************************************/
-struct ATTRIBS_N_ARREXPR {
-};
 struct ATTRIBS_N_ASSIGN {
 };
 struct ATTRIBS_N_BINOP {
@@ -135,7 +133,6 @@ struct ATTRIBS_N_WHILE {
  * called N_nodename.
  ****************************************************************************/
 struct ATTRIBUNION {
-	struct ATTRIBS_N_ARREXPR *N_arrexpr;
 	struct ATTRIBS_N_ASSIGN *N_assign;
 	struct ATTRIBS_N_BINOP *N_binop;
 	struct ATTRIBS_N_BOOL *N_bool;

@@ -40,30 +40,6 @@
 
 /** <!--******************************************************************-->
  *
- * @fn FREEarrexpr
- *
- * @brief Frees the node and its sons/attributes
- *
- * @param arg_node ArrExpr node to process
- * @param arg_info pointer to info structure
- *
- * @return processed node
- *
- ***************************************************************************/
-node           *FREEarrexpr(node * arg_node, info * arg_info) {
-	node           *result = NULL;
-	DBUG_ENTER("FREEarrexpr");
-	DBUG_PRINT("FREE", ("Processing node N_arrexpr at " F_PTR, arg_node));
-	ARREXPR_EXPRS(arg_node) = FREETRAV(ARREXPR_EXPRS(arg_node), arg_info);
-	result = NULL;
-	arg_node->sons.N_arrexpr = MEMfree(arg_node->sons.N_arrexpr);
-	arg_node->attribs.N_arrexpr = MEMfree(arg_node->attribs.N_arrexpr);
-	DBUG_PRINT("FREE", ("Processing node N_arrexpr at " F_PTR, arg_node));
-	result = MEMfree(arg_node);
-	DBUG_RETURN(result);
-}
-/** <!--******************************************************************-->
- *
  * @fn FREEassign
  *
  * @brief Frees the node and its sons/attributes

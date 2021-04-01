@@ -17,7 +17,6 @@
 
 #include "types.h"
 
-extern node    *COPYarrexpr(node * arg_node, info * arg_info);
 extern node    *COPYassign(node * arg_node, info * arg_info);
 extern node    *COPYbinop(node * arg_node, info * arg_info);
 extern node    *COPYbool(node * arg_node, info * arg_info);

@@ -20,7 +20,6 @@
 extern node    *CHKdoTreeCheck(node * syntax_tree);
 
 
-extern node    *CHKarrexpr(node * arg_node, info * arg_info);
 extern node    *CHKassign(node * arg_node, info * arg_info);
 extern node    *CHKbinop(node * arg_node, info * arg_info);
 extern node    *CHKbool(node * arg_node, info * arg_info);
@@ -64,7 +63,6 @@ extern node    *CHKvar(node * arg_node, info * arg_info);
 extern node    *CHKnum(node * arg_node, info * arg_info);
 extern node    *CHKfloat(node * arg_node, info * arg_info);
 extern node    *CHKbool(node * arg_node, info * arg_info);
-extern node    *CHKarrexpr(node * arg_node, info * arg_info);
 extern node    *CHKternary(node * arg_node, info * arg_info);
 extern node    *CHKassign(node * arg_node, info * arg_info);
 extern node    *CHKexprstmt(node * arg_node, info * arg_info);

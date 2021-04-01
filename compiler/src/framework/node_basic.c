@@ -194,39 +194,11 @@ node           *TBmakeExprs(node * Expr, node * Next) {
 	EXPRS_NEXT(this) = Next;
 #ifndef DBUG_OFF
 	DBUG_PRINT("MAKE", ("doing son target checks"));
-	if ((EXPRS_EXPR(this) != NULL) && (NODE_TYPE(EXPRS_EXPR(this)) != N_binop) && (NODE_TYPE(EXPRS_EXPR(this)) != N_monop) && (NODE_TYPE(EXPRS_EXPR(this)) != N_funcall) && (NODE_TYPE(EXPRS_EXPR(this)) != N_cast) && (NODE_TYPE(EXPRS_EXPR(this)) != N_var) && (NODE_TYPE(EXPRS_EXPR(this)) != N_num) && (NODE_TYPE(EXPRS_EXPR(this)) != N_float) && (NODE_TYPE(EXPRS_EXPR(this)) != N_bool) && (NODE_TYPE(EXPRS_EXPR(this)) != N_arrexpr) && (NODE_TYPE(EXPRS_EXPR(this)) != N_ternary)) {
+	if ((EXPRS_EXPR(this) != NULL) && (NODE_TYPE(EXPRS_EXPR(this)) != N_binop) && (NODE_TYPE(EXPRS_EXPR(this)) != N_monop) && (NODE_TYPE(EXPRS_EXPR(this)) != N_funcall) && (NODE_TYPE(EXPRS_EXPR(this)) != N_cast) && (NODE_TYPE(EXPRS_EXPR(this)) != N_var) && (NODE_TYPE(EXPRS_EXPR(this)) != N_num) && (NODE_TYPE(EXPRS_EXPR(this)) != N_float) && (NODE_TYPE(EXPRS_EXPR(this)) != N_bool) && (NODE_TYPE(EXPRS_EXPR(this)) != N_ternary)) {
 		CTIwarn("Field Expr of node N_Exprs has non-allowed target node.");
 	}
 	if ((EXPRS_NEXT(this) != NULL) && (NODE_TYPE(EXPRS_NEXT(this)) != N_exprs)) {
 		CTIwarn("Field Next of node N_Exprs has non-allowed target node.");
-	}
-#endif				/* DBUG_OFF */
-	DBUG_RETURN(this);
-}
-
-/*****************************************************************************
- * N_ArrExpr :
- *****************************************************************************/
-
-node           *TBmakeArrexpr(node * Exprs) {
-	node           *this;
-	DBUG_ENTER("TBmakeArrexpr");
-	DBUG_PRINT("MAKE", ("allocating node structure"));
-	this = MakeEmptyNode();
-	NODE_TYPE(this) = N_arrexpr;
-	DBUG_PRINT("MAKE", ("address: %s ", this));
-	DBUG_PRINT("MAKE", ("allocating sons structure"));
-	this->sons.N_arrexpr = MEMmalloc(sizeof(struct SONS_N_ARREXPR));
-	DBUG_PRINT("MAKE", ("allocating attrib structure"));
-	this->attribs.N_arrexpr = MEMmalloc(sizeof(struct ATTRIBS_N_ARREXPR));
-	DBUG_PRINT("MAKE", ("setting node type"));
-	NODE_TYPE(this) = N_arrexpr;
-	DBUG_PRINT("MAKE", ("assigning son Exprs initial value: %s ", Exprs));
-	ARREXPR_EXPRS(this) = Exprs;
-#ifndef DBUG_OFF
-	DBUG_PRINT("MAKE", ("doing son target checks"));
-	if ((ARREXPR_EXPRS(this) != NULL) && (NODE_TYPE(ARREXPR_EXPRS(this)) != N_exprs)) {
-		CTIwarn("Field Exprs of node N_ArrExpr has non-allowed target node.");
 	}
 #endif				/* DBUG_OFF */
 	DBUG_RETURN(this);
@@ -282,7 +254,7 @@ node           *TBmakeExprstmt(node * Expr) {
 	EXPRSTMT_EXPR(this) = Expr;
 #ifndef DBUG_OFF
 	DBUG_PRINT("MAKE", ("doing son target checks"));
-	if ((EXPRSTMT_EXPR(this) != NULL) && (NODE_TYPE(EXPRSTMT_EXPR(this)) != N_binop) && (NODE_TYPE(EXPRSTMT_EXPR(this)) != N_monop) && (NODE_TYPE(EXPRSTMT_EXPR(this)) != N_funcall) && (NODE_TYPE(EXPRSTMT_EXPR(this)) != N_cast) && (NODE_TYPE(EXPRSTMT_EXPR(this)) != N_var) && (NODE_TYPE(EXPRSTMT_EXPR(this)) != N_num) && (NODE_TYPE(EXPRSTMT_EXPR(this)) != N_float) && (NODE_TYPE(EXPRSTMT_EXPR(this)) != N_bool) && (NODE_TYPE(EXPRSTMT_EXPR(this)) != N_arrexpr) && (NODE_TYPE(EXPRSTMT_EXPR(this)) != N_ternary)) {
+	if ((EXPRSTMT_EXPR(this) != NULL) && (NODE_TYPE(EXPRSTMT_EXPR(this)) != N_binop) && (NODE_TYPE(EXPRSTMT_EXPR(this)) != N_monop) && (NODE_TYPE(EXPRSTMT_EXPR(this)) != N_funcall) && (NODE_TYPE(EXPRSTMT_EXPR(this)) != N_cast) && (NODE_TYPE(EXPRSTMT_EXPR(this)) != N_var) && (NODE_TYPE(EXPRSTMT_EXPR(this)) != N_num) && (NODE_TYPE(EXPRSTMT_EXPR(this)) != N_float) && (NODE_TYPE(EXPRSTMT_EXPR(this)) != N_bool) && (NODE_TYPE(EXPRSTMT_EXPR(this)) != N_ternary)) {
 		CTIwarn("Field Expr of node N_ExprStmt has non-allowed target node.");
 	}
 #endif				/* DBUG_OFF */
@@ -310,7 +282,7 @@ node           *TBmakeReturn(node * Expr) {
 	RETURN_EXPR(this) = Expr;
 #ifndef DBUG_OFF
 	DBUG_PRINT("MAKE", ("doing son target checks"));
-	if ((RETURN_EXPR(this) != NULL) && (NODE_TYPE(RETURN_EXPR(this)) != N_binop) && (NODE_TYPE(RETURN_EXPR(this)) != N_monop) && (NODE_TYPE(RETURN_EXPR(this)) != N_funcall) && (NODE_TYPE(RETURN_EXPR(this)) != N_cast) && (NODE_TYPE(RETURN_EXPR(this)) != N_var) && (NODE_TYPE(RETURN_EXPR(this)) != N_num) && (NODE_TYPE(RETURN_EXPR(this)) != N_float) && (NODE_TYPE(RETURN_EXPR(this)) != N_bool) && (NODE_TYPE(RETURN_EXPR(this)) != N_arrexpr) && (NODE_TYPE(RETURN_EXPR(this)) != N_ternary)) {
+	if ((RETURN_EXPR(this) != NULL) && (NODE_TYPE(RETURN_EXPR(this)) != N_binop) && (NODE_TYPE(RETURN_EXPR(this)) != N_monop) && (NODE_TYPE(RETURN_EXPR(this)) != N_funcall) && (NODE_TYPE(RETURN_EXPR(this)) != N_cast) && (NODE_TYPE(RETURN_EXPR(this)) != N_var) && (NODE_TYPE(RETURN_EXPR(this)) != N_num) && (NODE_TYPE(RETURN_EXPR(this)) != N_float) && (NODE_TYPE(RETURN_EXPR(this)) != N_bool) && (NODE_TYPE(RETURN_EXPR(this)) != N_ternary)) {
 		CTIwarn("Field Expr of node N_Return has non-allowed target node.");
 	}
 #endif				/* DBUG_OFF */
@@ -369,7 +341,7 @@ node           *TBmakeCast(type Type, node * Expr) {
 	CAST_TYPE(this) = Type;
 #ifndef DBUG_OFF
 	DBUG_PRINT("MAKE", ("doing son target checks"));
-	if ((CAST_EXPR(this) != NULL) && (NODE_TYPE(CAST_EXPR(this)) != N_binop) && (NODE_TYPE(CAST_EXPR(this)) != N_monop) && (NODE_TYPE(CAST_EXPR(this)) != N_funcall) && (NODE_TYPE(CAST_EXPR(this)) != N_cast) && (NODE_TYPE(CAST_EXPR(this)) != N_var) && (NODE_TYPE(CAST_EXPR(this)) != N_num) && (NODE_TYPE(CAST_EXPR(this)) != N_float) && (NODE_TYPE(CAST_EXPR(this)) != N_bool) && (NODE_TYPE(CAST_EXPR(this)) != N_arrexpr) && (NODE_TYPE(CAST_EXPR(this)) != N_ternary)) {
+	if ((CAST_EXPR(this) != NULL) && (NODE_TYPE(CAST_EXPR(this)) != N_binop) && (NODE_TYPE(CAST_EXPR(this)) != N_monop) && (NODE_TYPE(CAST_EXPR(this)) != N_funcall) && (NODE_TYPE(CAST_EXPR(this)) != N_cast) && (NODE_TYPE(CAST_EXPR(this)) != N_var) && (NODE_TYPE(CAST_EXPR(this)) != N_num) && (NODE_TYPE(CAST_EXPR(this)) != N_float) && (NODE_TYPE(CAST_EXPR(this)) != N_bool) && (NODE_TYPE(CAST_EXPR(this)) != N_ternary)) {
 		CTIwarn("Field Expr of node N_Cast has non-allowed target node.");
 	}
 #endif				/* DBUG_OFF */
@@ -509,13 +481,13 @@ node           *TBmakeTernary(node * Expr, node * Then, node * Else) {
 	TERNARY_ELSE(this) = Else;
 #ifndef DBUG_OFF
 	DBUG_PRINT("MAKE", ("doing son target checks"));
-	if ((TERNARY_EXPR(this) != NULL) && (NODE_TYPE(TERNARY_EXPR(this)) != N_binop) && (NODE_TYPE(TERNARY_EXPR(this)) != N_monop) && (NODE_TYPE(TERNARY_EXPR(this)) != N_funcall) && (NODE_TYPE(TERNARY_EXPR(this)) != N_cast) && (NODE_TYPE(TERNARY_EXPR(this)) != N_var) && (NODE_TYPE(TERNARY_EXPR(this)) != N_num) && (NODE_TYPE(TERNARY_EXPR(this)) != N_float) && (NODE_TYPE(TERNARY_EXPR(this)) != N_bool) && (NODE_TYPE(TERNARY_EXPR(this)) != N_arrexpr) && (NODE_TYPE(TERNARY_EXPR(this)) != N_ternary)) {
+	if ((TERNARY_EXPR(this) != NULL) && (NODE_TYPE(TERNARY_EXPR(this)) != N_binop) && (NODE_TYPE(TERNARY_EXPR(this)) != N_monop) && (NODE_TYPE(TERNARY_EXPR(this)) != N_funcall) && (NODE_TYPE(TERNARY_EXPR(this)) != N_cast) && (NODE_TYPE(TERNARY_EXPR(this)) != N_var) && (NODE_TYPE(TERNARY_EXPR(this)) != N_num) && (NODE_TYPE(TERNARY_EXPR(this)) != N_float) && (NODE_TYPE(TERNARY_EXPR(this)) != N_bool) && (NODE_TYPE(TERNARY_EXPR(this)) != N_ternary)) {
 		CTIwarn("Field Expr of node N_Ternary has non-allowed target node.");
 	}
-	if ((TERNARY_THEN(this) != NULL) && (NODE_TYPE(TERNARY_THEN(this)) != N_binop) && (NODE_TYPE(TERNARY_THEN(this)) != N_monop) && (NODE_TYPE(TERNARY_THEN(this)) != N_funcall) && (NODE_TYPE(TERNARY_THEN(this)) != N_cast) && (NODE_TYPE(TERNARY_THEN(this)) != N_var) && (NODE_TYPE(TERNARY_THEN(this)) != N_num) && (NODE_TYPE(TERNARY_THEN(this)) != N_float) && (NODE_TYPE(TERNARY_THEN(this)) != N_bool) && (NODE_TYPE(TERNARY_THEN(this)) != N_arrexpr) && (NODE_TYPE(TERNARY_THEN(this)) != N_ternary)) {
+	if ((TERNARY_THEN(this) != NULL) && (NODE_TYPE(TERNARY_THEN(this)) != N_binop) && (NODE_TYPE(TERNARY_THEN(this)) != N_monop) && (NODE_TYPE(TERNARY_THEN(this)) != N_funcall) && (NODE_TYPE(TERNARY_THEN(this)) != N_cast) && (NODE_TYPE(TERNARY_THEN(this)) != N_var) && (NODE_TYPE(TERNARY_THEN(this)) != N_num) && (NODE_TYPE(TERNARY_THEN(this)) != N_float) && (NODE_TYPE(TERNARY_THEN(this)) != N_bool) && (NODE_TYPE(TERNARY_THEN(this)) != N_ternary)) {
 		CTIwarn("Field Then of node N_Ternary has non-allowed target node.");
 	}
-	if ((TERNARY_ELSE(this) != NULL) && (NODE_TYPE(TERNARY_ELSE(this)) != N_binop) && (NODE_TYPE(TERNARY_ELSE(this)) != N_monop) && (NODE_TYPE(TERNARY_ELSE(this)) != N_funcall) && (NODE_TYPE(TERNARY_ELSE(this)) != N_cast) && (NODE_TYPE(TERNARY_ELSE(this)) != N_var) && (NODE_TYPE(TERNARY_ELSE(this)) != N_num) && (NODE_TYPE(TERNARY_ELSE(this)) != N_float) && (NODE_TYPE(TERNARY_ELSE(this)) != N_bool) && (NODE_TYPE(TERNARY_ELSE(this)) != N_arrexpr) && (NODE_TYPE(TERNARY_ELSE(this)) != N_ternary)) {
+	if ((TERNARY_ELSE(this) != NULL) && (NODE_TYPE(TERNARY_ELSE(this)) != N_binop) && (NODE_TYPE(TERNARY_ELSE(this)) != N_monop) && (NODE_TYPE(TERNARY_ELSE(this)) != N_funcall) && (NODE_TYPE(TERNARY_ELSE(this)) != N_cast) && (NODE_TYPE(TERNARY_ELSE(this)) != N_var) && (NODE_TYPE(TERNARY_ELSE(this)) != N_num) && (NODE_TYPE(TERNARY_ELSE(this)) != N_float) && (NODE_TYPE(TERNARY_ELSE(this)) != N_bool) && (NODE_TYPE(TERNARY_ELSE(this)) != N_ternary)) {
 		CTIwarn("Field Else of node N_Ternary has non-allowed target node.");
 	}
 #endif				/* DBUG_OFF */
@@ -547,7 +519,7 @@ node           *TBmakeIfelse(node * Cond, node * Then, node * Else) {
 	IFELSE_ELSE(this) = Else;
 #ifndef DBUG_OFF
 	DBUG_PRINT("MAKE", ("doing son target checks"));
-	if ((IFELSE_COND(this) != NULL) && (NODE_TYPE(IFELSE_COND(this)) != N_binop) && (NODE_TYPE(IFELSE_COND(this)) != N_monop) && (NODE_TYPE(IFELSE_COND(this)) != N_funcall) && (NODE_TYPE(IFELSE_COND(this)) != N_cast) && (NODE_TYPE(IFELSE_COND(this)) != N_var) && (NODE_TYPE(IFELSE_COND(this)) != N_num) && (NODE_TYPE(IFELSE_COND(this)) != N_float) && (NODE_TYPE(IFELSE_COND(this)) != N_bool) && (NODE_TYPE(IFELSE_COND(this)) != N_arrexpr) && (NODE_TYPE(IFELSE_COND(this)) != N_ternary)) {
+	if ((IFELSE_COND(this) != NULL) && (NODE_TYPE(IFELSE_COND(this)) != N_binop) && (NODE_TYPE(IFELSE_COND(this)) != N_monop) && (NODE_TYPE(IFELSE_COND(this)) != N_funcall) && (NODE_TYPE(IFELSE_COND(this)) != N_cast) && (NODE_TYPE(IFELSE_COND(this)) != N_var) && (NODE_TYPE(IFELSE_COND(this)) != N_num) && (NODE_TYPE(IFELSE_COND(this)) != N_float) && (NODE_TYPE(IFELSE_COND(this)) != N_bool) && (NODE_TYPE(IFELSE_COND(this)) != N_ternary)) {
 		CTIwarn("Field Cond of node N_IfElse has non-allowed target node.");
 	}
 	if ((IFELSE_THEN(this) != NULL) && (NODE_TYPE(IFELSE_THEN(this)) != N_stmts)) {
@@ -583,7 +555,7 @@ node           *TBmakeWhile(node * Cond, node * Block) {
 	WHILE_BLOCK(this) = Block;
 #ifndef DBUG_OFF
 	DBUG_PRINT("MAKE", ("doing son target checks"));
-	if ((WHILE_COND(this) != NULL) && (NODE_TYPE(WHILE_COND(this)) != N_binop) && (NODE_TYPE(WHILE_COND(this)) != N_monop) && (NODE_TYPE(WHILE_COND(this)) != N_funcall) && (NODE_TYPE(WHILE_COND(this)) != N_cast) && (NODE_TYPE(WHILE_COND(this)) != N_var) && (NODE_TYPE(WHILE_COND(this)) != N_num) && (NODE_TYPE(WHILE_COND(this)) != N_float) && (NODE_TYPE(WHILE_COND(this)) != N_bool) && (NODE_TYPE(WHILE_COND(this)) != N_arrexpr) && (NODE_TYPE(WHILE_COND(this)) != N_ternary)) {
+	if ((WHILE_COND(this) != NULL) && (NODE_TYPE(WHILE_COND(this)) != N_binop) && (NODE_TYPE(WHILE_COND(this)) != N_monop) && (NODE_TYPE(WHILE_COND(this)) != N_funcall) && (NODE_TYPE(WHILE_COND(this)) != N_cast) && (NODE_TYPE(WHILE_COND(this)) != N_var) && (NODE_TYPE(WHILE_COND(this)) != N_num) && (NODE_TYPE(WHILE_COND(this)) != N_float) && (NODE_TYPE(WHILE_COND(this)) != N_bool) && (NODE_TYPE(WHILE_COND(this)) != N_ternary)) {
 		CTIwarn("Field Cond of node N_While has non-allowed target node.");
 	}
 	if ((WHILE_BLOCK(this) != NULL) && (NODE_TYPE(WHILE_BLOCK(this)) != N_stmts)) {
@@ -616,7 +588,7 @@ node           *TBmakeDowhile(node * Cond, node * Block) {
 	DOWHILE_BLOCK(this) = Block;
 #ifndef DBUG_OFF
 	DBUG_PRINT("MAKE", ("doing son target checks"));
-	if ((DOWHILE_COND(this) != NULL) && (NODE_TYPE(DOWHILE_COND(this)) != N_binop) && (NODE_TYPE(DOWHILE_COND(this)) != N_monop) && (NODE_TYPE(DOWHILE_COND(this)) != N_funcall) && (NODE_TYPE(DOWHILE_COND(this)) != N_cast) && (NODE_TYPE(DOWHILE_COND(this)) != N_var) && (NODE_TYPE(DOWHILE_COND(this)) != N_num) && (NODE_TYPE(DOWHILE_COND(this)) != N_float) && (NODE_TYPE(DOWHILE_COND(this)) != N_bool) && (NODE_TYPE(DOWHILE_COND(this)) != N_arrexpr) && (NODE_TYPE(DOWHILE_COND(this)) != N_ternary)) {
+	if ((DOWHILE_COND(this) != NULL) && (NODE_TYPE(DOWHILE_COND(this)) != N_binop) && (NODE_TYPE(DOWHILE_COND(this)) != N_monop) && (NODE_TYPE(DOWHILE_COND(this)) != N_funcall) && (NODE_TYPE(DOWHILE_COND(this)) != N_cast) && (NODE_TYPE(DOWHILE_COND(this)) != N_var) && (NODE_TYPE(DOWHILE_COND(this)) != N_num) && (NODE_TYPE(DOWHILE_COND(this)) != N_float) && (NODE_TYPE(DOWHILE_COND(this)) != N_bool) && (NODE_TYPE(DOWHILE_COND(this)) != N_ternary)) {
 		CTIwarn("Field Cond of node N_DoWhile has non-allowed target node.");
 	}
 	if ((DOWHILE_BLOCK(this) != NULL) && (NODE_TYPE(DOWHILE_BLOCK(this)) != N_stmts)) {
@@ -654,13 +626,13 @@ node           *TBmakeFor(char *LoopVar, node * Start, node * Stop, node * Step,
 	FOR_LOOPVAR(this) = LoopVar;
 #ifndef DBUG_OFF
 	DBUG_PRINT("MAKE", ("doing son target checks"));
-	if ((FOR_START(this) != NULL) && (NODE_TYPE(FOR_START(this)) != N_binop) && (NODE_TYPE(FOR_START(this)) != N_monop) && (NODE_TYPE(FOR_START(this)) != N_funcall) && (NODE_TYPE(FOR_START(this)) != N_cast) && (NODE_TYPE(FOR_START(this)) != N_var) && (NODE_TYPE(FOR_START(this)) != N_num) && (NODE_TYPE(FOR_START(this)) != N_float) && (NODE_TYPE(FOR_START(this)) != N_bool) && (NODE_TYPE(FOR_START(this)) != N_arrexpr) && (NODE_TYPE(FOR_START(this)) != N_ternary)) {
+	if ((FOR_START(this) != NULL) && (NODE_TYPE(FOR_START(this)) != N_binop) && (NODE_TYPE(FOR_START(this)) != N_monop) && (NODE_TYPE(FOR_START(this)) != N_funcall) && (NODE_TYPE(FOR_START(this)) != N_cast) && (NODE_TYPE(FOR_START(this)) != N_var) && (NODE_TYPE(FOR_START(this)) != N_num) && (NODE_TYPE(FOR_START(this)) != N_float) && (NODE_TYPE(FOR_START(this)) != N_bool) && (NODE_TYPE(FOR_START(this)) != N_ternary)) {
 		CTIwarn("Field Start of node N_For has non-allowed target node.");
 	}
-	if ((FOR_STOP(this) != NULL) && (NODE_TYPE(FOR_STOP(this)) != N_binop) && (NODE_TYPE(FOR_STOP(this)) != N_monop) && (NODE_TYPE(FOR_STOP(this)) != N_funcall) && (NODE_TYPE(FOR_STOP(this)) != N_cast) && (NODE_TYPE(FOR_STOP(this)) != N_var) && (NODE_TYPE(FOR_STOP(this)) != N_num) && (NODE_TYPE(FOR_STOP(this)) != N_float) && (NODE_TYPE(FOR_STOP(this)) != N_bool) && (NODE_TYPE(FOR_STOP(this)) != N_arrexpr) && (NODE_TYPE(FOR_STOP(this)) != N_ternary)) {
+	if ((FOR_STOP(this) != NULL) && (NODE_TYPE(FOR_STOP(this)) != N_binop) && (NODE_TYPE(FOR_STOP(this)) != N_monop) && (NODE_TYPE(FOR_STOP(this)) != N_funcall) && (NODE_TYPE(FOR_STOP(this)) != N_cast) && (NODE_TYPE(FOR_STOP(this)) != N_var) && (NODE_TYPE(FOR_STOP(this)) != N_num) && (NODE_TYPE(FOR_STOP(this)) != N_float) && (NODE_TYPE(FOR_STOP(this)) != N_bool) && (NODE_TYPE(FOR_STOP(this)) != N_ternary)) {
 		CTIwarn("Field Stop of node N_For has non-allowed target node.");
 	}
-	if ((FOR_STEP(this) != NULL) && (NODE_TYPE(FOR_STEP(this)) != N_binop) && (NODE_TYPE(FOR_STEP(this)) != N_monop) && (NODE_TYPE(FOR_STEP(this)) != N_funcall) && (NODE_TYPE(FOR_STEP(this)) != N_cast) && (NODE_TYPE(FOR_STEP(this)) != N_var) && (NODE_TYPE(FOR_STEP(this)) != N_num) && (NODE_TYPE(FOR_STEP(this)) != N_float) && (NODE_TYPE(FOR_STEP(this)) != N_bool) && (NODE_TYPE(FOR_STEP(this)) != N_arrexpr) && (NODE_TYPE(FOR_STEP(this)) != N_ternary)) {
+	if ((FOR_STEP(this) != NULL) && (NODE_TYPE(FOR_STEP(this)) != N_binop) && (NODE_TYPE(FOR_STEP(this)) != N_monop) && (NODE_TYPE(FOR_STEP(this)) != N_funcall) && (NODE_TYPE(FOR_STEP(this)) != N_cast) && (NODE_TYPE(FOR_STEP(this)) != N_var) && (NODE_TYPE(FOR_STEP(this)) != N_num) && (NODE_TYPE(FOR_STEP(this)) != N_float) && (NODE_TYPE(FOR_STEP(this)) != N_bool) && (NODE_TYPE(FOR_STEP(this)) != N_ternary)) {
 		CTIwarn("Field Step of node N_For has non-allowed target node.");
 	}
 	if ((FOR_BLOCK(this) != NULL) && (NODE_TYPE(FOR_BLOCK(this)) != N_stmts)) {
@@ -730,7 +702,7 @@ node           *TBmakeGlobdef(type Type, char *Name, node * Dims, node * Init){
 	if ((GLOBDEF_DIMS(this) != NULL) && (NODE_TYPE(GLOBDEF_DIMS(this)) != N_exprs)) {
 		CTIwarn("Field Dims of node N_GlobDef has non-allowed target node.");
 	}
-	if ((GLOBDEF_INIT(this) != NULL) && (NODE_TYPE(GLOBDEF_INIT(this)) != N_binop) && (NODE_TYPE(GLOBDEF_INIT(this)) != N_monop) && (NODE_TYPE(GLOBDEF_INIT(this)) != N_funcall) && (NODE_TYPE(GLOBDEF_INIT(this)) != N_cast) && (NODE_TYPE(GLOBDEF_INIT(this)) != N_var) && (NODE_TYPE(GLOBDEF_INIT(this)) != N_num) && (NODE_TYPE(GLOBDEF_INIT(this)) != N_float) && (NODE_TYPE(GLOBDEF_INIT(this)) != N_bool) && (NODE_TYPE(GLOBDEF_INIT(this)) != N_arrexpr) && (NODE_TYPE(GLOBDEF_INIT(this)) != N_ternary)) {
+	if ((GLOBDEF_INIT(this) != NULL) && (NODE_TYPE(GLOBDEF_INIT(this)) != N_binop) && (NODE_TYPE(GLOBDEF_INIT(this)) != N_monop) && (NODE_TYPE(GLOBDEF_INIT(this)) != N_funcall) && (NODE_TYPE(GLOBDEF_INIT(this)) != N_cast) && (NODE_TYPE(GLOBDEF_INIT(this)) != N_var) && (NODE_TYPE(GLOBDEF_INIT(this)) != N_num) && (NODE_TYPE(GLOBDEF_INIT(this)) != N_float) && (NODE_TYPE(GLOBDEF_INIT(this)) != N_bool) && (NODE_TYPE(GLOBDEF_INIT(this)) != N_ternary)) {
 		CTIwarn("Field Init of node N_GlobDef has non-allowed target node.");
 	}
 #endif				/* DBUG_OFF */
@@ -802,7 +774,7 @@ node           *TBmakeVardecl(char *Name, type Type, node * Dims, node * Init, n
 	if ((VARDECL_DIMS(this) != NULL) && (NODE_TYPE(VARDECL_DIMS(this)) != N_exprs)) {
 		CTIwarn("Field Dims of node N_VarDecl has non-allowed target node.");
 	}
-	if ((VARDECL_INIT(this) != NULL) && (NODE_TYPE(VARDECL_INIT(this)) != N_binop) && (NODE_TYPE(VARDECL_INIT(this)) != N_monop) && (NODE_TYPE(VARDECL_INIT(this)) != N_funcall) && (NODE_TYPE(VARDECL_INIT(this)) != N_cast) && (NODE_TYPE(VARDECL_INIT(this)) != N_var) && (NODE_TYPE(VARDECL_INIT(this)) != N_num) && (NODE_TYPE(VARDECL_INIT(this)) != N_float) && (NODE_TYPE(VARDECL_INIT(this)) != N_bool) && (NODE_TYPE(VARDECL_INIT(this)) != N_arrexpr) && (NODE_TYPE(VARDECL_INIT(this)) != N_ternary)) {
+	if ((VARDECL_INIT(this) != NULL) && (NODE_TYPE(VARDECL_INIT(this)) != N_binop) && (NODE_TYPE(VARDECL_INIT(this)) != N_monop) && (NODE_TYPE(VARDECL_INIT(this)) != N_funcall) && (NODE_TYPE(VARDECL_INIT(this)) != N_cast) && (NODE_TYPE(VARDECL_INIT(this)) != N_var) && (NODE_TYPE(VARDECL_INIT(this)) != N_num) && (NODE_TYPE(VARDECL_INIT(this)) != N_float) && (NODE_TYPE(VARDECL_INIT(this)) != N_bool) && (NODE_TYPE(VARDECL_INIT(this)) != N_ternary)) {
 		CTIwarn("Field Init of node N_VarDecl has non-allowed target node.");
 	}
 	if ((VARDECL_NEXT(this) != NULL) && (NODE_TYPE(VARDECL_NEXT(this)) != N_vardecl)) {
@@ -871,7 +843,7 @@ node           *TBmakeAssign(node * Let, node * Expr) {
 	if ((ASSIGN_LET(this) != NULL) && (NODE_TYPE(ASSIGN_LET(this)) != N_varlet)) {
 		CTIwarn("Field Let of node N_Assign has non-allowed target node.");
 	}
-	if ((ASSIGN_EXPR(this) != NULL) && (NODE_TYPE(ASSIGN_EXPR(this)) != N_binop) && (NODE_TYPE(ASSIGN_EXPR(this)) != N_monop) && (NODE_TYPE(ASSIGN_EXPR(this)) != N_funcall) && (NODE_TYPE(ASSIGN_EXPR(this)) != N_cast) && (NODE_TYPE(ASSIGN_EXPR(this)) != N_var) && (NODE_TYPE(ASSIGN_EXPR(this)) != N_num) && (NODE_TYPE(ASSIGN_EXPR(this)) != N_float) && (NODE_TYPE(ASSIGN_EXPR(this)) != N_bool) && (NODE_TYPE(ASSIGN_EXPR(this)) != N_arrexpr) && (NODE_TYPE(ASSIGN_EXPR(this)) != N_ternary)) {
+	if ((ASSIGN_EXPR(this) != NULL) && (NODE_TYPE(ASSIGN_EXPR(this)) != N_binop) && (NODE_TYPE(ASSIGN_EXPR(this)) != N_monop) && (NODE_TYPE(ASSIGN_EXPR(this)) != N_funcall) && (NODE_TYPE(ASSIGN_EXPR(this)) != N_cast) && (NODE_TYPE(ASSIGN_EXPR(this)) != N_var) && (NODE_TYPE(ASSIGN_EXPR(this)) != N_num) && (NODE_TYPE(ASSIGN_EXPR(this)) != N_float) && (NODE_TYPE(ASSIGN_EXPR(this)) != N_bool) && (NODE_TYPE(ASSIGN_EXPR(this)) != N_ternary)) {
 		CTIwarn("Field Expr of node N_Assign has non-allowed target node.");
 	}
 #endif				/* DBUG_OFF */
@@ -902,10 +874,10 @@ node           *TBmakeBinop(binop Op, node * Left, node * Right) {
 	BINOP_OP(this) = Op;
 #ifndef DBUG_OFF
 	DBUG_PRINT("MAKE", ("doing son target checks"));
-	if ((BINOP_LEFT(this) != NULL) && (NODE_TYPE(BINOP_LEFT(this)) != N_binop) && (NODE_TYPE(BINOP_LEFT(this)) != N_monop) && (NODE_TYPE(BINOP_LEFT(this)) != N_funcall) && (NODE_TYPE(BINOP_LEFT(this)) != N_cast) && (NODE_TYPE(BINOP_LEFT(this)) != N_var) && (NODE_TYPE(BINOP_LEFT(this)) != N_num) && (NODE_TYPE(BINOP_LEFT(this)) != N_float) && (NODE_TYPE(BINOP_LEFT(this)) != N_bool) && (NODE_TYPE(BINOP_LEFT(this)) != N_arrexpr) && (NODE_TYPE(BINOP_LEFT(this)) != N_ternary)) {
+	if ((BINOP_LEFT(this) != NULL) && (NODE_TYPE(BINOP_LEFT(this)) != N_binop) && (NODE_TYPE(BINOP_LEFT(this)) != N_monop) && (NODE_TYPE(BINOP_LEFT(this)) != N_funcall) && (NODE_TYPE(BINOP_LEFT(this)) != N_cast) && (NODE_TYPE(BINOP_LEFT(this)) != N_var) && (NODE_TYPE(BINOP_LEFT(this)) != N_num) && (NODE_TYPE(BINOP_LEFT(this)) != N_float) && (NODE_TYPE(BINOP_LEFT(this)) != N_bool) && (NODE_TYPE(BINOP_LEFT(this)) != N_ternary)) {
 		CTIwarn("Field Left of node N_BinOp has non-allowed target node.");
 	}
-	if ((BINOP_RIGHT(this) != NULL) && (NODE_TYPE(BINOP_RIGHT(this)) != N_binop) && (NODE_TYPE(BINOP_RIGHT(this)) != N_monop) && (NODE_TYPE(BINOP_RIGHT(this)) != N_funcall) && (NODE_TYPE(BINOP_RIGHT(this)) != N_cast) && (NODE_TYPE(BINOP_RIGHT(this)) != N_var) && (NODE_TYPE(BINOP_RIGHT(this)) != N_num) && (NODE_TYPE(BINOP_RIGHT(this)) != N_float) && (NODE_TYPE(BINOP_RIGHT(this)) != N_bool) && (NODE_TYPE(BINOP_RIGHT(this)) != N_arrexpr) && (NODE_TYPE(BINOP_RIGHT(this)) != N_ternary)) {
+	if ((BINOP_RIGHT(this) != NULL) && (NODE_TYPE(BINOP_RIGHT(this)) != N_binop) && (NODE_TYPE(BINOP_RIGHT(this)) != N_monop) && (NODE_TYPE(BINOP_RIGHT(this)) != N_funcall) && (NODE_TYPE(BINOP_RIGHT(this)) != N_cast) && (NODE_TYPE(BINOP_RIGHT(this)) != N_var) && (NODE_TYPE(BINOP_RIGHT(this)) != N_num) && (NODE_TYPE(BINOP_RIGHT(this)) != N_float) && (NODE_TYPE(BINOP_RIGHT(this)) != N_bool) && (NODE_TYPE(BINOP_RIGHT(this)) != N_ternary)) {
 		CTIwarn("Field Right of node N_BinOp has non-allowed target node.");
 	}
 #endif				/* DBUG_OFF */
@@ -934,7 +906,7 @@ node           *TBmakeMonop(monop Op, node * Operand) {
 	MONOP_OP(this) = Op;
 #ifndef DBUG_OFF
 	DBUG_PRINT("MAKE", ("doing son target checks"));
-	if ((MONOP_OPERAND(this) != NULL) && (NODE_TYPE(MONOP_OPERAND(this)) != N_binop) && (NODE_TYPE(MONOP_OPERAND(this)) != N_monop) && (NODE_TYPE(MONOP_OPERAND(this)) != N_funcall) && (NODE_TYPE(MONOP_OPERAND(this)) != N_cast) && (NODE_TYPE(MONOP_OPERAND(this)) != N_var) && (NODE_TYPE(MONOP_OPERAND(this)) != N_num) && (NODE_TYPE(MONOP_OPERAND(this)) != N_float) && (NODE_TYPE(MONOP_OPERAND(this)) != N_bool) && (NODE_TYPE(MONOP_OPERAND(this)) != N_arrexpr) && (NODE_TYPE(MONOP_OPERAND(this)) != N_ternary)) {
+	if ((MONOP_OPERAND(this) != NULL) && (NODE_TYPE(MONOP_OPERAND(this)) != N_binop) && (NODE_TYPE(MONOP_OPERAND(this)) != N_monop) && (NODE_TYPE(MONOP_OPERAND(this)) != N_funcall) && (NODE_TYPE(MONOP_OPERAND(this)) != N_cast) && (NODE_TYPE(MONOP_OPERAND(this)) != N_var) && (NODE_TYPE(MONOP_OPERAND(this)) != N_num) && (NODE_TYPE(MONOP_OPERAND(this)) != N_float) && (NODE_TYPE(MONOP_OPERAND(this)) != N_bool) && (NODE_TYPE(MONOP_OPERAND(this)) != N_ternary)) {
 		CTIwarn("Field Operand of node N_MonOp has non-allowed target node.");
 	}
 #endif				/* DBUG_OFF */

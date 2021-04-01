@@ -64,8 +64,7 @@ isDecl(node * arg_node)
 static bool 
 isExpr(node * arg_node)
 {
-	bool		res = ((NODE_TYPE(arg_node) == N_arrexpr) ||
-		     (NODE_TYPE(arg_node) == N_binop) ||
+	bool		res = ((NODE_TYPE(arg_node) == N_binop) ||
 		     (NODE_TYPE(arg_node) == N_bool) ||
 		     (NODE_TYPE(arg_node) == N_cast) ||
 		     (NODE_TYPE(arg_node) == N_float) ||
@@ -92,42 +91,6 @@ void		isDummy   () {
 	isDecl(NULL);
 	isExpr(NULL);
 	isStmt(NULL);
-}
-/** <!--******************************************************************-->
- *
- * @fn CHKarrexpr
- *
- * @brief Check the node and its sons/attributes
- *
- * @param arg_node ArrExpr node to process
- * @param arg_info pointer to info structure
- *
- * @return processed node
- *
- ***************************************************************************/
-node           *CHKarrexpr(node * arg_node, info * arg_info) {
-	DBUG_ENTER("CHKarrexpr");
-
-	/*
-	 * Son check: ARREXPR_EXPRS
-	 */
-	if ((FALSE) || (TRUE)) {
-		CHKexistSon(ARREXPR_EXPRS(arg_node), arg_node, "mandatory son ARREXPR_EXPRS is NULL");
-		if (ARREXPR_EXPRS(arg_node) != NULL) {
-			if (!((FALSE) || (NODE_TYPE(ARREXPR_EXPRS(arg_node)) == N_exprs))) {
-				CHKcorrectTypeInsertError(arg_node, "ARREXPR_EXPRS hasnt the right type." " It should be: " "N_exprs");
-			}
-		}
-	} else {
-		CHKnotExist(ARREXPR_EXPRS(arg_node), arg_node, "attribute ARREXPR_EXPRS must be NULL");
-	}
-
-	/*
-	 * trav functions: to get all sons
-	 */
-	if (ARREXPR_EXPRS(arg_node) != NULL) {
-		ARREXPR_EXPRS(arg_node) = TRAVdo(ARREXPR_EXPRS(arg_node), arg_info);
-	} DBUG_RETURN(arg_node);
 }
 /** <!--******************************************************************-->
  *

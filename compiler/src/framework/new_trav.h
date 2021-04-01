@@ -17,7 +17,6 @@
 
 #include "types.h"
 
-extern node    *EVALarrexpr(node * arg_node, info * arg_info);
 extern node    *EVALassign(node * arg_node, info * arg_info);
 extern node    *EVALbinop(node * arg_node, info * arg_info);
 extern node    *EVALbool(node * arg_node, info * arg_info);

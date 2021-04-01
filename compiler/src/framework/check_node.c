@@ -51,24 +51,6 @@ CHKMpostfun(node * arg_node, info * arg_info)
 
 /** <!--******************************************************************-->
  *
- * @fn CHKMarrexpr
- *
- * @brief Touched the node and its sons/attributes
- *
- * @param arg_node ArrExpr node to process
- * @param arg_info pointer to info structure
- *
- * @return processed node
- *
- ***************************************************************************/
-node           *CHKMarrexpr(node * arg_node, info * arg_info) {
-	DBUG_ENTER("CHKMarrexpr");
-	NODE_ERROR(arg_node) = CHKMTRAV(NODE_ERROR(arg_node), arg_info);
-	ARREXPR_EXPRS(arg_node) = CHKMTRAV(ARREXPR_EXPRS(arg_node), arg_info);
-	DBUG_RETURN(arg_node);
-}
-/** <!--******************************************************************-->
- *
  * @fn CHKMassign
  *
  * @brief Touched the node and its sons/attributes

@@ -57,9 +57,6 @@ TRAVsons(node * arg_node, info * arg_info)
 		TRAV(EXPRS_EXPR(arg_node), arg_info);
 		TRAV(EXPRS_NEXT(arg_node), arg_info);
 		break;
-	case N_arrexpr:
-		TRAV(ARREXPR_EXPRS(arg_node), arg_info);
-		break;
 	case N_ids:
 		TRAV(IDS_NEXT(arg_node), arg_info);
 		break;
@@ -189,9 +186,6 @@ TRAVnumSons(node * node)
 		break;
 	case N_exprs:
 		result = 2;
-		break;
-	case N_arrexpr:
-		result = 1;
 		break;
 	case N_ids:
 		result = 1;
@@ -343,15 +337,6 @@ TRAVgetSon(int no, node * parent)
 			break;
 		case 1:
 			result = EXPRS_NEXT(parent);
-			break;
-		default:
-			DBUG_ASSERT((FALSE), "index out of range!");
-			break;
-		} break;
-	case N_arrexpr:
-		switch (no) {
-		case 0:
-			result = ARREXPR_EXPRS(parent);
 			break;
 		default:
 			DBUG_ASSERT((FALSE), "index out of range!");

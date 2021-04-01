@@ -69,13 +69,6 @@ extern node    *TBmakeDecls(node * Decl, node * Next);
 extern node    *TBmakeExprs(node * Expr, node * Next);
 
 /*****************************************************************************
- * macros and functions for N_arrexpr
- *****************************************************************************/
-
-#define ARREXPR_EXPRS( n) ((n)->sons.N_arrexpr->Exprs)
-extern node    *TBmakeArrexpr(node * Exprs);
-
-/*****************************************************************************
  * macros and functions for N_ids
  *****************************************************************************/
 

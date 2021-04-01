@@ -35,27 +35,6 @@
 
 /** <!--******************************************************************-->
  *
- * @fn COPYarrexpr
- *
- * @brief Copies the node and its sons/attributes
- *
- * @param arg_node ArrExpr node to process
- * @param arg_info pointer to info structure
- *
- * @return processed node
- *
- ***************************************************************************/
-node           *COPYarrexpr(node * arg_node, info * arg_info) {
-	node           *result = TBmakeArrexpr(NULL);
-	DBUG_ENTER("COPYarrexpr");
-	LUTinsertIntoLutP(INFO_LUT(arg_info), arg_node, result);
-	/* Copy sons */
-	ARREXPR_EXPRS(result) = COPYTRAV(ARREXPR_EXPRS(arg_node), arg_info);
-	/* Return value */
-	DBUG_RETURN(result);
-}
-/** <!--******************************************************************-->
- *
  * @fn COPYassign
  *
  * @brief Copies the node and its sons/attributes

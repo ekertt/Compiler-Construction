@@ -22,9 +22,6 @@
  * For each node a structure of its sons is defined, named
  * SONS_<nodename>
  *****************************************************************************/
-struct SONS_N_ARREXPR {
-	node           *Exprs;
-};
 struct SONS_N_ASSIGN {
 	node           *Let;
 	node           *Expr;
@@ -147,7 +144,6 @@ struct SONS_N_WHILE {
  * called N_nodename.
  ****************************************************************************/
 struct SONUNION {
-	struct SONS_N_ARREXPR *N_arrexpr;
 	struct SONS_N_ASSIGN *N_assign;
 	struct SONS_N_BINOP *N_binop;
 	struct SONS_N_BOOL *N_bool;

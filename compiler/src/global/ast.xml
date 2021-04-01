@@ -112,7 +112,6 @@
                 <node name="Num"/>
                 <node name="Float"/>
                 <node name="Bool"/>
-                <node name="ArrExpr"/>
                 <node name="Ternary" />
             </target>
         </nodeset>
@@ -340,20 +339,6 @@
                 <son name="Next">
                     <targets>
                         <target mandatory="no">
-                            <node name="Exprs"/>
-                            <phases>
-                                <all/>
-                            </phases>
-                        </target>
-                    </targets>
-                </son>
-            </sons>
-        </node>
-        <node name="ArrExpr">
-            <sons>
-                <son name="Exprs">
-                    <targets>
-                        <target mandatory="yes">
                             <node name="Exprs"/>
                             <phases>
                                 <all/>
