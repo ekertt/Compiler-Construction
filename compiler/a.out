@@ -1,119 +1,157 @@
-main:
-   esr 9
-  iloadc 0
-  iloadc 1
-  iloadc 2
-  istore 0
-  iloadc 3
-  istore 1
-  iloadc 4
-  istore 3
-   iload_1
-  istore 4
-  iloadc 5
-  istore 5
+foo:
+   iload_0
+   fload_1
+  f2i
+  iadd
+   iload_2
+  iadd
+  ireturn
 
-0_while:
-    iload 5
-  iloadc 6
-  igt
-  branch_f 2_false_expr
-   iload_3
-    iload 4
-  ilt
-  jump 3_end
-2_false_expr:
-   iload_3
-    iload 4
-  igt
-3_end:
-  branch_f 1_end
-   iload_0
-  iloadc 7
-  isub
+fun:
+   esr 7
+  iloadc 0
   istore 0
-  isrg
+  iloadc 1
+  istore 1
+  iloadc 2
+  istore 2
+  iloadc 3
+  istore 3
+  floadc 4
+  fstore 4
+  floadc 5
+  fstore 5
+  bloadc 6
+  bstore 6
    iload_0
+   iload_1
+  ilt
+  branch_f 1_false_expr
+   iload_2
+   iload_3
+  igt
+  jump 2_end
+1_false_expr:
+  bloadc 7
+2_end:
+  branch_f 0_false_expr
+  iloadc 8
+  jump 3_end
+0_false_expr:
+  iloadc 9
+3_end:
+  istore 3
+  isrg
+   iload_3
   jsre 0
   isrg
-  iloadc 8
-  jsre 4
-   iload_3
-    iload 5
-  iadd
-  istore 3
-  jump 0_while
-1_end:
-
-  isrg
-  iloadc 9
-  jsre 5
   iloadc 10
-  istore 1
-  iloadc 11
-  istore 6
-   iload_1
-  istore 7
-  iloadc 12
-  ineg
-  istore 8
-
-4_while:
-    iload 8
-  iloadc 13
-  igt
-  branch_f 6_false_expr
-    iload 6
-    iload 7
+  jsre 5
+  isrg
+   iload_0
+   iload_2
   ilt
+  branch_f 4_false_expr
+  iloadc 11
+  jump 5_end
+4_false_expr:
+  iloadc 12
+5_end:
+    fload 4
+    fload 5
+  fadd
+   iload_1
+   iload_3
+  ilt
+  branch_f 6_false_expr
+  iloadc 13
   jump 7_end
 6_false_expr:
-    iload 6
-    iload 7
-  igt
-7_end:
-  branch_f 5_end
-   iload_0
   iloadc 14
-  isub
-  istore 0
+7_end:
+  jsr 3 foo
+  istore 3
   isrg
-   iload_0
+   iload_3
   jsre 0
   isrg
   iloadc 15
-  jsre 4
-    iload 6
-    iload 8
-  iadd
-  istore 6
-  jump 4_while
-5_end:
-
-  isrg
-  iloadc 16
   jsre 5
+   iload_1
+   iload_3
+  ilt
+  branch_f 8_false_expr
+  bloadc 16
+  jump 9_end
+8_false_expr:
+   iload_0
+   iload_2
+  igt
+9_end:
+  branch_f 10_end
+
   iloadc 17
+  istore 0
+10_end:
+  iloadc 18
   ireturn
 
-.const int 10
-.const int 5
-.const int 10
-.const int 5
-.const int 0
+bar:
+   esr 3
+  iloadc 19
+  istore 0
+  floadc 20
+  fstore 1
+   iload_0
+   fload_1
+  f2i
+   iload_0
+  imul
+  iadd
+  istore 2
+  isrg
+   iload_2
+  jsre 0
+  isrg
+  iloadc 21
+  jsre 5
+  return
+
+main:
+  isrg
+  jsr 0 fun
+  ipop
+  isrg
+  jsr 0 bar
+  iloadc 22
+  ireturn
+
 .const int 1
-.const int 0
-.const int 1
+.const int 2
 .const int 3
+.const int 4
+.const float 1.000000
+.const float 2.000000
+.const bool true
+.const bool false
+.const int 1
+.const int 0
+.const int 1
+.const int 1
+.const int 0
+.const int 1
+.const int 0
+.const int 1
+.const bool true
+.const int 7
 .const int 1
 .const int 5
-.const int 10
+.const float 6.000000
 .const int 1
 .const int 0
-.const int 1
-.const int 3
-.const int 1
-.const int 0
+.exportfun "foo" int  int float int foo
+.exportfun "fun" int  fun
+.exportfun "bar" void  bar
 .exportfun "main" int  main
 .importfun "printInt" void  int
 .importfun "printFloat" void  float

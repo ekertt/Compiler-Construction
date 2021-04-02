@@ -71,12 +71,8 @@ node *STadd(node *table, node *entry)
 {
     DBUG_ENTER("STadd");
 
-    if (STfind(table, SYMBOLTABLEENTRY_NAME(entry)) != NULL)
-    {
-        return NULL;
-    }
-
-    if (STfindFundef(table, SYMBOLTABLEENTRY_NAME(entry)) != NULL)
+    if ((STfind(table, SYMBOLTABLEENTRY_NAME(entry)) != NULL) || 
+        (STfindFundef(table, SYMBOLTABLEENTRY_NAME(entry)) != NULL))
     {
         return NULL;
     }
@@ -98,22 +94,22 @@ node *STadd(node *table, node *entry)
 
     node *latestEntry = STlatestEntry(SYMBOLTABLE_ENTRY(table));
 
-    if (latestEntry == NULL)
+    if (!latestEntry)
     {
         return SYMBOLTABLE_ENTRY(table) = entry;
     }
 
     SYMBOLTABLEENTRY_NEXT(latestEntry) = entry;
+
     DBUG_RETURN(entry);
 }
 
 size_t STcountVarDecls(node *table)
 {
     size_t count = 0;
-
     node *entry = SYMBOLTABLE_ENTRY(table);
 
-    for (; entry != NULL; entry = SYMBOLTABLEENTRY_NEXT(entry))
+    for (; entry; entry = SYMBOLTABLEENTRY_NEXT(entry))
     {
         if (SYMBOLTABLEENTRY_PARAM(entry))
         {
@@ -130,7 +126,7 @@ node *STfindByNode(node *table, node *link)
 {
     node *entry = SYMBOLTABLE_ENTRY(table);
 
-    for (; entry != NULL; entry = SYMBOLTABLEENTRY_NEXT(entry))
+    for (; entry; entry = SYMBOLTABLEENTRY_NEXT(entry))
     {
         node *n = SYMBOLTABLEENTRY_LINK(entry);
 
@@ -139,26 +135,19 @@ node *STfindByNode(node *table, node *link)
             continue;
         }
 
-        if (NODE_TYPE(n) == N_globdef && STReq(GLOBDEF_NAME(n), GLOBDEF_NAME(link)))
-        {
-            return entry;
-        }
-        if (NODE_TYPE(n) == N_fundef && STReq(FUNDEF_NAME(n), FUNDEF_NAME(link)))
-        {
-            return entry;
-        }
-        if (NODE_TYPE(n) == N_vardecl && STReq(VARDECL_NAME(n), VARDECL_NAME(link)))
-        {
-            return entry;
-        }
-        if (NODE_TYPE(n) == N_param && STReq(PARAM_NAME(n), PARAM_NAME(link)))
+        if ((NODE_TYPE(n) == N_globdef && STReq(GLOBDEF_NAME(n), GLOBDEF_NAME(link))) || 
+            (NODE_TYPE(n) == N_fundef && STReq(FUNDEF_NAME(n), FUNDEF_NAME(link))) ||
+            (NODE_TYPE(n) == N_vardecl && STReq(VARDECL_NAME(n), VARDECL_NAME(link))) ||
+            (NODE_TYPE(n) == N_param && STReq(PARAM_NAME(n), PARAM_NAME(link))))
         {
             return entry;
         }
     }
 
-    if (SYMBOLTABLE_PARENT(table) == NULL)
+    if (!SYMBOLTABLE_PARENT(table))
+    {
         return NULL;
+    }
 
     return STfindByNode(SYMBOLTABLE_PARENT(table), link);
 }
@@ -172,22 +161,13 @@ node *STfind(node *symboltable, const char *name)
 
 node *STfindEntry(node *symboltableentry, const char *name, type type)
 {
-    if (symboltableentry == NULL)
+    if (!symboltableentry)
     {
         return NULL;
     }
-
-    if (SYMBOLTABLEENTRY_TABLE(symboltableentry) != NULL)
-    {
-        return STfindEntry(SYMBOLTABLEENTRY_NEXT(symboltableentry), name, type);
-    }
-
-    if (strcmp(SYMBOLTABLEENTRY_NAME(symboltableentry), name) != 0)
-    {
-        return STfindEntry(SYMBOLTABLEENTRY_NEXT(symboltableentry), name, type);
-    }
-
-    if (SYMBOLTABLEENTRY_TYPE(symboltableentry) != type && T_unknown != type)
+    else if ((SYMBOLTABLEENTRY_TABLE(symboltableentry)) ||
+             (strcmp(SYMBOLTABLEENTRY_NAME(symboltableentry), name) != 0) ||
+             (SYMBOLTABLEENTRY_TYPE(symboltableentry) != type && T_unknown != type))
     {
         return STfindEntry(SYMBOLTABLEENTRY_NEXT(symboltableentry), name, type);
     }
@@ -198,15 +178,13 @@ node *STfindEntry(node *symboltableentry, const char *name, type type)
 node *STfindInParent(node *symboltable, const char *name)
 {
     node *variable = STfind(symboltable, name);
+    node *parent = SYMBOLTABLE_PARENT(symboltable);
 
-    if (variable != NULL)
+    if (variable)
     {
         return variable;
     }
-
-    node *parent = SYMBOLTABLE_PARENT(symboltable);
-
-    if (parent == NULL)
+    else if (!parent)
     {
         return NULL;
     }
@@ -216,12 +194,7 @@ node *STfindInParent(node *symboltable, const char *name)
 
 node *STlatestEntry(node *linkedlist)
 {
-    if (linkedlist == NULL)
-    {
-        return linkedlist;
-    }
-
-    if (SYMBOLTABLEENTRY_NEXT(linkedlist) == NULL)
+    if (!linkedlist || !SYMBOLTABLEENTRY_NEXT(linkedlist))
     {
         return linkedlist;
     }
@@ -236,7 +209,7 @@ void STdisplay(node *table, size_t tabs)
 
 void STprint(node *list, size_t tabs)
 {
-    if (list == NULL)
+    if (!list)
     {
         return;
     }
@@ -246,34 +219,14 @@ void STprint(node *list, size_t tabs)
         printf("\t");
     }
 
-    printf("Type: ");
+    printf("Type: %s, Name: %s\n", typeToString(SYMBOLTABLEENTRY_TYPE(list)), SYMBOLTABLEENTRY_NAME(list));
 
-    switch (SYMBOLTABLEENTRY_TYPE(list))
-    {
-    case T_void:
-        printf("void");
-        break;
-    case T_bool:
-        printf("bool");
-        break;
-    case T_int:
-        printf("int");
-        break;
-    case T_float:
-        printf("float");
-        break;
-    case T_unknown:
-        DBUG_ASSERT(0, "unknown type detected!");
-    }
-
-    printf(", Name: %s\n", SYMBOLTABLEENTRY_NAME(list));
-
-    if (SYMBOLTABLEENTRY_TABLE(list) != NULL)
+    if (SYMBOLTABLEENTRY_TABLE(list))
     {
         STdisplay(SYMBOLTABLEENTRY_TABLE(list), tabs + 1);
     }
 
-    STprint(SYMBOLTABLEENTRY_NEXT(list), tabs);
+    return STprint(SYMBOLTABLEENTRY_NEXT(list), tabs);
 }
 
 size_t STcountParams(node *table)
@@ -297,19 +250,13 @@ size_t STcountParams(node *table)
 size_t STcountGlobDecls(node *table)
 {
     size_t count = 0;
-
     node *entry = SYMBOLTABLE_ENTRY(table);
 
     for (; entry != NULL; entry = SYMBOLTABLEENTRY_NEXT(entry))
     {
         node *link = SYMBOLTABLEENTRY_LINK(entry);
 
-        if (NODE_TYPE(link) != N_globdef)
-        {
-            continue;
-        }
-
-        if (!GLOBDEF_ISEXTERN(link))
+        if (NODE_TYPE(link) != N_globdef || !GLOBDEF_ISEXTERN(link))
         {
             continue;
         }
@@ -323,19 +270,13 @@ size_t STcountGlobDecls(node *table)
 size_t STcountFunDecls(node *table)
 {
     size_t count = 0;
-
     node *entry = SYMBOLTABLE_ENTRY(table);
 
     for (; entry != NULL; entry = SYMBOLTABLEENTRY_NEXT(entry))
     {
         node *link = SYMBOLTABLEENTRY_LINK(entry);
 
-        if (NODE_TYPE(link) != N_fundef)
-        {
-            continue;
-        }
-
-        if (!FUNDEF_ISEXTERN(link))
+        if (NODE_TYPE(link) != N_fundef || !FUNDEF_ISEXTERN(link))
         {
             continue;
         }
@@ -352,16 +293,12 @@ size_t STcount(node *table)
 
     node *entry = SYMBOLTABLE_ENTRY(table);
 
-    for (; entry != NULL; entry = SYMBOLTABLEENTRY_NEXT(entry))
+    for (; entry; entry = SYMBOLTABLEENTRY_NEXT(entry))
     {
         node *link = SYMBOLTABLEENTRY_LINK(entry);
 
-        if (NODE_TYPE(link) == N_fundef && (FUNDEF_ISEXTERN(link) || FUNDEF_ISEXPORT(link)))
-        {
-            continue;
-        }
-
-        if (NODE_TYPE(link) == N_globdef && GLOBDEF_ISEXTERN(link))
+        if ((NODE_TYPE(link) == N_globdef && GLOBDEF_ISEXTERN(link)) || 
+            (NODE_TYPE(link) == N_fundef && (FUNDEF_ISEXTERN(link) || FUNDEF_ISEXPORT(link))))
         {
             continue;
         }
@@ -381,17 +318,12 @@ node *STfindFundef(node *table, const char *name)
 
 node *STfindFundefEntry(node *symboltableentry, const char *name)
 {
-    if (symboltableentry == NULL)
+    if (!symboltableentry)
     {
         return NULL;
     }
-
-    if (SYMBOLTABLEENTRY_TABLE(symboltableentry) == NULL)
-    {
-        return STfindFundefEntry(SYMBOLTABLEENTRY_NEXT(symboltableentry), name);
-    }
-
-    if (strcmp(SYMBOLTABLEENTRY_NAME(symboltableentry), name) != 0)
+    else if (!SYMBOLTABLEENTRY_TABLE(symboltableentry) || 
+             strcmp(SYMBOLTABLEENTRY_NAME(symboltableentry), name) != 0)
     {
         return STfindFundefEntry(SYMBOLTABLEENTRY_NEXT(symboltableentry), name);
     }
@@ -402,15 +334,13 @@ node *STfindFundefEntry(node *symboltableentry, const char *name)
 node *STdeepFindFundef(node *table, const char *name)
 {
     node *found = STfindFundef(table, name);
+    node *parent = SYMBOLTABLE_PARENT(table);
 
-    if (found != NULL)
+    if (found)
     {
         return found;
     }
-
-    node *parent = SYMBOLTABLE_PARENT(table);
-
-    if (parent == NULL)
+    else if (!parent)
     {
         return NULL;
     }
@@ -450,11 +380,10 @@ node *STfundef(node *arg_node, info *arg_info)
     DBUG_PRINT("ST", ("STfundef"));
 
     node *symboltable = INFO_SYMBOL_TABLE(arg_info);
-
     info *symbolTableInfo = MakeInfo(symboltable);
-    SYMBOLTABLE_RETURNTYPE(INFO_SYMBOL_TABLE(symbolTableInfo)) = FUNDEF_TYPE(arg_node);
-
     node *symboltableentry = TBmakeSymboltableentry(STRcpy(FUNDEF_NAME(arg_node)), FUNDEF_TYPE(arg_node), 0, 0, arg_node, NULL, INFO_SYMBOL_TABLE(symbolTableInfo));
+
+    SYMBOLTABLE_RETURNTYPE(INFO_SYMBOL_TABLE(symbolTableInfo)) = FUNDEF_TYPE(arg_node);
 
     STadd(symboltable, symboltableentry);
 
@@ -488,33 +417,23 @@ node *STfuncall(node *arg_node, info *arg_info)
     DBUG_PRINT("ST", ("STfuncall"));
 
     node *table = INFO_SYMBOL_TABLE(arg_info);
-
     node *entry = STdeepFindFundef(table, FUNCALL_NAME(arg_node));
 
-    if (entry == NULL)
-    {
-        CTIerrorLine(NODE_LINE(arg_node), "`%s()` was not declared in this scope.\n", FUNCALL_NAME(arg_node));
-    }
-    else
+    if (entry)
     {
         FUNCALL_DECL(arg_node) = SYMBOLTABLEENTRY_LINK(entry);
 
-        if (FUNCALL_ARGS(arg_node) != NULL)
+        if (FUNCALL_ARGS(arg_node))
         {
             int backarguments = INFO_ARGUMENTS(arg_info);
             INFO_ARGUMENTS(arg_info) = 0;
-
             FUNCALL_ARGS(arg_node) = TRAVopt(FUNCALL_ARGS(arg_node), arg_info);
-
             size_t params = STcountParams(SYMBOLTABLEENTRY_TABLE(entry));
 
-            if (INFO_ARGUMENTS(arg_info) < params)
+            if ((INFO_ARGUMENTS(arg_info) < params) ||
+                (INFO_ARGUMENTS(arg_info) > params))
             {
-                CTIerrorLine(NODE_LINE(arg_node), "Not enough arguments for function.\n");
-            }
-            else if (INFO_ARGUMENTS(arg_info) > params)
-            {
-                CTIerrorLine(NODE_LINE(arg_node), "Not enough arguments for function.\n");
+                CTIerrorLine(NODE_LINE(arg_node), "Too few or too many arguments for function.\n");
             }
 
             INFO_ARGUMENTS(arg_info) = backarguments;
@@ -523,6 +442,10 @@ node *STfuncall(node *arg_node, info *arg_info)
         {
             CTIerrorLine(NODE_LINE(arg_node), "Not enough arguments for function.\n");
         }
+    }
+    else
+    {
+        CTIerrorLine(NODE_LINE(arg_node), "`%s()` was declared in a different scope.\n", FUNCALL_NAME(arg_node));
     }
 
     DBUG_RETURN(arg_node);
@@ -556,13 +479,13 @@ node *STvarlet(node *arg_node, info *arg_info)
 
     node *variable = STfindInParent(INFO_SYMBOL_TABLE(arg_info), VARLET_NAME(arg_node));
 
-    if (variable == NULL)
+    if (variable)
     {
-        CTIerrorLine(NODE_LINE(arg_node), "`%s` is not declared in this scope\n", VARLET_NAME(arg_node));
+        VARLET_DECL(arg_node) = SYMBOLTABLEENTRY_LINK(variable);
     }
     else
     {
-        VARLET_DECL(arg_node) = SYMBOLTABLEENTRY_LINK(variable);
+        CTIerrorLine(NODE_LINE(arg_node), "`%s` is declared in a different scope\n", VARLET_NAME(arg_node));
     }
 
     DBUG_RETURN(arg_node);
@@ -575,13 +498,13 @@ node *STvar(node *arg_node, info *arg_info)
 
     node *entry = STfindInParent(INFO_SYMBOL_TABLE(arg_info), VAR_NAME(arg_node));
 
-    if (entry != NULL)
+    if (entry)
     {
         VAR_DECL(arg_node) = SYMBOLTABLEENTRY_LINK(entry);
     }
     else
     {
-        CTIerrorLine(NODE_LINE(arg_node), "`%s` was not declared in this scope\n", VAR_NAME(arg_node));
+        CTIerrorLine(NODE_LINE(arg_node), "`%s` is declared in a different scope\n", VAR_NAME(arg_node));
     }
 
     DBUG_RETURN(arg_node);
