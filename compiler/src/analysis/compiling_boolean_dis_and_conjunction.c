@@ -30,24 +30,24 @@ node *CBbinop(node *arg_node, info *arg_info)
         DBUG_RETURN(arg_node);
     }
 
-    node *leftSide = NULL;
-
     BINOP_LEFT(arg_node) = TRAVopt(BINOP_LEFT(arg_node), arg_info);
     BINOP_RIGHT(arg_node) = TRAVopt(BINOP_RIGHT(arg_node), arg_info);
+
+    node *leftSide = NULL;
 
     if (BO_and == BINOP_OP(arg_node))
     {
         leftSide = TBmakeTernary(COPYdoCopy(BINOP_LEFT(arg_node)), COPYdoCopy(BINOP_RIGHT(arg_node)), TBmakeBool(0));
     }
-    else if (BO_or == BINOP_OP(arg_node))
+
+    if (BO_or == BINOP_OP(arg_node))
     {
         leftSide = TBmakeTernary(COPYdoCopy(BINOP_LEFT(arg_node)), TBmakeBool(1), COPYdoCopy(BINOP_RIGHT(arg_node)));
     }
 
     FREEdoFreeTree(arg_node);
 
-    arg_node = leftSide;
-    DBUG_RETURN(arg_node);
+    DBUG_RETURN(leftSide);
 }
 
 node *CBdoCompileBoolean(node *syntaxtree)
