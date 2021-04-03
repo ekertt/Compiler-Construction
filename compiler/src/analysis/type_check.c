@@ -114,9 +114,8 @@ node *TCfundef(node *arg_node, info *arg_info)
     DBUG_PRINT("TC", ("TCfundef"));
 
     node *symboltable = INFO_SYMBOL_TABLE(arg_info);
-    node *symboltableentry = STfindFundef(symboltable, FUNDEF_NAME(arg_node));
 
-    INFO_SYMBOL_TABLE(arg_info) = SYMBOLTABLEENTRY_TABLE(symboltableentry);
+    INFO_SYMBOL_TABLE(arg_info) = SYMBOLTABLEENTRY_TABLE(STfindFundef(symboltable, FUNDEF_NAME(arg_node)));
     FUNDEF_FUNBODY(arg_node) = TRAVopt(FUNDEF_FUNBODY(arg_node), arg_info);
 
     if (INFO_RETURN(arg_info) == 0 && FUNDEF_ISEXTERN(arg_node) < 1 && FUNDEF_TYPE(arg_node) != T_void)
@@ -146,12 +145,11 @@ node *TCreturn(node *arg_node, info *arg_info)
 
     RETURN_EXPR(arg_node) = TRAVopt(RETURN_EXPR(arg_node), arg_info);
 
-    if (INFO_TYPE(arg_info) == SYMBOLTABLE_RETURNTYPE(symboltable))
+    if (INFO_TYPE(arg_info) != SYMBOLTABLE_RETURNTYPE(symboltable))
     {
-        DBUG_RETURN(arg_node);
+            CTIerrorLine(NODE_LINE(arg_node), "Invalid return statement from %s to %s", SYMBOLTABLE_RETURNTYPE(symboltable), INFO_TYPE(arg_info));
     }
 
-    CTIerrorLine(NODE_LINE(arg_node), "Invalid return statement from line %s to line %s", SYMBOLTABLE_RETURNTYPE(symboltable), INFO_TYPE(arg_info));
     DBUG_RETURN(arg_node);
 }
 
