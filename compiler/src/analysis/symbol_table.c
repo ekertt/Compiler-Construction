@@ -72,7 +72,7 @@ node *STadd(node *table, node *entry)
 {
     DBUG_ENTER("STadd");
 
-    if ((STfind(table, SYMBOLTABLEENTRY_NAME(entry)) != NULL) || 
+    if ((STfind(table, SYMBOLTABLEENTRY_NAME(entry)) != NULL) ||
         (STfindFundef(table, SYMBOLTABLEENTRY_NAME(entry)) != NULL))
     {
         return NULL;
@@ -136,7 +136,7 @@ node *STfindByNode(node *table, node *link)
             continue;
         }
 
-        if ((NODE_TYPE(n) == N_globdef && STReq(GLOBDEF_NAME(n), GLOBDEF_NAME(link))) || 
+        if ((NODE_TYPE(n) == N_globdef && STReq(GLOBDEF_NAME(n), GLOBDEF_NAME(link))) ||
             (NODE_TYPE(n) == N_fundef && STReq(FUNDEF_NAME(n), FUNDEF_NAME(link))) ||
             (NODE_TYPE(n) == N_vardecl && STReq(VARDECL_NAME(n), VARDECL_NAME(link))) ||
             (NODE_TYPE(n) == N_param && STReq(PARAM_NAME(n), PARAM_NAME(link))))
@@ -167,7 +167,7 @@ node *STfindEntry(node *symboltableentry, const char *name, type type)
         return NULL;
     }
     else if ((SYMBOLTABLEENTRY_TABLE(symboltableentry)) ||
-             (strcmp(SYMBOLTABLEENTRY_NAME(symboltableentry), name) != 0) ||
+             (!STReq(SYMBOLTABLEENTRY_NAME(symboltableentry), name)) ||
              (SYMBOLTABLEENTRY_TYPE(symboltableentry) != type && T_unknown != type))
     {
         return STfindEntry(SYMBOLTABLEENTRY_NEXT(symboltableentry), name, type);
@@ -298,7 +298,7 @@ size_t STcount(node *table)
     {
         node *link = SYMBOLTABLEENTRY_LINK(entry);
 
-        if ((NODE_TYPE(link) == N_globdef && GLOBDEF_ISEXTERN(link)) || 
+        if ((NODE_TYPE(link) == N_globdef && GLOBDEF_ISEXTERN(link)) ||
             (NODE_TYPE(link) == N_fundef && (FUNDEF_ISEXTERN(link) || FUNDEF_ISEXPORT(link))))
         {
             continue;
@@ -323,8 +323,8 @@ node *STfindFundefEntry(node *symboltableentry, const char *name)
     {
         return NULL;
     }
-    else if (!SYMBOLTABLEENTRY_TABLE(symboltableentry) || 
-             strcmp(SYMBOLTABLEENTRY_NAME(symboltableentry), name) != 0)
+    else if (!SYMBOLTABLEENTRY_TABLE(symboltableentry) ||
+             !STReq(SYMBOLTABLEENTRY_NAME(symboltableentry), name))
     {
         return STfindFundefEntry(SYMBOLTABLEENTRY_NEXT(symboltableentry), name);
     }

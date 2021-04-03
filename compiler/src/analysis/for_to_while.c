@@ -113,7 +113,7 @@ keyvalueListNode *KeyValueSearch(keyvalueListNode *head, const char *key)
     keyvalueListNode *current = head;
     while (current != NULL)
     {
-        if (strcmp(current->key, key) == 0)
+        if (STReq(current->key, key))
         {
             return current;
         }
