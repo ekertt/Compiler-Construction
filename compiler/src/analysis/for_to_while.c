@@ -1,3 +1,13 @@
+/*****************************************************************************
+ *
+ * Module: Change for loops to while loops
+ *
+ * Prefix: FTW
+ *
+ * Description: Changes all for loops to while loops
+ *
+ *****************************************************************************/
+
 #include "for_to_while.h"
 
 #include "types.h"

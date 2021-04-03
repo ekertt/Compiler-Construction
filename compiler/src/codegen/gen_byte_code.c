@@ -1,3 +1,12 @@
+/*****************************************************************************
+ *
+ * Module: Generating byte code
+ *
+ * Prefix: GBC
+ *
+ * Description: This generates the byte code
+ *
+ *****************************************************************************/
 #include "linked_list.h"
 #include "symbol_table.h"
 #include "gen_byte_code.h"
