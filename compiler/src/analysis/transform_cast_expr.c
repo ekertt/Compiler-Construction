@@ -106,12 +106,9 @@ node *TCEfundef(node *arg_node, info *arg_info)
     DBUG_PRINT("TCE", ("TCEfundef"));
 
     node *symboltable = INFO_SYMBOLTABLE(arg_info);
-    node *entry = STfindFundef(symboltable, FUNDEF_NAME(arg_node));
 
-    INFO_SYMBOLTABLE(arg_info) = SYMBOLTABLEENTRY_TABLE(entry);
-
+    INFO_SYMBOLTABLE(arg_info) = SYMBOLTABLEENTRY_TABLE(STfindFundef(symboltable, FUNDEF_NAME(arg_node)));
     FUNDEF_FUNBODY(arg_node) = TRAVopt(FUNDEF_FUNBODY(arg_node), arg_info);
-
     INFO_SYMBOLTABLE(arg_info) = symboltable;
 
     DBUG_RETURN(arg_node);
