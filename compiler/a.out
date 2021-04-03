@@ -1,12 +1,268 @@
 main:
-  isrg
-  iloade 0
-  jsre 0
+   esr 18
   iloadc 0
+  istore 0
+  iloadc 1
+  istore 1
+  iloadc 2
+  istore 2
+
+0_while:
+   iload_2
+  iloadc 3
+  igt
+  branch_f 2_false_expr
+   iload_0
+   iload_1
+  ilt
+  jump 3_end
+2_false_expr:
+   iload_0
+   iload_1
+  igt
+3_end:
+  branch_f 1_end
+  isrg
+   iload_0
+  jsre 0
+  isrg
+  iloadc 4
+  jsre 1
+   iload_0
+   iload_2
+  iadd
+  istore 0
+  jump 0_while
+1_end:
+
+  isrg
+  iloadc 5
+  jsre 2
+  iloadc 6
+  istore 3
+  iloadc 7
+  istore 4
+  iloadc 8
+  ineg
+  istore 5
+
+4_while:
+    iload 5
+  iloadc 9
+  igt
+  branch_f 6_false_expr
+   iload_3
+    iload 4
+  ilt
+  jump 7_end
+6_false_expr:
+   iload_3
+    iload 4
+  igt
+7_end:
+  branch_f 5_end
+  isrg
+   iload_3
+  jsre 0
+  isrg
+  iloadc 10
+  jsre 1
+   iload_3
+    iload 5
+  iadd
+  istore 3
+  jump 4_while
+5_end:
+
+  isrg
+  iloadc 11
+  jsre 2
+  iloadc 12
+  istore 6
+  iloadc 13
+  istore 7
+  iloadc 14
+  istore 8
+
+8_while:
+    iload 8
+  iloadc 15
+  igt
+  branch_f 10_false_expr
+    iload 6
+    iload 7
+  ilt
+  jump 11_end
+10_false_expr:
+    iload 6
+    iload 7
+  igt
+11_end:
+  branch_f 9_end
+  isrg
+    iload 6
+  jsre 0
+  isrg
+  iloadc 16
+  jsre 1
+    iload 6
+    iload 8
+  iadd
+  istore 6
+  jump 8_while
+9_end:
+
+  isrg
+  iloadc 17
+  jsre 2
+  iloadc 18
+  istore 9
+  iloadc 19
+  istore 10
+  iloadc 20
+  ineg
+  istore 11
+
+12_while:
+    iload 11
+  iloadc 21
+  igt
+  branch_f 14_false_expr
+    iload 9
+    iload 10
+  ilt
+  jump 15_end
+14_false_expr:
+    iload 9
+    iload 10
+  igt
+15_end:
+  branch_f 13_end
+  isrg
+    iload 9
+  jsre 0
+  isrg
+  iloadc 22
+  jsre 1
+    iload 9
+    iload 11
+  iadd
+  istore 9
+  jump 12_while
+13_end:
+
+  iloadc 23
+  istore 15
+  iloadc 24
+  istore 16
+  iloadc 25
+  istore 17
+
+16_while:
+    iload 17
+  iloadc 26
+  igt
+  branch_f 18_false_expr
+    iload 15
+    iload 16
+  ilt
+  jump 19_end
+18_false_expr:
+    iload 15
+    iload 16
+  igt
+19_end:
+  branch_f 17_end
+  iloadc 27
+  istore 12
+  iloadc 28
+  istore 13
+  iloadc 29
+  istore 14
+
+20_while:
+    iload 14
+  iloadc 30
+  igt
+  branch_f 22_false_expr
+    iload 12
+    iload 13
+  ilt
+  jump 23_end
+22_false_expr:
+    iload 12
+    iload 13
+  igt
+23_end:
+  branch_f 21_end
+  isrg
+    iload 15
+  jsre 0
+  isrg
+  iloadc 31
+  jsre 1
+  isrg
+    iload 12
+  jsre 0
+  isrg
+  iloadc 32
+  jsre 1
+    iload 12
+    iload 14
+  iadd
+  istore 12
+  jump 20_while
+21_end:
+
+  isrg
+  iloadc 33
+  jsre 2
+    iload 15
+    iload 17
+  iadd
+  istore 15
+  jump 16_while
+17_end:
+
+  iloadc 34
   ireturn
 
 .const int 0
+.const int 10
+.const int 1
+.const int 0
+.const int 1
+.const int 1
+.const int 10
+.const int 0
+.const int 1
+.const int 0
+.const int 1
+.const int 1
+.const int 0
+.const int 10
+.const int 2
+.const int 0
+.const int 1
+.const int 1
+.const int 7
+.const int 0
+.const int 3
+.const int 0
+.const int 1
+.const int 0
+.const int 5
+.const int 1
+.const int 0
+.const int 0
+.const int 4
+.const int 1
+.const int 0
+.const int 1
+.const int 1
+.const int 1
+.const int 0
 .exportfun "main" int  main
 .importfun "printInt" void  int
+.importfun "printSpaces" void  int
 .importfun "printNewlines" void  int
-.importvar "foo" int

@@ -152,17 +152,24 @@ node *CIfunbody(node *arg_node, info *arg_info)
     DBUG_ENTER("CIfunbody");
     DBUG_PRINT("CI", ("CIfunbody"));
 
-    info *info = MakeInfo();
-    FUNBODY_VARDECLS(arg_node) = TRAVopt(FUNBODY_VARDECLS(arg_node), info);
+    info *infoFunBody = MakeInfo();
+    FUNBODY_VARDECLS(arg_node) = TRAVopt(FUNBODY_VARDECLS(arg_node), infoFunBody);
 
-    if (INFO_END(info) != NULL)
+    if (INFO_END(infoFunBody) == NULL)
     {
-        STMTS_NEXT(INFO_END(info)) = FUNBODY_STMTS(arg_node);
-        FUNBODY_STMTS(arg_node) = INFO_BEGIN(info);
-    }
+        FreeInfo(infoFunBody);
 
-    FreeInfo(info);
-    DBUG_RETURN(arg_node);
+        DBUG_RETURN(arg_node);
+    }
+    else
+    {
+        STMTS_NEXT(INFO_END(infoFunBody)) = FUNBODY_STMTS(arg_node);
+        FUNBODY_STMTS(arg_node) = INFO_BEGIN(infoFunBody);
+
+        FreeInfo(infoFunBody);
+
+        DBUG_RETURN(arg_node);
+    }
 }
 
 node *CIdoChangeVariableInitToRegular(node *syntaxtree)
