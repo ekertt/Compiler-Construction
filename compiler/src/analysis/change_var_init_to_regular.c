@@ -73,45 +73,18 @@ node *CIprogram(node *arg_node, info *arg_info)
     INFO_SYMBOL_TABLE(arg_info) = PROGRAM_SYMBOLTABLE(arg_node);
     PROGRAM_DECLS(arg_node) = TRAVopt(PROGRAM_DECLS(arg_node), arg_info);
 
-    node *statements = INFO_BEGIN(arg_info);
-
-    if (statements == NULL)
+    if (INFO_BEGIN(arg_info))
     {
-        DBUG_RETURN(arg_node);
-    }
+        node *initFunction = TBmakeFundef(T_void, STRcpy("__init"), TBmakeFunbody(NULL, NULL, INFO_BEGIN(arg_info)), NULL);
+        node *symboltableInit = TBmakeSymboltable(NULL);
 
-    node *initFunction = TBmakeFundef(T_void, STRcpy("__init"), TBmakeFunbody(NULL, NULL, statements), NULL);
-    FUNDEF_ISEXPORT(initFunction) = 1;
+        PROGRAM_DECLS(arg_node) = TBmakeDecls(initFunction, PROGRAM_DECLS(arg_node));
 
-    PROGRAM_DECLS(arg_node) = TBmakeDecls(initFunction, PROGRAM_DECLS(arg_node));
+        SYMBOLTABLE_PARENT(symboltableInit) = INFO_SYMBOL_TABLE(arg_info);
 
-    node *symboltable = INFO_SYMBOL_TABLE(arg_info);
+        FUNDEF_ISEXPORT(initFunction) = 1;
 
-    node *inittable = TBmakeSymboltable(NULL);
-    SYMBOLTABLE_PARENT(inittable) = symboltable;
-
-    node *entry = TBmakeSymboltableentry(STRcpy(FUNDEF_NAME(initFunction)), FUNDEF_TYPE(initFunction), 0, 0, arg_node, NULL, inittable);
-
-    STadd(symboltable, entry);
-
-    DBUG_RETURN(arg_node);
-}
-
-node *CIglobdef(node *arg_node, info *arg_info)
-{
-    DBUG_ENTER("CIglobdef");
-    DBUG_PRINT("CI", ("CIglobdef"));
-
-    node *expression = GLOBDEF_INIT(arg_node);
-    GLOBDEF_INIT(arg_node) = NULL;
-
-    if (expression)
-    {
-        node *newstatements = TBmakeAssign(TBmakeVarlet(STRcpy(GLOBDEF_NAME(arg_node)), arg_node, NULL), COPYdoCopy(expression));
-
-        FREEdoFreeTree(expression);
-
-        helper(arg_node, arg_info, newstatements, 0);
+        STadd(INFO_SYMBOL_TABLE(arg_info), TBmakeSymboltableentry(STRcpy(FUNDEF_NAME(initFunction)), FUNDEF_TYPE(initFunction), 0, 0, arg_node, NULL, symboltableInit));
     }
 
     DBUG_RETURN(arg_node);
@@ -134,6 +107,26 @@ node *CIvardecl(node *arg_node, info *arg_info)
         helper(arg_node, arg_info, newstatements, 1);
 
         VARDECL_NEXT(arg_node) = TRAVopt(VARDECL_NEXT(arg_node), arg_info);
+    }
+
+    DBUG_RETURN(arg_node);
+}
+
+node *CIglobdef(node *arg_node, info *arg_info)
+{
+    DBUG_ENTER("CIglobdef");
+    DBUG_PRINT("CI", ("CIglobdef"));
+
+    node *expression = GLOBDEF_INIT(arg_node);
+    GLOBDEF_INIT(arg_node) = NULL;
+
+    if (expression)
+    {
+        node *newstatements = TBmakeAssign(TBmakeVarlet(STRcpy(GLOBDEF_NAME(arg_node)), arg_node, NULL), COPYdoCopy(expression));
+
+        FREEdoFreeTree(expression);
+
+        helper(arg_node, arg_info, newstatements, 0);
     }
 
     DBUG_RETURN(arg_node);
