@@ -10,17 +10,17 @@
 #include "change_var_init_to_regular.h"
 #include "symbol_table.h"
 
+#include "copy.h"
+#include "ctinfo.h"
+#include "dbug.h"
+#include "free.h"
+#include "print.h"
+#include "memory.h"
+#include "str.h"
+#include "string.h"
 #include "types.h"
 #include "tree_basic.h"
 #include "traverse.h"
-#include "dbug.h"
-#include "print.h"
-#include "memory.h"
-#include "free.h"
-#include "str.h"
-#include "ctinfo.h"
-#include "string.h"
-#include "copy.h"
 
 /*
  * INFO structure

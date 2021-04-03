@@ -9,16 +9,17 @@
  *****************************************************************************/
 #include "compiling_boolean_dis_and_conjunction.h"
 
+#include "copy.h"
+#include "ctinfo.h"
+#include "dbug.h"
+#include "free.h"
+#include "print.h"
+#include "memory.h"
+#include "str.h"
+#include "string.h"
 #include "types.h"
 #include "tree_basic.h"
 #include "traverse.h"
-#include "dbug.h"
-#include "print.h"
-#include "memory.h"
-#include "free.h"
-#include "str.h"
-#include "ctinfo.h"
-#include "copy.h"
 
 node *CBbinop(node *arg_node, info *arg_info)
 {

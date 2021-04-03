@@ -9,16 +9,17 @@
  *****************************************************************************/
 #include "symbol_table.h"
 
+#include "copy.h"
+#include "ctinfo.h"
+#include "dbug.h"
+#include "free.h"
+#include "print.h"
+#include "memory.h"
+#include "str.h"
+#include "string.h"
 #include "types.h"
 #include "tree_basic.h"
 #include "traverse.h"
-#include "dbug.h"
-#include "print.h"
-#include "memory.h"
-#include "free.h"
-#include "str.h"
-#include "string.h"
-#include "ctinfo.h"
 /*
  * INFO structure
  */

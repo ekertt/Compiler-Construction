@@ -11,19 +11,20 @@
 #include "symbol_table.h"
 #include "gen_byte_code.h"
 
+#include "copy.h"
+#include "ctinfo.h"
+#include "dbug.h"
+#include "free.h"
+#include "globals.h"
+#include "print.h"
+#include "memory.h"
+#include "str.h"
+#include "string.h"
 #include "types.h"
 #include "tree_basic.h"
 #include "traverse.h"
-#include "dbug.h"
-
-#include "ctinfo.h"
-#include <stdio.h>
-#include "memory.h"
-#include "free.h"
-#include "str.h"
-#include "print.h"
 #include <unistd.h>
-#include "globals.h"
+#include <stdio.h>
 
 /*
  * INFO structure
