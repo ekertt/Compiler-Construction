@@ -24,8 +24,8 @@
 
 %}
 
-%p 6000 /* set positions to 6000 */
-%e 2000 /* set nodes to 1100 */
+%p 6000
+%e 2000
 %option noyywrap
 %option nounput
 
@@ -60,7 +60,7 @@
 
 "!"                        { FILTER( NEG);    }
 
-"extern"                   { FILTER( EXTERN); } // KEYWORDS
+"extern"                   { FILTER( EXTERN); }
 "export"                   { FILTER( EXPORT); }
 "return"                   { FILTER( RETURN); }
 
@@ -99,10 +99,11 @@
                              yyless(1);
                            }
 
+"/*"((\*+[^/*])|([^*]))*\**"*/"           { /* none */ }
+[/][*]                                    { yy_fatal_error("Comment isn't closed"); } 
+[ \t\n]+                                  { /* none */ }
+"//".*                                    { /* none */ }
+
 [ \t]                      { global.col += yyleng;
                            } 
 
-[ \t\n]+                   //White space
-"//".*                     //Single line comment
-[/][*][^*]*[*]+([^*/][^*]*[*]+)*[/]       { /* DO NOTHING */ }
-[/][*]                                    { yy_fatal_error("Unclosed comment"); } 
